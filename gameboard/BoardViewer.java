@@ -6,7 +6,7 @@ public class BoardViewer {
 
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
-		frame.setSize(350,350);
+		frame.setSize(850,750);
 		frame.setTitle("Risk Game Board");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
