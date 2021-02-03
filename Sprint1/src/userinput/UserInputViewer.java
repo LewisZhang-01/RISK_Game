@@ -12,7 +12,7 @@ public class UserInputViewer {
 		JFrame frame = new UserInput();
 		frame.setSize(900, 900);
 		frame.setTitle("RISK Game");
-		frame.getContentPane(frame);
+		//frame.getContentPane(frame);
 		//UserInput.createUI(frame);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(true);

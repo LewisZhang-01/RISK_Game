@@ -33,20 +33,20 @@ public class IO extends JPanel {
 	public IO() {
 
 		resultArea = new JTextArea(AREA_ROWS, AREA_COLUMNS);
-
+		
 		resultArea.setEditable(false);
 
 		createTextField();
 		createButton();
 		createPanel();
 
-		setSize(FRAME_WIDTH, FRAME_HEIGHT);
+		//setSize(FRAME_WIDTH, FRAME_HEIGHT);
 	}
 
 	// add input here:
 	private void createTextField() {
 		inputLabel = new JLabel("User input: ");
-
+		
 		final int FIELD_WIDTH = 23;
 
 		inputField = new JTextField(FIELD_WIDTH);
@@ -77,9 +77,9 @@ public class IO extends JPanel {
 	private void createButton() {
 
 		button_enter = new JButton("Enter");
-		button_enter.setBounds(80, 150, 80, 30);
+		button_enter.setBounds(80, 300, 80, 30);
 		button_close = new JButton("Close");
-		button_close.setBounds(120, 150, 80, 30);
+		button_close.setBounds(80, 700, 80, 30);
 
 		ActionListener listener = new AddInputListener();
 
@@ -105,11 +105,12 @@ public class IO extends JPanel {
 		 */
 		
 		JScrollPane scrollPane = new JScrollPane(resultArea);
-		panel.add(scrollPane);
-		add(panel);
-		panel.add(inputLabel);
-		panel.add(inputField);
-		panel.add(button_enter);
-		panel.add(button_close);
+		panel.add(scrollPane,BorderLayout.NORTH);
+		
+		panel.add(inputLabel,BorderLayout.SOUTH);
+		panel.add(inputField,BorderLayout.SOUTH);
+		panel.add(button_enter,BorderLayout.SOUTH);
+		panel.add(button_close,BorderLayout.SOUTH);
+		add(panel,BorderLayout.CENTER);
 	}
 }

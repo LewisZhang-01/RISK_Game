@@ -11,21 +11,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
-public class UserInput extends JFrame{//JFrame{//
-   /*
-	public static void main(String[] args) {
-      createWindow();
-   }
-   private static void createWindow() {    
-      JFrame frame = new JFrame("RiskGame");
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      
-      frame.setSize(400, 300);      
-   	  frame.setResizable(true);
-	  frame.setVisible(true);
-   }
-*/
+public class UserInput extends JPanel{//JFrame{//
+   
+	public UserInput() {
+
+		createUI();
+		
+	}
    public void createUI(/*final JFrame frame*/){  
       JPanel panel = new JPanel();
       LayoutManager layout = new FlowLayout();  
@@ -59,8 +53,8 @@ public class UserInput extends JFrame{//JFrame{//
 
       panel.add(button);
       panel.add(label);
-      add(panel, BorderLayout.CENTER);//panel.getContentPane().add(panel);//    
-      //panel.add(panel);
+      add(panel);
+     
    }  
 }
 
