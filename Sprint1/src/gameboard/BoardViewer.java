@@ -12,16 +12,19 @@ import IO.IO;
 import userinput.UserInput;
 
 public class BoardViewer {
-
+	
+	private static final int FRAME_WIDTH = 1300;    // must be even
+	private static final int FRAME_HEIGHT = 1050;
+	
 	public static void main(String[] args) {
 		
 		JFrame frame = new JFrame();
-		frame.setSize(1300,900);
+		frame.setSize(FRAME_WIDTH,FRAME_HEIGHT);
 		frame.setTitle("Risk Game Board");
 		
 // Add Background Photo Part:
-		/*
-		ImageIcon icon=new ImageIcon("/Users/lewiszhang/Pictures/RISK.jpg");
+		
+		ImageIcon icon=new ImageIcon("RISK.jpg");
 		
 		// put photo into lable
 		JLabel label=new JLabel(icon);
@@ -35,14 +38,14 @@ public class BoardViewer {
 		//Gets the top-level container of the Frame and sets it to transparent.
 		JPanel j=(JPanel)frame.getContentPane();
 		j.setOpaque(false);
-		*/
+		
 // end
 		
 				 
 		BoardComponent component = new BoardComponent();
-		
 		component.setBorder(BorderFactory.createEtchedBorder()); 
 		frame.add(component,BorderLayout.CENTER);
+		
 		
 		IO io = new IO();
 		io.setBorder(BorderFactory.createEtchedBorder()); 
@@ -54,10 +57,7 @@ public class BoardViewer {
 		
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(true);
-		
-		//frame.setSize(icon.getIconWidth(),icon.getIconHeight());
-		
+		frame.setResizable(true);	
 		frame.setVisible(true);
 		
 	}

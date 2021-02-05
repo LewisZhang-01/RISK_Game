@@ -4,9 +4,6 @@ package IO;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-//import java.awt.image.BufferedImage;
-
 import javax.swing.*;
 
 import gameboard.BoardComponent;
@@ -15,7 +12,7 @@ public class IO extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 
-	private static final int AREA_ROWS = 48;
+	private static final int AREA_ROWS = 59;
 	private static final int AREA_COLUMNS = 30;
 
 	public static JLabel inputLabel;
@@ -37,7 +34,6 @@ public class IO extends JPanel {
 		createButton();
 		createPanel();
 
-		//setSize(FRAME_WIDTH, FRAME_HEIGHT);
 	}
 
 	
@@ -62,12 +58,17 @@ public class IO extends JPanel {
 				if (i == 1) {
 					resultArea.append("Please enter the " + (i + 1) + " player name:\n");
 				}
+				
+				
+				if(i==2) {
+					// Call to initialize the player's territories
+					BoardComponent.playerTerritories_Initialization();
+				}
 				i++;
 			} else {
 				userInput = inputField.getText();
 				resultArea.append(userInput + "\n");
-				// Call to initialize the player's territories
-				BoardComponent.playerTerritories_Initialization();
+				
 			}
 		}	
 	}
@@ -97,11 +98,6 @@ public class IO extends JPanel {
 
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createEtchedBorder()); 
-		/*
-		 * JLabel image=new JLabel(new
-		 * ImageIcon("/Users/lewiszhang/Pictures/IMG_0034.jpg")); panel.add(image);
-		 * image.setBounds(0, 20, 200, 200);
-		 */
 		
 		JScrollPane scrollPane = new JScrollPane(resultArea);
 		panel.add(scrollPane);
