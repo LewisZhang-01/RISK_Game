@@ -3,20 +3,21 @@ package gameboard;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
-import java.awt.geom.Ellipse2D.Double;
 
+import java.awt.geom.Line2D;
 import javax.swing.JComponent;
 
 public class BoardComponent extends JComponent{
+	
+	private static final long serialVersionUID = 1L;
+
 	public void paintComponent(Graphics g) {
 		// Recover Graphics2D
-		Graphics2D g2 = (Graphics2D)g;
+	    Graphics2D g2 = (Graphics2D)g;
 		
 		
 		//draw countries and lines
+	    
 		setYellow(g2,75,25);
 		setYellow(g2,15,95);
 		
@@ -254,7 +255,7 @@ public class BoardComponent extends JComponent{
 		g2.drawOval(x,y,25,25);
 	}
 	
-	private void setRed(Graphics2D g2, int x, int y) {
+	private static void setRed(Graphics2D g2, int x, int y) {
 		g2.setColor(Color.RED);
 		g2.fillOval(x,y,25,25);
 		g2.setColor(Color.BLACK);
@@ -273,6 +274,17 @@ public class BoardComponent extends JComponent{
 		g2.setColor(Color.BLACK);
 		Line2D.Double lines = new Line2D.Double(x1,y1,x2,y2);
 		g2.draw(lines);
+	}
+	
+	// initialize the plyaer, 
+	//Allocate 9 territories to each of the two players 
+	//and 6 territories to each of the 4 neutral players. 
+	//The allocation does not need to be random. Put one army on each territory.
+	public static void playerTerritories_Initialization() {
+		// P1 - RED
+		Graphics2D g2 = null;
+		setRed(g2,75,25);
+		
 	}
 	
 }

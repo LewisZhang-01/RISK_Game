@@ -4,27 +4,24 @@ package IO;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
+
+//import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 
+import gameboard.BoardComponent;
+
 public class IO extends JPanel {
-	/*
-	* 
-	*/
+	
 	private static final long serialVersionUID = 1L;
 
-	private static final int FRAME_WIDTH = 800;
-	private static final int FRAME_HEIGHT = 500;
-
-	private static final int AREA_ROWS = 10;
+	private static final int AREA_ROWS = 48;
 	private static final int AREA_COLUMNS = 30;
 
-	private JLabel inputLabel;
-	private JTextField inputField;
-	private JButton button_enter, button_close;
-	private JTextArea resultArea;
+	public static JLabel inputLabel;
+	public static JTextField inputField;
+	public static JButton button_enter, button_close;
+	public static JTextArea resultArea;
 	private String userInput;
 
 	int PLAYERS_NUM = 2;
@@ -43,21 +40,20 @@ public class IO extends JPanel {
 		//setSize(FRAME_WIDTH, FRAME_HEIGHT);
 	}
 
+	
 	// add input here:
 	private void createTextField() {
 		inputLabel = new JLabel("User input: ");
-		
 		final int FIELD_WIDTH = 23;
 
 		inputField = new JTextField(FIELD_WIDTH);
 
-		resultArea.append("Please enter the " + i + " player name:\n");
+		resultArea.append("Please enter the 1 player name:\n");
 
 	}
 
-	int i = 1;
-
 	class AddInputListener implements ActionListener {
+		int i = 1;
 		public void actionPerformed(ActionEvent event) {
 			if (i <= 2) {
 
@@ -70,34 +66,37 @@ public class IO extends JPanel {
 			} else {
 				userInput = inputField.getText();
 				resultArea.append(userInput + "\n");
+				// Call to initialize the player's territories
+				BoardComponent.playerTerritories_Initialization();
 			}
-		}
+		}	
 	}
 
+	
+	
 	private void createButton() {
 
 		button_enter = new JButton("Enter");
-		button_enter.setBounds(80, 300, 80, 30);
-		button_close = new JButton("Close");
-		button_close.setBounds(80, 700, 80, 30);
-
+		
 		ActionListener listener = new AddInputListener();
-
+		
 		button_enter.addActionListener(listener);
 
+		button_close = new JButton("Close");
+		
 		button_close.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				inputField.setBackground(Color.cyan);
+				resultArea.setBackground(Color.red);
 				System.exit(0);
 			}
 		});
-
+		
 	}
 
 	private void createPanel() {
 
 		JPanel panel = new JPanel();
-		
+		panel.setBorder(BorderFactory.createEtchedBorder()); 
 		/*
 		 * JLabel image=new JLabel(new
 		 * ImageIcon("/Users/lewiszhang/Pictures/IMG_0034.jpg")); panel.add(image);
@@ -105,12 +104,7 @@ public class IO extends JPanel {
 		 */
 		
 		JScrollPane scrollPane = new JScrollPane(resultArea);
-		panel.add(scrollPane,BorderLayout.NORTH);
-		
-		panel.add(inputLabel,BorderLayout.SOUTH);
-		panel.add(inputField,BorderLayout.SOUTH);
-		panel.add(button_enter,BorderLayout.SOUTH);
-		panel.add(button_close,BorderLayout.SOUTH);
-		add(panel,BorderLayout.CENTER);
+		panel.add(scrollPane);
+		add(panel);
 	}
 }

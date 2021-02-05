@@ -1,20 +1,25 @@
 package userinput;
 //Yunlong Cheng
-import java.awt.BorderLayout;
+
 import java.awt.FlowLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
+
+
+import IO.IO;
 
 public class UserInput extends JPanel{//JFrame{//
    
+	
+	private static final long serialVersionUID = 1L;
+	
 	public UserInput() {
 
 		createUI();
@@ -25,7 +30,7 @@ public class UserInput extends JPanel{//JFrame{//
       LayoutManager layout = new FlowLayout();  
       panel.setLayout(layout);       
 
-      JButton button = new JButton("ClickHere!");
+      JButton button = new JButton("Menu");
      
       final JLabel label = new JLabel();
       
@@ -44,15 +49,27 @@ public class UserInput extends JPanel{//JFrame{//
                options[0] 
             );
             if(result == "Attack country" || result == "Add soldiers" || result == "Transfer forces" || result == "Exchange cards" || result == "End this round"){
-               label.setText("You choose:" + result);
+            	IO.resultArea.append("You choose:" + result+"\n");
+            	// choose end.
+            	if(result == "End this round") {
+    				System.exit(0);
+            	}            	
             }else {
-               label.setText("You do nothing");
+            	IO.resultArea.append("You do nothing\n");
             }
          }
       });
 
+      
+	  
       panel.add(button);
       panel.add(label);
+      
+      panel.add(IO.inputLabel);
+	  panel.add(IO.inputField);
+	  panel.add(IO.button_enter);
+	  
+	  panel.add(IO.button_close);
       add(panel);
      
    }  
