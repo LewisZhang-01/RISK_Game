@@ -10,33 +10,14 @@ import javax.swing.JComponent;
 public class BoardComponent extends JComponent{
 	private Graphics2D g2;
 	
+	//get country coordinates
+	Constants c = new Constants();
 	
-	//country coordinates
-	private double[][] N_America = { { 75 , 25 } , { 15 , 95 } , { 100 , 120 } , { 55 , 170 } , { 0 , 220 } , 
-								  { 130 , 195 } , { 190 , 140 } , { 185 , 60 } , { 280 , 15 } };
+	private double[][][] countries = c.getCountries();
 	
-	private double[][] S_America = { { 55 , 320 } , { 5 , 400 } , { 105 , 410 } , { 60 , 490 } };
+	private String[][] colorSets = c.getColorSets();
 	
-	private double[][] Europe = { { 230 , 195 } , { 210 , 265 } , { 280 , 245 } , { 260 , 305 } , { 200 , 360 } , 
-								  { 340 , 295 } , { 295 , 380 } };
-	
-	private double[][] Africa = { { 220 , 460 } , { 315 , 440 } , { 200 , 550 } , { 320 , 530 } , { 260, 630 } , { 360 , 610 } };
-	
-	private double[][] Asia = { { 390 , 400 } , { 420 , 290 } , { 480 , 340 } , { 380 , 220 } , { 475 , 218 } , { 405 , 150 } ,
-		    				    { 390 , 80 } , { 315 , 100 } , { 470 , 80 } , { 380 , 30 } , { 480 , 5 } , { 570 , 270 } };
-	
-	private double[][] Australia = { { 640 , 260 } , { 710 , 200 } , { 720 , 300 } , { 790 , 240 } };
-	
-	private double[][][] countries = {N_America, S_America, Europe, Africa, Asia, Australia};
-	
-	public double[][][] getC(){
-		return countries;
-	}
-	
-	
-	//´íµÄupdate
-	public void update(double[][] countries, int x, String color) {
-		setCountry(countries, x, color);
+	public void update() {
 		repaint();
 	}
 	
@@ -91,28 +72,10 @@ public class BoardComponent extends JComponent{
 		g2 = (Graphics2D)g;
 		
 		//draw country points
-		for(int i = 0; i < N_America.length; i++) {
-			setCountry(N_America,i,"yellow");
-		}
-		
-		for(int i = 0; i < S_America.length; i++) {
-			setCountry(S_America,i,"DarkGreen");
-		}
-		
-		for(int i = 0; i < Europe.length; i++) {
-			setCountry(Europe,i,"blue");
-		}
-		
-		for(int i = 0; i < Africa.length; i++) {
-			setCountry(Africa,i,"orange");
-		}
-		
-		for(int i = 0; i < Asia.length; i++) {
-			setCountry(Asia,i,"green");
-		}
-		
-		for(int i = 0; i < Australia.length; i++) {
-			setCountry(Australia,i,"cyan");
+		for(int i = 0; i < countries.length; i++) {
+			for(int j = 0; j < countries[i].length; j++) {
+				setCountry(countries[i],j,colorSets[i][j]);
+			}
 		}
 		
 		//draw lines
@@ -246,10 +209,6 @@ public class BoardComponent extends JComponent{
 		g2.drawString("E Australia", 780, 240);
 	}
 
-	
-	public Graphics2D getG2() {
-		return g2;
-	}
 	/*
 	public static void main(String[] args) {
 		BoardComponent component = new BoardComponent();
