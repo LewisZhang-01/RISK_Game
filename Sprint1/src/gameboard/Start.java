@@ -17,7 +17,7 @@ import userinput.UserInput;
 public class Start {
 	
 	private static final int FRAME_WIDTH = 1300;    // must be even
-	private static final int FRAME_HEIGHT = 1050;
+	private static final int FRAME_HEIGHT = 930;
 	
 	public static void main(String[] args) {
 		
