@@ -19,87 +19,129 @@ public class BoardComponent extends JComponent{
 
 	private Graphics2D g2;	//create Graphics2D for later drawing the board
 	
-	//get country coordinates and the initial country color from the constants class
-	Constants c = new Constants();
+	//country coordinates
+	private double[][] N_America = { { 75 , 25 } , { 15 , 95 } , { 100 , 120 } , { 55 , 170 } , { 0 , 220 } , 
+			  						 { 130 , 195 } , { 190 , 140 } , { 185 , 60 } , { 280 , 15 } };
+
+	private double[][] S_America = { { 55 , 320 } , { 5 , 400 } , { 105 , 410 } , { 60 , 490 } };
+
+	private double[][] Europe = { { 230 , 195 } , { 210 , 265 } , { 280 , 245 } , { 260 , 305 } , { 200 , 360 } , 
+			  					  { 340 , 295 } , { 295 , 380 } };
+
+	private double[][] Africa = { { 220 , 460 } , { 315 , 440 } , { 200 , 550 } , { 320 , 530 } , { 260, 630 } , { 360 , 610 } };
+
+	private double[][] Asia = { { 390 , 400 } , { 420 , 290 } , { 480 , 340 } , { 380 , 220 } , { 475 , 218 } , { 405 , 150 } ,
+								{ 390 , 80 } , { 315 , 100 } , { 470 , 80 } , { 380 , 30 } , { 480 , 5 } , { 570 , 270 } };
+
+	private double[][] Australia = { { 640 , 260 } , { 710 , 200 } , { 720 , 300 } , { 790 , 240 } };
+
+	private double[][][] countries = {N_America,Europe, Asia, Australia, S_America, Africa};
+
+	//color set of countries
+	String[] NA_color = {"yellow","yellow","yellow","yellow","yellow","yellow","yellow","yellow","yellow"};
+	String[] SA_color = {"DarkGreen","DarkGreen","DarkGreen","DarkGreen"};
+	String[] Europe_color = {"Pink","Pink","Pink","Pink","Pink","Pink","Pink"};
+	String[] Africa_color = {"orange","orange","orange","orange","orange","orange"};
+	String[] Asia_color = {"green","green","green","green","green","green","green","green","green","green","green","green"};
+	String[] Australia_color = {"cyan","cyan","cyan","cyan"};
+
+	String[][] colorSets = {NA_color,Europe_color,Asia_color,Australia_color,SA_color,Africa_color};
+
+	String[] army = new String[42];
+
 	
-	private double[][][] countries = c.getCountries();
+	//getters
+	public double[][][] getCountries() { return countries; }
+
+	public String[][] getColorSets() { return colorSets; }
+
+	public String[] getArmy() { return army; }
+
+	//setters
+	public void setColorsets(int continentIndex, int countryIndex, String color) {
+		colorSets[continentIndex][countryIndex] = color;
+	}
+
+	public void setArmy(int armyIndex, String armyNumber) {
+		army[armyIndex] = armyNumber;
+	}
 	
-	private String[][] colorSets = c.getColorSets();
-	
-	private String[] army = c.getArmy();
 	
 	//button for initializing the board after players join. (mainly change the color of countries)
 	public static JButton button_initialize;
 	
 	public BoardComponent() {
 
+		for(int i = 0; i < army.length; i++) {
+			army[i] = "0";
+		}
+		
 		button_initialize = new JButton("Refresh");
 	
 		button_initialize.addActionListener(new ActionListener() {
 			
-				public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 
-						// Call to initialize the player's territories
+				// Call to initialize the player's territories		
+				// for player #1 (red)
+				setColorsets(0, 0, "red");
+				setColorsets(0, 1, "red");
+				setColorsets(1, 0, "red");
+				setColorsets(1, 1, "red");
+				setColorsets(2, 0, "red");
+				setColorsets(2, 1, "red");
+				setColorsets(3, 0, "red");
+				setColorsets(3, 1, "red");
+				setColorsets(4, 0, "red");
+				// for player #2 (blue) 
+				setColorsets(0, 2, "blue");
+				setColorsets(0, 3, "blue");
+				setColorsets(0, 4, "blue");
+				setColorsets(1, 2, "blue");
+				setColorsets(1, 3, "blue");
+				setColorsets(2, 2, "blue");
+				setColorsets(2, 3, "blue");
+				setColorsets(3, 2, "blue");
+				setColorsets(3, 3, "blue");
+			
+				// for neutral #1 (Grey)
+				setColorsets(1, 4, "Grey");
+				setColorsets(1, 5, "Grey");
+				setColorsets(1, 6, "Grey");
+				setColorsets(2, 4, "Grey");
+				setColorsets(2, 5, "Grey");
+				setColorsets(2, 6, "Grey");
 						
-						// for player #1 (red)
-						c.setColorsets(0, 0, "red");
-						c.setColorsets(0, 1, "red");
-						c.setColorsets(1, 0, "red");
-						c.setColorsets(1, 1, "red");
-						c.setColorsets(2, 0, "red");
-						c.setColorsets(2, 1, "red");
-						c.setColorsets(3, 0, "red");
-						c.setColorsets(3, 1, "red");
-						c.setColorsets(4, 0, "red");
-						// for player #2 (blue) 
-						c.setColorsets(0, 2, "blue");
-						c.setColorsets(0, 3, "blue");
-						c.setColorsets(0, 4, "blue");
-						c.setColorsets(1, 2, "blue");
-						c.setColorsets(1, 3, "blue");
-						c.setColorsets(2, 2, "blue");
-						c.setColorsets(2, 3, "blue");
-						c.setColorsets(3, 2, "blue");
-						c.setColorsets(3, 3, "blue");
+				// for neutral #2 (Moccasin)
+				setColorsets(2, 7, "Moccasin");
+				setColorsets(2, 8, "Moccasin");
+				setColorsets(2, 9, "Moccasin");
+				setColorsets(2, 10, "Moccasin");
+				setColorsets(2, 11, "Moccasin");
+				setColorsets(4, 1, "Moccasin");
 						
-						// for neutral #1 (Grey)
-						c.setColorsets(1, 4, "Grey");
-						c.setColorsets(1, 5, "Grey");
-						c.setColorsets(1, 6, "Grey");
-					    c.setColorsets(2, 4, "Grey");
-						c.setColorsets(2, 5, "Grey");
-						c.setColorsets(2, 6, "Grey");
-						
-						// for neutral #2 (Moccasin)
-						c.setColorsets(2, 7, "Moccasin");
-						c.setColorsets(2, 8, "Moccasin");
-						c.setColorsets(2, 9, "Moccasin");
-						c.setColorsets(2, 10, "Moccasin");
-						c.setColorsets(2, 11, "Moccasin");
-						c.setColorsets(4, 1, "Moccasin");
-						
-						// for neutral #3 (Bisque)
-						c.setColorsets(4, 2, "Bisque");
-						c.setColorsets(4, 3, "Bisque");
-						c.setColorsets(5, 0, "Bisque");
-						c.setColorsets(5, 1, "Bisque");
-						c.setColorsets(5, 2, "Bisque");
-						c.setColorsets(5, 3, "Bisque");
-					
-						// for neutral #3 (DarkGrey)
-						c.setColorsets(5, 4, "DarkGrey");
-						c.setColorsets(5, 5, "DarkGrey");
-						c.setColorsets(0, 5, "DarkGrey");
-						c.setColorsets(0, 6, "DarkGrey");
-						c.setColorsets(0, 7, "DarkGrey");
-						c.setColorsets(0, 8, "DarkGrey");
-						
-						for(int i = 0; i < army.length; i++) {
-							army[i] = "1";
-						}
-						
-						repaint();	//draw the board again with new colors after initializing
+				// for neutral #3 (Bisque)
+				setColorsets(4, 2, "Bisque");
+				setColorsets(4, 3, "Bisque");
+				setColorsets(5, 0, "Bisque");
+				setColorsets(5, 1, "Bisque");
+				setColorsets(5, 2, "Bisque");
+				setColorsets(5, 3, "Bisque");
+			
+				// for neutral #3 (DarkGrey)
+				setColorsets(5, 4, "DarkGrey");
+				setColorsets(5, 5, "DarkGrey");
+				setColorsets(0, 5, "DarkGrey");
+				setColorsets(0, 6, "DarkGrey");
+				setColorsets(0, 7, "DarkGrey");
+				setColorsets(0, 8, "DarkGrey");
+			
+				for(int i = 0; i < army.length; i++) {
+					army[i] = "1";
 				}
+				
+				repaint();	//draw the board again with new colors after initializing
+			}
 		});		
 	}
 	
@@ -262,8 +304,6 @@ public class BoardComponent extends JComponent{
 		drawLines(g2,790,250,735,217);
 		drawLines(g2,792,260,745,308);
 		
-		
-		
 		//label country names
 		g2.drawString("Alberta", 65, 25);
 		g2.drawString("W United States", 5, 95);
@@ -317,6 +357,5 @@ public class BoardComponent extends JComponent{
 				armyIndex++;
 			}
 		}
-	}
-	
+	}	
 }

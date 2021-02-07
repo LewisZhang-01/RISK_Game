@@ -1,4 +1,6 @@
-//Zhonghe Chen, Zhi Zhang, Yunlong Cheng
+//Team: BadGuy
+//Team member: Zhonghe Chen, Zhi Zhang, Yunlong Cheng
+
 package gameboard;
 
 import javax.swing.BorderFactory;
@@ -12,7 +14,7 @@ import java.awt.*;
 import IO.IO;
 import userinput.UserInput;
 
-public class BoardViewer {
+public class Start {
 	
 	private static final int FRAME_WIDTH = 1300;    // must be even
 	private static final int FRAME_HEIGHT = 1050;
@@ -23,7 +25,7 @@ public class BoardViewer {
 		frame.setSize(FRAME_WIDTH,FRAME_HEIGHT);
 		frame.setTitle("Risk Game Board");
 		
-// Add Background Photo Part:
+//Add Background Photo Part:
 		
 		ImageIcon icon=new ImageIcon("RISK.jpg");
 		
@@ -40,23 +42,21 @@ public class BoardViewer {
 		JPanel j=(JPanel)frame.getContentPane();
 		j.setOpaque(false);
 		
-// end
-		
-		 
+//End
+		//Add board to frame.
 		BoardComponent component = new BoardComponent();
 		component.setBorder(BorderFactory.createEtchedBorder()); 
 		frame.add(component,BorderLayout.CENTER);
 		
-		
+		//Add user input/output to frame.
 		IO io = new IO();
 		io.setBorder(BorderFactory.createEtchedBorder()); 
 		frame.add(io,BorderLayout.EAST);
 		
-		
+		//Add user input to frame
 		UserInput ui = new UserInput();
 		ui.setBorder(BorderFactory.createEtchedBorder()); 
 		frame.add(ui,BorderLayout.SOUTH);
-		
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);	
