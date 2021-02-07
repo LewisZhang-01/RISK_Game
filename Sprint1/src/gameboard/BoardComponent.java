@@ -26,6 +26,7 @@ public class BoardComponent extends JComponent{
 	
 	private String[][] colorSets = c.getColorSets();
 	
+	private String[] army = c.getArmy();
 	
 	//button for initializing the board after players join. (mainly change the color of countries)
 	public static JButton button_initialize;
@@ -92,6 +93,10 @@ public class BoardComponent extends JComponent{
 						c.setColorsets(0, 6, "DarkGrey");
 						c.setColorsets(0, 7, "DarkGrey");
 						c.setColorsets(0, 8, "DarkGrey");
+						
+						for(int i = 0; i < army.length; i++) {
+							army[i] = "1";
+						}
 						
 						repaint();	//draw the board again with new colors after initializing
 				}
@@ -304,50 +309,14 @@ public class BoardComponent extends JComponent{
 		g2.drawString("E Australia", 780, 240);
 		
 		
-		//draw army number
-		String army_num = "1";
-		g2.drawString(army_num, 84, 41);//65+19 25+16
-		g2.drawString(army_num, 24, 111);
-		g2.drawString(army_num, 90+19, 120+16);
-		g2.drawString(army_num, 45+19, 170+16);
-		g2.drawString(army_num, 0+10, 220+16);
-		g2.drawString(army_num, 120+19, 195+16);
-		g2.drawString(army_num, 180+19, 140+16);
-		g2.drawString(army_num, 170+19, 60+16);
-		g2.drawString(army_num, 270+19, 15+16);
-		g2.drawString(army_num, 45+19, 320+16);
-		g2.drawString(army_num, 5+10, 400+16);
-		g2.drawString(army_num, 105+10, 410+16);
-		g2.drawString(army_num, 50+19, 490+16);
-		g2.drawString(army_num, 220+19, 195+16);
-		g2.drawString(army_num, 200+19, 265+16);
-		g2.drawString(army_num, 270+19, 245+16);
-		g2.drawString(army_num, 250+19, 305+16);
-		g2.drawString(army_num, 190+19, 360+16);
-		g2.drawString(army_num, 330+19, 295+16);
-		g2.drawString(army_num, 285+19, 380+16);
-		g2.drawString(army_num, 210+19, 460+16);
-		g2.drawString(army_num, 305+19, 440+16);
-		g2.drawString(army_num, 190+19, 550+16);
-		g2.drawString(army_num, 310+19, 530+16);
-		g2.drawString(army_num, 250+19, 630+16);
-		g2.drawString(army_num, 350+19, 610+16);
-		g2.drawString(army_num, 380+19, 400+16);
-		g2.drawString(army_num, 410+19, 290+16);
-		g2.drawString(army_num, 480+10, 340+16);
-		g2.drawString(army_num, 380+10, 220+16);
-		g2.drawString(army_num, 475+10, 218+16);
-		g2.drawString(army_num, 400+15, 150+16);
-		g2.drawString(army_num, 380+19, 80+16);
-		g2.drawString(army_num, 305+19, 100+16);
-		g2.drawString(army_num, 460+19, 80+16);
-		g2.drawString(army_num, 370+19, 30+16);
-		g2.drawString(army_num, 510-19, 15+6);
-		g2.drawString(army_num, 560+19, 270+16);
-		g2.drawString(army_num, 630+19, 260+16);
-		g2.drawString(army_num, 700+19, 200+16);
-		g2.drawString(army_num, 710+19, 300+16);
-		g2.drawString(army_num, 780+19, 240+16);
+		//draw army numbers
+		int armyIndex = 0;
+		for(int i = 0; i < countries.length; i++) {
+			for(int j = 0; j < countries[i].length; j++) {
+				g2.drawString(army[armyIndex], (int)countries[i][j][0]+10, (int)countries[i][j][1]+16);
+				armyIndex++;
+			}
+		}
 	}
 	
 }

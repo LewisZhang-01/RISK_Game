@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 import IO.IO;
 
-public class UserInput extends JPanel{//JFrame{//
+public class UserInput extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -21,7 +21,7 @@ public class UserInput extends JPanel{//JFrame{//
 		createUI();
 		
 	}
-   public void createUI(/*final JFrame frame*/){  
+   public void createUI(){  
 	   
       JPanel panel = new JPanel();
       

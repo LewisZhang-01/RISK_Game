@@ -31,16 +31,28 @@ public class Constants {
 		
 		String[][] colorSets = {NA_color,Europe_color,Asia_color,Australia_color,SA_color,Africa_color};
 		
-		//army numbers should also be here later weeks
+		String[] army = new String[42];
+		
+		public Constants() {
+			for(int i = 0; i < army.length; i++) {
+				army[i] = "0";
+			}
+		}
 		
 		//getters
 		public double[][][] getCountries() { return countries; }
 		
 		public String[][] getColorSets() { return colorSets; }
 		
-		//setter
+		public String[] getArmy() { return army; }
+		
+		//setters
 		public void setColorsets(int continentIndex, int countryIndex, String color) {
 			colorSets[continentIndex][countryIndex] = color;
+		}
+		
+		public void setArmy(int armyIndex, String armyNumber) {
+			army[armyIndex] = armyNumber;
 		}
 		
 		
