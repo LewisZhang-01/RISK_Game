@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
+import gameboard.BoardComponent;
 import gameboard.Initializer;
 
 public class IO extends JPanel {
@@ -67,11 +68,11 @@ public class IO extends JPanel {
 				if(i==2) {
 					// Call to initialize the player's territories
 					
-					Initializer i = new Initializer();		
+					//Initializer i = new Initializer();		
 					
-					i.territoriesInitial();
+					//i.territoriesInitial();
 					
-					repaint();	//I guess repaint should be placed here, but nothing happens --Zhonghe Chen
+					//repaint();	//I guess repaint should be placed here, but nothing happens --Zhonghe Chen
 				}
 				i++;
 			} else {

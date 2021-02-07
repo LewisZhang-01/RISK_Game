@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import IO.IO;
+import gameboard.BoardComponent;
 
 public class UserInput extends JPanel{//JFrame{//
    
@@ -72,7 +73,7 @@ public class UserInput extends JPanel{//JFrame{//
       panel.add(IO.inputLabel);
 	  panel.add(IO.inputField);
 	  panel.add(IO.button_enter);
-	  
+	  panel.add(BoardComponent.button_re);
 	  panel.add(IO.button_close);
       add(panel);
      
