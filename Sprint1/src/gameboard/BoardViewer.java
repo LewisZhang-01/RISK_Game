@@ -51,6 +51,10 @@ public class BoardViewer {
 		io.setBorder(BorderFactory.createEtchedBorder()); 
 		frame.add(io,BorderLayout.EAST);
 		
+		BoardComponent component1 = new BoardComponent();
+		component.setBorder(BorderFactory.createEtchedBorder()); 
+		frame.add(component1,BorderLayout.CENTER);
+		
 		UserInput ui = new UserInput();
 		ui.setBorder(BorderFactory.createEtchedBorder()); 
 		frame.add(ui,BorderLayout.SOUTH);
