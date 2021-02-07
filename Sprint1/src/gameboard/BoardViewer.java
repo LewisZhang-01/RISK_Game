@@ -14,8 +14,8 @@ import userinput.UserInput;
 
 public class BoardViewer {
 	
-	private static final int FRAME_WIDTH = 1200;    // must be even
-	private static final int FRAME_HEIGHT = 800;
+	private static final int FRAME_WIDTH = 1300;    // must be even
+	private static final int FRAME_HEIGHT = 1050;
 	
 	public static void main(String[] args) {
 		
@@ -59,7 +59,7 @@ public class BoardViewer {
 		
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(true);	
+		frame.setResizable(false);	
 		frame.setVisible(true);
 		
 	}

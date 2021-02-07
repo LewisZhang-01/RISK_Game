@@ -11,10 +11,14 @@ import java.awt.geom.Line2D;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JTextArea;
 
 
 public class BoardComponent extends JComponent{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private Graphics2D g2;
 	
 	//get country coordinates
@@ -24,22 +28,16 @@ public class BoardComponent extends JComponent{
 	
 	private String[][] colorSets = c.getColorSets();
 	
-	
-	
-	public static JButton button_re;
+	public static JButton button_initialize;
 	
 	public BoardComponent() {
 
-		
-		
-		
-		button_re = new JButton("Refresh");
+		button_initialize = new JButton("Refresh");
 	
-		button_re.addActionListener(new ActionListener() {
+		button_initialize.addActionListener(new ActionListener() {
 			
 				public void actionPerformed(ActionEvent e) {
-				
-			
+
 						// Call to initialize the player's territories
 						
 						// for player #1 (red)
@@ -95,14 +93,9 @@ public class BoardComponent extends JComponent{
 						c.setColorsets(0, 7, "DarkGrey");
 						c.setColorsets(0, 8, "DarkGrey");
 						
-						
 						repaint();	
-					
 				}
-			
-		});
-		
-		
+		});		
 	}
 	
 	// Draw the countries

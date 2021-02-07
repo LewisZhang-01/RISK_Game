@@ -7,9 +7,10 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import gameboard.BoardComponent;
-import gameboard.Initializer;
+
 
 public class IO extends JPanel {
+	
 	
 	/**
 	 * 
@@ -48,7 +49,7 @@ public class IO extends JPanel {
 
 		inputField = new JTextField(FIELD_WIDTH);
 
-		resultArea.append("Please enter the 1 player name:\n");
+		resultArea.append("Please enter the #1 player name:\n");
 
 	}
 
@@ -60,19 +61,16 @@ public class IO extends JPanel {
 			if (i <= 2) {
 				repaint();
 				players[i - 1] = inputField.getText();
-				resultArea.append("Player " + i + ": " + players[i - 1] + "\n");
+				
 				if (i == 1) {
-					resultArea.append("Please enter the " + (i + 1) + " player name:\n");
+					resultArea.append("Player #" + i + " (Red): " + players[i - 1] + "\n");
+					resultArea.append("Please enter the #" + (i + 1) + " player name:\n");
 				}
 				
 				if(i==2) {
-					// Call to initialize the player's territories
-					
-					//Initializer i = new Initializer();		
-					
-					//i.territoriesInitial();
-					
-					//repaint();	//I guess repaint should be placed here, but nothing happens --Zhonghe Chen
+					// Call to initialize the player's territories	
+					BoardComponent.button_initialize.doClick();
+					resultArea.append("Player #" + i + " (Blue): " + players[i - 1] + "\n");
 				}
 				i++;
 			} else {
