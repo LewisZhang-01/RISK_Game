@@ -24,7 +24,7 @@ public class Constants {
 		//color set of countries
 		String[] NA_color = {"yellow","yellow","yellow","yellow","yellow","yellow","yellow","yellow","yellow"};
 		String[] SA_color = {"DarkGreen","DarkGreen","DarkGreen","DarkGreen"};
-		String[] Europe_color = {"blue","blue","blue","blue","blue","blue","blue"};
+		String[] Europe_color = {"Pink","Pink","Pink","Pink","Pink","Pink","Pink"};
 		String[] Africa_color = {"orange","orange","orange","orange","orange","orange"};
 		String[] Asia_color = {"green","green","green","green","green","green","green","green","green","green","green","green"};
 		String[] Australia_color = {"cyan","cyan","cyan","cyan"};
@@ -38,13 +38,98 @@ public class Constants {
 			return countries;
 		}
 		
+		//boolean flag = false;
 		public String[][] getColorSets(){
-			return colorSets;
+			//System.out.println("in get : "+flag);
+			//if(flag==true) {
+				
+				//setColorsets(0,0,"red");
+				//return colorSets;
+			//}else {
+				
+				return colorSets;
+			//}
+			
 		}
 		
 		//setters
 		public void setColorsets(int continentIndex, int countryIndex, String color) {
+			
+			//BoardComponent b = new BoardComponent();
+			
+			//flag=true;
+			
+			System.out.println("Before change color: "+colorSets[continentIndex][countryIndex]);
+			
 			colorSets[continentIndex][countryIndex] = color;
+			
+			//b.update();
+			//b.repaint();// we try to use repaint.
+			//b.paintComponent(b.g);// and even through call painComponent instead of repaint, but still not working.
+			
+			System.out.println("After change color: "+colorSets[continentIndex][countryIndex]);
+			
+			
+			//b.repaint();
 		}
 		
+		// Allocate 9 territories to each of the two players
+		// and 6 territories to each of the 4 neutral players.
+		public void territoriesInitial() {
+			// [0]<9 [1]<7 [2]<12 [3]<4 [4]<4 [5]<6
+			
+			// for player #1 (red)
+			setColorsets(0, 0, "red");
+			setColorsets(0, 1, "red");
+			setColorsets(1, 0, "red");
+			setColorsets(1, 1, "red");
+			setColorsets(2, 0, "red");
+			setColorsets(2, 1, "red");
+			setColorsets(3, 0, "red");
+			setColorsets(3, 1, "red");
+			setColorsets(4, 0, "red");
+			// for player #2 (blue) 
+			setColorsets(0, 2, "blue");
+			setColorsets(0, 3, "blue");
+			setColorsets(0, 4, "blue");
+			setColorsets(1, 2, "blue");
+			setColorsets(1, 3, "blue");
+			setColorsets(2, 2, "blue");
+			setColorsets(2, 3, "blue");
+			setColorsets(3, 2, "blue");
+			setColorsets(3, 3, "blue");
+			
+			// for neutral #1 (Grey)
+			setColorsets(1, 4, "Grey");
+			setColorsets(1, 5, "Grey");
+			setColorsets(1, 6, "Grey");
+			setColorsets(2, 4, "Grey");
+			setColorsets(2, 5, "Grey");
+			setColorsets(2, 6, "Grey");
+			
+			// for neutral #2 (Moccasin)
+			setColorsets(2, 7, "Moccasin");
+			setColorsets(2, 8, "Moccasin");
+			setColorsets(2, 9, "Moccasin");
+			setColorsets(2, 10, "Moccasin");
+			setColorsets(2, 11, "Moccasin");
+			setColorsets(4, 1, "Moccasin");
+			
+			// for neutral #3 (Bisque)
+			setColorsets(4, 2, "Bisque");
+			setColorsets(4, 3, "Bisque");
+			setColorsets(5, 0, "Bisque");
+			setColorsets(5, 1, "Bisque");
+			setColorsets(5, 2, "Bisque");
+			setColorsets(5, 3, "Bisque");
+		
+			// for neutral #3 (DarkGrey)
+			setColorsets(5, 4, "DarkGrey");
+			setColorsets(5, 5, "DarkGrey");
+			setColorsets(0, 5, "DarkGrey");
+			setColorsets(0, 6, "DarkGrey");
+			setColorsets(0, 7, "DarkGrey");
+			setColorsets(0, 8, "DarkGrey");
+			
+		}
 }

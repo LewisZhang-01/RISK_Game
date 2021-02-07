@@ -41,7 +41,7 @@ public class BoardViewer {
 		
 // end
 		
-				 
+		 
 		BoardComponent component = new BoardComponent();
 		component.setBorder(BorderFactory.createEtchedBorder()); 
 		frame.add(component,BorderLayout.CENTER);

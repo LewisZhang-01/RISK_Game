@@ -6,14 +6,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-import gameboard.BoardComponent;
+import gameboard.Constants;
 
 public class IO extends JPanel {
 	
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
-
-	private static final int AREA_ROWS = 59;
-	private static final int AREA_COLUMNS = 30;
+	private final int AREA_ROWS = 59;
+	private final int AREA_COLUMNS = 30;
 
 	public static JLabel inputLabel;
 	public static JTextField inputField;
@@ -24,6 +26,7 @@ public class IO extends JPanel {
 	int PLAYERS_NUM = 2;
 	String players[] = new String[PLAYERS_NUM];
 
+	
 	public IO() {
 
 		resultArea = new JTextArea(AREA_ROWS, AREA_COLUMNS);
@@ -59,10 +62,12 @@ public class IO extends JPanel {
 					resultArea.append("Please enter the " + (i + 1) + " player name:\n");
 				}
 				
-				
 				if(i==2) {
 					// Call to initialize the player's territories
-					BoardComponent.playerTerritories_Initialization();
+					Constants constants = new Constants();		
+					//constants.setColorsets(0, 0, "red");
+					constants.territoriesInitial();
+					//resultArea.append( constants.getColorSets() + "\n");
 				}
 				i++;
 			} else {
@@ -101,6 +106,9 @@ public class IO extends JPanel {
 		
 		JScrollPane scrollPane = new JScrollPane(resultArea);
 		panel.add(scrollPane);
+		//panel.add(inputLabel);
+		//panel.add(inputField);
+		//panel.add(button_enter);
 		add(panel);
 	}
 }

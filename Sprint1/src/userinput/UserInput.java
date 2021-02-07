@@ -1,8 +1,6 @@
 package userinput;
 //Yunlong Cheng
 
-import java.awt.FlowLayout;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,29 +10,35 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-
 import IO.IO;
 
 public class UserInput extends JPanel{//JFrame{//
    
 	
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
-	
 	public UserInput() {
 
 		createUI();
 		
 	}
    public void createUI(/*final JFrame frame*/){  
+	   
+	  //IO io = new IO();
+	   
       JPanel panel = new JPanel();
-      LayoutManager layout = new FlowLayout();  
+      
+      /*LayoutManager layout = new FlowLayout();  
       panel.setLayout(layout);       
-
+*/
       JButton button = new JButton("Menu");
      
       final JLabel label = new JLabel();
       
       button.addActionListener(new ActionListener() {
+    	  
          @Override
          public void actionPerformed(ActionEvent e) {
            String[] options = {"Attack country", "Add soldiers", "Transfer forces", "Exchange cards", "End this round"}; 

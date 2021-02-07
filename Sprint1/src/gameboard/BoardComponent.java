@@ -8,6 +8,11 @@ import java.awt.geom.Line2D;
 import javax.swing.JComponent;
 
 public class BoardComponent extends JComponent{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private Graphics2D g2;
 	
 	//get country coordinates
@@ -49,6 +54,25 @@ public class BoardComponent extends JComponent{
 		case "DarkGreen":
 			g2.setColor(new Color(0,100,0));
 			break;
+		case "Brown":
+			g2.setColor(new Color(165,42,42));
+			break;
+		case "Pink":
+			g2.setColor(new Color(205,145,158));
+			break;
+		case "Grey":
+			g2.setColor(new Color(190,190,190));
+			break;
+		case "Moccasin":
+			g2.setColor(new Color(255,228,181));
+			break;
+		case "DarkGrey":
+			g2.setColor(new Color(79,79,79));
+			break;	
+		case "Bisque":
+			g2.setColor(new Color(238,213,183));
+			break;	
+			
 			
 		default:
 			g2.setColor(Color.BLACK);
@@ -65,12 +89,21 @@ public class BoardComponent extends JComponent{
 		g2.draw(lines);
 		g2.setColor(Color.BLACK);
 	}	
+	//boolean flag=false;
 	
-	public void paintComponent(Graphics g){
+	//public Graphics g;
+	protected void paintComponent(Graphics g){
+		
+
+		//if(flag==true) {
+			//setCountry(countries[0],0,colorSets[0][0]);
+			
+		//}else {
 		super.paintComponent(g);
+		
 		// Recover Graphics2D
 		g2 = (Graphics2D)g;
-		
+				
 		//draw country points
 		for(int i = 0; i < countries.length; i++) {
 			for(int j = 0; j < countries[i].length; j++) {
@@ -165,7 +198,7 @@ public class BoardComponent extends JComponent{
 		
 		
 		//label country names
-		g2.drawString("Alberta", 65, 25);
+		g2.drawString("Alberta", 65, 25);//65 25+15
 		g2.drawString("W United States", 5, 95);
 		g2.drawString("Ontario", 90, 120);
 		g2.drawString("E United States", 45, 170);
@@ -207,12 +240,53 @@ public class BoardComponent extends JComponent{
 		g2.drawString("New Guinea", 700, 200);
 		g2.drawString("W Australia", 710, 300);
 		g2.drawString("E Australia", 780, 240);
+		
+		
+		String army_num = "1";
+		g2.drawString(army_num, 84, 41);//65+19 25+16
+		g2.drawString(army_num, 24, 111);
+		g2.drawString(army_num, 90+19, 120+16);
+		g2.drawString(army_num, 45+19, 170+16);
+		g2.drawString(army_num, 0+10, 220+16);
+		g2.drawString(army_num, 120+19, 195+16);
+		g2.drawString(army_num, 180+19, 140+16);
+		g2.drawString(army_num, 170+19, 60+16);
+		g2.drawString(army_num, 270+19, 15+16);
+		g2.drawString(army_num, 45+19, 320+16);
+		g2.drawString(army_num, 5+10, 400+16);
+		g2.drawString(army_num, 105+10, 410+16);
+		g2.drawString(army_num, 50+19, 490+16);
+		g2.drawString(army_num, 220+19, 195+16);
+		g2.drawString(army_num, 200+19, 265+16);
+		g2.drawString(army_num, 270+19, 245+16);
+		g2.drawString(army_num, 250+19, 305+16);
+		g2.drawString(army_num, 190+19, 360+16);
+		g2.drawString(army_num, 330+19, 295+16);
+		g2.drawString(army_num, 285+19, 380+16);
+		g2.drawString(army_num, 210+19, 460+16);
+		g2.drawString(army_num, 305+19, 440+16);
+		g2.drawString(army_num, 190+19, 550+16);
+		g2.drawString(army_num, 310+19, 530+16);
+		g2.drawString(army_num, 250+19, 630+16);
+		g2.drawString(army_num, 350+19, 610+16);
+		g2.drawString(army_num, 380+19, 400+16);
+		g2.drawString(army_num, 410+19, 290+16);
+		g2.drawString(army_num, 480+10, 340+16);
+		g2.drawString(army_num, 380+10, 220+16);
+		g2.drawString(army_num, 475+10, 218+16);
+		g2.drawString(army_num, 400+19, 150+16);
+		g2.drawString(army_num, 380+19, 80+16);
+		g2.drawString(army_num, 305+19, 100+16);
+		g2.drawString(army_num, 460+19, 80+16);
+		g2.drawString(army_num, 370+19, 30+16);
+		g2.drawString(army_num, 510-19, 15+6);
+		g2.drawString(army_num, 560+19, 270+16);
+		g2.drawString(army_num, 630+19, 260+16);
+		g2.drawString(army_num, 700+19, 200+16);
+		g2.drawString(army_num, 710+19, 300+16);
+		g2.drawString(army_num, 780+19, 240+16);
+		//}
 	}
 
-	/*
-	public static void main(String[] args) {
-		BoardComponent component = new BoardComponent();
-		double b = 0;
-		System.out.print(b);
-	}*/
+
 }
