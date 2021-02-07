@@ -13,12 +13,9 @@ import javax.swing.JPanel;
 import IO.IO;
 
 public class UserInput extends JPanel{//JFrame{//
-   
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
 	public UserInput() {
 
 		createUI();
@@ -26,13 +23,8 @@ public class UserInput extends JPanel{//JFrame{//
 	}
    public void createUI(/*final JFrame frame*/){  
 	   
-	  //IO io = new IO();
-	   
       JPanel panel = new JPanel();
       
-      /*LayoutManager layout = new FlowLayout();  
-      panel.setLayout(layout);       
-*/
       JButton button = new JButton("Menu");
      
       final JLabel label = new JLabel();

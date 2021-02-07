@@ -38,24 +38,9 @@ public class Constants {
 		
 		public String[][] getColorSets() { return colorSets; }
 		
-		//setters
+		//setter
 		public void setColorsets(int continentIndex, int countryIndex, String color) {
-			
-			//BoardComponent b = new BoardComponent();
-			
-			System.out.println("Before change color: "+colorSets[continentIndex][countryIndex]);
-			
 			colorSets[continentIndex][countryIndex] = color;
-			
-			//b.update();
-			//b.repaint();// we try to use repaint.
-			//b.paintComponent(b.g);// and even through call painComponent instead of repaint, but still not working.
-			
-			System.out.println("After change color: "+colorSets[continentIndex][countryIndex]);
-			
-			//b.repaint();
-			
-			//Comments by Zhi Zhang in this block
 		}
 		
 		

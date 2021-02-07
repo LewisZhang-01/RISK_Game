@@ -109,9 +109,6 @@ public class IO extends JPanel {
 		
 		JScrollPane scrollPane = new JScrollPane(resultArea);
 		panel.add(scrollPane);
-		//panel.add(inputLabel);
-		//panel.add(inputField);
-		//panel.add(button_enter);
 		add(panel);
 	}
 }

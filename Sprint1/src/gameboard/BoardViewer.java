@@ -30,7 +30,7 @@ public class BoardViewer {
 		// put photo into lable
 		JLabel label=new JLabel(icon);
 		
-		// set lable size
+		// set label size
 		label.setBounds(0,0,icon.getIconWidth(),icon.getIconHeight());
 		
 		//Gets the second layer of the window and places the Label in.

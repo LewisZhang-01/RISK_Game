@@ -14,20 +14,20 @@ import javax.swing.JComponent;
 
 
 public class BoardComponent extends JComponent{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
-	private Graphics2D g2;
+	private Graphics2D g2;	//create Graphics2D for later drawing the board
 	
-	//get country coordinates
+	//get country coordinates and the initial country color from the constants class
 	Constants c = new Constants();
 	
 	private double[][][] countries = c.getCountries();
 	
 	private String[][] colorSets = c.getColorSets();
 	
+	
+	//button for initializing the board after players join. (mainly change the color of countries)
 	public static JButton button_initialize;
 	
 	public BoardComponent() {
@@ -93,7 +93,7 @@ public class BoardComponent extends JComponent{
 						c.setColorsets(0, 7, "DarkGrey");
 						c.setColorsets(0, 8, "DarkGrey");
 						
-						repaint();	
+						repaint();	//draw the board again with new colors after initializing
 				}
 		});		
 	}
@@ -103,6 +103,7 @@ public class BoardComponent extends JComponent{
 	public void setCountry(double[][] countries, int i, String color) {
 		Ellipse2D.Double country = new Ellipse2D.Double(countries[i][0], countries[i][1], 25, 25);
 		
+		//determine the color to draw the country
 		switch(color) {
 		case "yellow":
 			g2.setColor(Color.YELLOW);
@@ -146,19 +147,19 @@ public class BoardComponent extends JComponent{
 		default:
 			g2.setColor(Color.BLACK);
 		}
-		g2.fill(country);
-		g2.setColor(Color.BLACK);
-		g2.drawOval((int)countries[i][0], (int)countries[i][1], 25,25);
-		repaint(); //I guess repaint should be placed here, but nothing happens. --Zhonghe Chen
+		g2.fill(country);	//draw the country
+		g2.setColor(Color.BLACK); 	//set the color of border
+		g2.drawOval((int)countries[i][0], (int)countries[i][1], 25,25); //draw country border
 	}
 	
 	// Draw lines
-	public void drawLines(Graphics2D g2, int x1, int y1, int x2, int y2) {
-		g2.setColor(Color.gray);
-		Line2D.Double lines = new Line2D.Double(x1,y1,x2,y2);
-		g2.draw(lines);
-		g2.setColor(Color.BLACK);
+	public void drawLines(Graphics2D g2, int x1, int y1, int x2, int y2) {	
+		g2.setColor(Color.gray);		//color of lines
+		Line2D.Double lines = new Line2D.Double(x1,y1,x2,y2);	//position of lines
+		g2.draw(lines);		//draw lines
+		g2.setColor(Color.BLACK);		//set the color back to black for convenience
 	}	
+	
 	
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
@@ -302,6 +303,8 @@ public class BoardComponent extends JComponent{
 		g2.drawString("W Australia", 710, 300);
 		g2.drawString("E Australia", 780, 240);
 		
+		
+		//draw army number
 		String army_num = "1";
 		g2.drawString(army_num, 84, 41);//65+19 25+16
 		g2.drawString(army_num, 24, 111);
@@ -334,7 +337,7 @@ public class BoardComponent extends JComponent{
 		g2.drawString(army_num, 480+10, 340+16);
 		g2.drawString(army_num, 380+10, 220+16);
 		g2.drawString(army_num, 475+10, 218+16);
-		g2.drawString(army_num, 400+19, 150+16);
+		g2.drawString(army_num, 400+15, 150+16);
 		g2.drawString(army_num, 380+19, 80+16);
 		g2.drawString(army_num, 305+19, 100+16);
 		g2.drawString(army_num, 460+19, 80+16);
