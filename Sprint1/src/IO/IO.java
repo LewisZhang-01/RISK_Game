@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-import gameboard.Constants;
+import gameboard.Initializer;
 
 public class IO extends JPanel {
 	
@@ -53,9 +53,11 @@ public class IO extends JPanel {
 
 	class AddInputListener implements ActionListener {
 		int i = 1;
+		
 		public void actionPerformed(ActionEvent event) {
+			
 			if (i <= 2) {
-
+				repaint();
 				players[i - 1] = inputField.getText();
 				resultArea.append("Player " + i + ": " + players[i - 1] + "\n");
 				if (i == 1) {
@@ -64,10 +66,12 @@ public class IO extends JPanel {
 				
 				if(i==2) {
 					// Call to initialize the player's territories
-					Constants constants = new Constants();		
-					//constants.setColorsets(0, 0, "red");
-					constants.territoriesInitial();
-					//resultArea.append( constants.getColorSets() + "\n");
+					
+					Initializer i = new Initializer();		
+					
+					i.territoriesInitial();
+					
+					repaint();	//I guess repaint should be placed here, but nothing happens --Zhonghe Chen
 				}
 				i++;
 			} else {

@@ -1,18 +1,20 @@
+//Zhonghe Chen
 package gameboard;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JTextArea;
+
 
 public class BoardComponent extends JComponent{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	private Graphics2D g2;
 	
 	//get country coordinates
@@ -22,10 +24,79 @@ public class BoardComponent extends JComponent{
 	
 	private String[][] colorSets = c.getColorSets();
 	
-	public void update() {
-		repaint();
+	public BoardComponent() {
+
+		class AddInputListener implements ActionListener {
+			int i = 1;
+			
+			public void actionPerformed(ActionEvent event) {
+					if(i==2) {
+						// Call to initialize the player's territories
+						
+						// for player #1 (red)
+						c.setColorsets(0, 0, "red");
+						c.setColorsets(0, 1, "red");
+						c.setColorsets(1, 0, "red");
+						c.setColorsets(1, 1, "red");
+						c.setColorsets(2, 0, "red");
+						c.setColorsets(2, 1, "red");
+						c.setColorsets(3, 0, "red");
+						c.setColorsets(3, 1, "red");
+						c.setColorsets(4, 0, "red");
+						// for player #2 (blue) 
+						c.setColorsets(0, 2, "blue");
+						c.setColorsets(0, 3, "blue");
+						c.setColorsets(0, 4, "blue");
+						c.setColorsets(1, 2, "blue");
+						c.setColorsets(1, 3, "blue");
+						c.setColorsets(2, 2, "blue");
+						c.setColorsets(2, 3, "blue");
+						c.setColorsets(3, 2, "blue");
+						c.setColorsets(3, 3, "blue");
+						
+						// for neutral #1 (Grey)
+						c.setColorsets(1, 4, "Grey");
+						c.setColorsets(1, 5, "Grey");
+						c.setColorsets(1, 6, "Grey");
+					    c.setColorsets(2, 4, "Grey");
+						c.setColorsets(2, 5, "Grey");
+						c.setColorsets(2, 6, "Grey");
+						
+						// for neutral #2 (Moccasin)
+						c.setColorsets(2, 7, "Moccasin");
+						c.setColorsets(2, 8, "Moccasin");
+						c.setColorsets(2, 9, "Moccasin");
+						c.setColorsets(2, 10, "Moccasin");
+						c.setColorsets(2, 11, "Moccasin");
+						c.setColorsets(4, 1, "Moccasin");
+						
+						// for neutral #3 (Bisque)
+						c.setColorsets(4, 2, "Bisque");
+						c.setColorsets(4, 3, "Bisque");
+						c.setColorsets(5, 0, "Bisque");
+						c.setColorsets(5, 1, "Bisque");
+						c.setColorsets(5, 2, "Bisque");
+						c.setColorsets(5, 3, "Bisque");
+					
+						// for neutral #3 (DarkGrey)
+						c.setColorsets(5, 4, "DarkGrey");
+						c.setColorsets(5, 5, "DarkGrey");
+						c.setColorsets(0, 5, "DarkGrey");
+						c.setColorsets(0, 6, "DarkGrey");
+						c.setColorsets(0, 7, "DarkGrey");
+						c.setColorsets(0, 8, "DarkGrey");
+						
+						
+						repaint();	//I guess repaint should be placed here, but nothing happens --Zhonghe Chen
+					}
+					i++;
+				}
+			//create button here
+			
+		}
+		
+		
 	}
-	
 	
 	// Draw the countries
 	// 0<=i<=41
@@ -54,25 +125,6 @@ public class BoardComponent extends JComponent{
 		case "DarkGreen":
 			g2.setColor(new Color(0,100,0));
 			break;
-		case "Brown":
-			g2.setColor(new Color(165,42,42));
-			break;
-		case "Pink":
-			g2.setColor(new Color(205,145,158));
-			break;
-		case "Grey":
-			g2.setColor(new Color(190,190,190));
-			break;
-		case "Moccasin":
-			g2.setColor(new Color(255,228,181));
-			break;
-		case "DarkGrey":
-			g2.setColor(new Color(79,79,79));
-			break;	
-		case "Bisque":
-			g2.setColor(new Color(238,213,183));
-			break;	
-			
 			
 		default:
 			g2.setColor(Color.BLACK);
@@ -80,6 +132,7 @@ public class BoardComponent extends JComponent{
 		g2.fill(country);
 		g2.setColor(Color.BLACK);
 		g2.drawOval((int)countries[i][0], (int)countries[i][1], 25,25);
+		repaint(); //I guess repaint should be placed here, but nothing happens. --Zhonghe Chen
 	}
 	
 	// Draw lines
@@ -89,21 +142,12 @@ public class BoardComponent extends JComponent{
 		g2.draw(lines);
 		g2.setColor(Color.BLACK);
 	}	
-	//boolean flag=false;
 	
-	//public Graphics g;
-	protected void paintComponent(Graphics g){
-		
-
-		//if(flag==true) {
-			//setCountry(countries[0],0,colorSets[0][0]);
-			
-		//}else {
+	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		
 		// Recover Graphics2D
 		g2 = (Graphics2D)g;
-				
+		
 		//draw country points
 		for(int i = 0; i < countries.length; i++) {
 			for(int j = 0; j < countries[i].length; j++) {
@@ -198,7 +242,7 @@ public class BoardComponent extends JComponent{
 		
 		
 		//label country names
-		g2.drawString("Alberta", 65, 25);//65 25+15
+		g2.drawString("Alberta", 65, 25);
 		g2.drawString("W United States", 5, 95);
 		g2.drawString("Ontario", 90, 120);
 		g2.drawString("E United States", 45, 170);
@@ -240,53 +284,6 @@ public class BoardComponent extends JComponent{
 		g2.drawString("New Guinea", 700, 200);
 		g2.drawString("W Australia", 710, 300);
 		g2.drawString("E Australia", 780, 240);
-		
-		
-		String army_num = "1";
-		g2.drawString(army_num, 84, 41);//65+19 25+16
-		g2.drawString(army_num, 24, 111);
-		g2.drawString(army_num, 90+19, 120+16);
-		g2.drawString(army_num, 45+19, 170+16);
-		g2.drawString(army_num, 0+10, 220+16);
-		g2.drawString(army_num, 120+19, 195+16);
-		g2.drawString(army_num, 180+19, 140+16);
-		g2.drawString(army_num, 170+19, 60+16);
-		g2.drawString(army_num, 270+19, 15+16);
-		g2.drawString(army_num, 45+19, 320+16);
-		g2.drawString(army_num, 5+10, 400+16);
-		g2.drawString(army_num, 105+10, 410+16);
-		g2.drawString(army_num, 50+19, 490+16);
-		g2.drawString(army_num, 220+19, 195+16);
-		g2.drawString(army_num, 200+19, 265+16);
-		g2.drawString(army_num, 270+19, 245+16);
-		g2.drawString(army_num, 250+19, 305+16);
-		g2.drawString(army_num, 190+19, 360+16);
-		g2.drawString(army_num, 330+19, 295+16);
-		g2.drawString(army_num, 285+19, 380+16);
-		g2.drawString(army_num, 210+19, 460+16);
-		g2.drawString(army_num, 305+19, 440+16);
-		g2.drawString(army_num, 190+19, 550+16);
-		g2.drawString(army_num, 310+19, 530+16);
-		g2.drawString(army_num, 250+19, 630+16);
-		g2.drawString(army_num, 350+19, 610+16);
-		g2.drawString(army_num, 380+19, 400+16);
-		g2.drawString(army_num, 410+19, 290+16);
-		g2.drawString(army_num, 480+10, 340+16);
-		g2.drawString(army_num, 380+10, 220+16);
-		g2.drawString(army_num, 475+10, 218+16);
-		g2.drawString(army_num, 400+19, 150+16);
-		g2.drawString(army_num, 380+19, 80+16);
-		g2.drawString(army_num, 305+19, 100+16);
-		g2.drawString(army_num, 460+19, 80+16);
-		g2.drawString(army_num, 370+19, 30+16);
-		g2.drawString(army_num, 510-19, 15+6);
-		g2.drawString(army_num, 560+19, 270+16);
-		g2.drawString(army_num, 630+19, 260+16);
-		g2.drawString(army_num, 700+19, 200+16);
-		g2.drawString(army_num, 710+19, 300+16);
-		g2.drawString(army_num, 780+19, 240+16);
-		//}
 	}
-
-
+	
 }

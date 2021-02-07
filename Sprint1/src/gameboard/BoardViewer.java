@@ -1,3 +1,4 @@
+//Zhonghe Chen, Zhi Zhang, Yunlong Cheng
 package gameboard;
 
 import javax.swing.BorderFactory;
@@ -13,8 +14,8 @@ import userinput.UserInput;
 
 public class BoardViewer {
 	
-	private static final int FRAME_WIDTH = 1300;    // must be even
-	private static final int FRAME_HEIGHT = 1050;
+	private static final int FRAME_WIDTH = 1200;    // must be even
+	private static final int FRAME_HEIGHT = 800;
 	
 	public static void main(String[] args) {
 		
@@ -51,9 +52,6 @@ public class BoardViewer {
 		io.setBorder(BorderFactory.createEtchedBorder()); 
 		frame.add(io,BorderLayout.EAST);
 		
-		BoardComponent component1 = new BoardComponent();
-		component.setBorder(BorderFactory.createEtchedBorder()); 
-		frame.add(component1,BorderLayout.CENTER);
 		
 		UserInput ui = new UserInput();
 		ui.setBorder(BorderFactory.createEtchedBorder()); 
