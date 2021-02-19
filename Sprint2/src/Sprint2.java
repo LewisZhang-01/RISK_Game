@@ -23,7 +23,7 @@ public class Sprint2 {
 			ui.displayString("Reroll!");
 			sequence(ui, playerId);
 		} else {
-			ui.displayString("The player" + index + " play first.");
+			ui.displayString("The player" + (index+1) + " play first.");
 		}
 		return index;
 	}
