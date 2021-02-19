@@ -1,6 +1,6 @@
 
 public final class GameData {
-
+	
 	public static final int NUM_PLAYERS = 2;
 	public static final int NUM_NEUTRALS = 4;
 	public static final int NUM_PLAYERS_PLUS_NEUTRALS = NUM_PLAYERS + NUM_NEUTRALS;
@@ -15,12 +15,12 @@ public final class GameData {
 		"Venezuela","Peru","Brazil","Argentina",
 		"Congo","N Africa","S Africa","Egypt","E Africa","Madagascar"};  // for reference
 	public static final String[] abbr_COUNTRY_NAMES = {
-			"ON","QC","NW","AB","GL","EUS","WUS","CA","AK",
-			"GB","WE","SE","UA","NE","ISL","Scand",
-			"AF","IND","ME","JP","UR","YAKT","KCK","SIM","IRKT","SI","MO","CN",
-			"EAU","NG","WAU","ID",
+			"ON","QU","NW","AL","GR","EUS","WUS","CA","ALA",
+			"GB","WE","SE","UK","NE","IC","SC",
+			"AF","IN","ME","JP","UR","YA","KA","SI","IR","SIB","MO","CH",
+			"EA","NG","WA","ID",
 			"VE","PE","BR","AR",
-			"COG","NAFC","SAFC","EG","EAFC","MG"};
+			"CO","NA","SA","EG","EA","MA"};
 	public static final int[][] ADJACENT = { 
 		{4,1,5,6,3,2},    // 0
 		{4,5,0},

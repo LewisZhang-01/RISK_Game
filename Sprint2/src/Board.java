@@ -28,6 +28,9 @@ public class Board {
 	}
 	
 	public int getOccupier (int country) {
+		if(country==-1) {
+			return -1;
+		}
 		return occupier[country];
 	}
 	
@@ -35,16 +38,20 @@ public class Board {
 		return numUnits[country];
 	}
 
-	public Boolean placeUnits(String territory, int playerId, int unit_num) {
+	public void placeUnits(String territory, int playerId, int unit_num) {
 		for(int id=0;id<GameData.COUNTRY_NAMES.length;id++) {
 			if(GameData.COUNTRY_NAMES[id].equals(territory)||GameData.abbr_COUNTRY_NAMES[id].equals(territory)) {
 				addUnits(id, playerId, unit_num);
-				return true;
-			}
-			if((id==GameData.COUNTRY_NAMES.length-1 && !GameData.COUNTRY_NAMES[id].equals(territory)) || (id==GameData.COUNTRY_NAMES.length-1 && !GameData.abbr_COUNTRY_NAMES[id].equals(territory))) {
-				return false;
 			}
 		}
-		return true;
+	}
+	
+	public int getCountry(String territory) {
+		for(int id=0;id<GameData.COUNTRY_NAMES.length;id++) {
+			if(GameData.COUNTRY_NAMES[id].equals(territory)||GameData.abbr_COUNTRY_NAMES[id].equals(territory)) {
+				return id;
+			}
+		}
+		return -1;
 	}
 }
