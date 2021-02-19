@@ -20,7 +20,7 @@ public final class GameData {
 			"AF","IN","ME","JP","UR","YA","KA","SI","IR","SIB","MO","CH",
 			"EA","NG","WA","ID",
 			"VE","PE","BR","AR",
-			"CO","NA","SA","EG","EA","MA"};
+			"CO","NA","SA","EG","EAF","MA"};
 	public static final int[][] ADJACENT = { 
 		{4,1,5,6,3,2},    // 0
 		{4,5,0},

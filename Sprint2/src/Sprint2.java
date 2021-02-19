@@ -20,10 +20,10 @@ public class Sprint2 {
 		}
 		Arrays.sort(dice);
 		if (dice[dice.length - 1] == dice[dice.length - 2]) {
-			ui.displayString("Reroll!");
+			ui.displayString("\nReroll!\n");
 			sequence(ui, playerId);
 		} else {
-			ui.displayString("The player" + (index+1) + " play first.");
+			ui.displayString("\nThe player" + (index+1) + " play first.\n");
 		}
 		return index;
 	}
@@ -32,15 +32,11 @@ public class Sprint2 {
 		
 		int country = board.getCountry(territory);
 		int occupier = board.getOccupier(country);
-		//invalid input handle: Letters only allowed.
-		while(!territory.matches("[a-zA-Z]+") || country == -1 || occupier != playerId || occupier == -1) {
-			//check if user not enter letters.
-			if(!territory.matches("[a-zA-Z]+")) {
-				ui.displayString("*You can only enter letters.\n*Please enter again: ");
-			}
+		//invalid input handle:
+		while( country == -1 || occupier != playerId || occupier == -1) {
 			//Check country.
 			if(country == -1 || occupier == -1) {
-				ui.displayString("\n*No territory matched!\n*All territorial names can be simplified to capitalized with the first two letters.\n*For instance: \"Ontario\" use [ON] & \"E United States\" use [EUS]\n*Except \"Alaska\" USE [ALA] & \"Siberia\" use [SIB] & \"Indonesia\" use [ID]\n*Please enter again: \n");						
+				ui.displayString("\n*No territory matched!\n*All territorial names can be simplified to capitalized with the first two letters.\n*For instance: \"Ontario\" use [ON] & \"E United States\" use [EUS]\n*Except \"Alaska\" use [ALA] & \"Siberia\" use [SIB] & \"Indonesia\" use [ID] & \"E Africa\" use [EAF]\n*Please enter again: \n");						
 			}
 			//Check occupier.
 			if(board.getOccupier(country) != playerId && occupier != -1) {
@@ -54,21 +50,21 @@ public class Sprint2 {
 		
 	}
 
-	public static void realPlayerPlace(UI ui, Board board, String territory, int unit_num, int playerId) {
-		ui.displayString("Enter the name of territory which you want place unit. (player " + (playerId+1)+")[color: "+MapPanel.word_PLAYER_COLORS[playerId]+" ]");
-		territory = ui.getCommand();
+	public static void realPlayerPlace(UI ui, Board board, int playerId) {
+		ui.displayString("Enter the name of territory which you want place unit. {"+getPlayerArmyNum(board, playerId)+"/36}(player " + (playerId+1)+")[color: "+MapPanel.word_PLAYER_COLORS[playerId]+" ]");
+		String territory = ui.getCommand();
 		//Check if input for territory name is invalid.
 		territory = errorHandle(board, ui, playerId, territory);
 		ui.displayString("> " + territory + "\nPlace 3 units to this territory.");
 
-		unit_num = 3;
+		int unit_num = 3;
 		board.placeUnits(territory, playerId, unit_num);//place 3 unit to this country.
 
 		ui.displayMap();//refresh map.
 	}
 	
-	public static void neutralPlayerPlace(UI ui, Board board, int playerId, int unit_num) {
-		unit_num = 1;
+	public static void neutralPlayerPlace(UI ui, Board board, int playerId) {
+		int unit_num = 1;
 		int id;
 		for(id=0;id<GameData.NUM_COUNTRIES;id++) {
 			if(board.getOccupier(id)==playerId && board.getNumUnits(id)<4) {
@@ -115,8 +111,6 @@ public class Sprint2 {
 		UI ui = new UI(board);
 		int playerId, countryId;
 		String name;
-		String territory = null;
-		int unit_num = 0;
 
 		// display blank board
 		ui.displayMap();
@@ -168,7 +162,7 @@ public class Sprint2 {
 								break;
 							}
 						}else {
-							realPlayerPlace(ui, board, territory, unit_num, playerId);
+							realPlayerPlace(ui, board, playerId);
 						}
 					}else {
 						// For neutral players.
@@ -177,7 +171,7 @@ public class Sprint2 {
 								break;
 							}
 						}else {
-							neutralPlayerPlace(ui, board, playerId, unit_num);
+							neutralPlayerPlace(ui, board, playerId);
 						}
 					}
 				}
@@ -191,7 +185,7 @@ public class Sprint2 {
 								break;
 							}
 						}else {
-							realPlayerPlace(ui, board, territory, unit_num, playerId);
+							realPlayerPlace(ui, board, playerId);
 						}
 					}else{
 						// For neutral players.
@@ -200,7 +194,7 @@ public class Sprint2 {
 								break;
 							}
 						}else {
-							neutralPlayerPlace(ui, board, playerId, unit_num);
+							neutralPlayerPlace(ui, board, playerId);
 						}
 					}			
 				}
@@ -210,13 +204,17 @@ public class Sprint2 {
 							break;
 						}
 					}else {
-						realPlayerPlace(ui, board, territory, unit_num, playerId);
+						realPlayerPlace(ui, board, playerId);
 					}
 				}
 			}
 		}
 		
-		//ui.displayString("finish"+getPlayerArmyNum(board, 1/*playerId*/));
+		ui.displayString("\nAllocation of armies completed.\n");
+		
+		for(int id=0;id<GameData.NUM_PLAYERS_PLUS_NEUTRALS;id++) {
+			ui.displayString("Player("+(id+1)+") army number: "+getPlayerArmyNum(board, id));
+		}
 
 		// display map
 		ui.displayMap();

@@ -61,6 +61,5 @@ class Sprint2Test {
 		int num = board.getCountry(territory);
 		assertEquals(6,board.getNumUnits(num));
 	}
-	
-	
+		
 }
