@@ -13,6 +13,12 @@ public class InfoPanel extends JPanel {
 	JScrollPane scrollPane = new JScrollPane(textArea);
 	DefaultCaret caret = (DefaultCaret)textArea.getCaret();
 	
+	//Display Info Panel Background Image
+	private Image image=new ImageIcon("InfoPanelImage.jpg").getImage();
+	protected void paintComponent(Graphics g) {  
+        g.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), this);  
+	}  
+	
 	InfoPanel () {
 		textArea.setEditable(false);
 		textArea.setFont(new Font("Times New Roman", Font.PLAIN, FONT_SIZE));
@@ -21,11 +27,14 @@ public class InfoPanel extends JPanel {
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		setLayout(new BorderLayout());
+		scrollPane.setOpaque(false);  
+		scrollPane.getViewport().setOpaque(false); 		
 		add(scrollPane, BorderLayout.CENTER);
 		return;
 	}
 	
 	public void addText (String text) {
+		textArea.setOpaque(false);
 		textArea.setText(textArea.getText()+"\n"+text);
 	}
 
