@@ -1,4 +1,3 @@
-import java.util.Arrays;
 
 public class Sprint2 {
 
@@ -24,37 +23,11 @@ public class Sprint2 {
 		return name;
 	}
 
-	private static int Dice() {
-		return (int) (Math.random() * 6) + 1;
-	}
-
-	private static int sequence(UI ui, int playerId) {
-		int[] dice = new int[GameData.NUM_PLAYERS];
-		for (playerId = 0; playerId < GameData.NUM_PLAYERS; playerId++) {
-			dice[playerId] = Dice();
-		}
-		int max = dice[0];
-		int index = 0;
-		for (int i = 0; i < dice.length; i++) {
-			if (max < dice[i]) {
-				max = dice[i];
-				index = i;
-			}
-		}
-		Arrays.sort(dice);
-		if (dice[dice.length - 1] == dice[dice.length - 2]) {
-			ui.displayString("\nReroll!\n");
-			sequence(ui, playerId);
-		} else {
-			ui.displayString("\nThe player" + (index + 1) + " play first.\n");
-		}
-		return index;
-	}
-
 	public static void main(String args[]) {
 		Board board = new Board();
 		UI ui = new UI(board);
 		ArmyPlace ap = new ArmyPlace();
+		Sequence index = new Sequence();
 		int playerId = 0 , countryId;
 		String name = null;
 		String[] nameList = new String[GameData.NUM_PLAYERS];
@@ -84,7 +57,7 @@ public class Sprint2 {
 		ui.displayMap();
 
 		// roll dice to determine the sequence
-		int first = sequence(ui, playerId);
+	    int first = index.sequence(ui, playerId);
 
 		// place army
 		ap.place(board, ui, playerId, first);
