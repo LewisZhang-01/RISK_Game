@@ -1,3 +1,12 @@
+package sprint2;
+
+/*
+ * BadGuys
+ * Zhonghe Chen 19203048
+ * Zhi Zhang 18210054
+ * Yunlong Cheng 18210611
+ * 
+ * */
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
@@ -7,7 +16,8 @@ class Sprint2Test {
 
 	Board board = new Board();
 	UI ui = new UI(board);
-	
+	ArmyPlace ap = new ArmyPlace();
+		
 	@Test
 	void test_word_PLAYER_COLORS() {
 		assertEquals("[color: Red ]","[color: "+MapPanel.word_PLAYER_COLORS[0]+" ]");
@@ -28,12 +38,11 @@ class Sprint2Test {
 		}
 	}
 	
-
 	@Test
 	void test_errorHandle() {
 		int playerId=0;
 		String territory = "CA";
-		territory = Sprint2.errorHandle(board, ui, playerId, territory);
+		territory = ap.errorHandle(board, ui, playerId, territory);
 		assertEquals("CA",territory);
 	}
 	

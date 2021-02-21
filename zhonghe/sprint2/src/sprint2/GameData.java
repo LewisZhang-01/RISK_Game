@@ -1,5 +1,12 @@
 package sprint2;
 
+/*
+ * BadGuys
+ * Zhonghe Chen 19203048
+ * Zhi Zhang 18210054
+ * Yunlong Cheng 18210611
+ * 
+ * */
 public final class GameData {
 	
 	public static final int NUM_PLAYERS = 2;

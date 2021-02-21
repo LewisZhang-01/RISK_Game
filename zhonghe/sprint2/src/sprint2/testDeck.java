@@ -1,5 +1,12 @@
 package sprint2;
 
+/*
+ * BadGuys
+ * Zhonghe Chen 19203048
+ * Zhi Zhang 18210054
+ * Yunlong Cheng 18210611
+ * 
+ * */
 import java.util.LinkedList;
 
 public class testDeck {

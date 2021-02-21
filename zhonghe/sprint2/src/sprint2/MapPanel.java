@@ -1,5 +1,12 @@
 package sprint2;
 
+/*
+ * BadGuys
+ * Zhonghe Chen 19203048
+ * Zhi Zhang 18210054
+ * Yunlong Cheng 18210611
+ * 
+ * */
 import javax.swing.*;
 
 import java.awt.*;
@@ -74,7 +81,7 @@ class MapPanel extends JPanel {
 		return;
 	}
 	
-	private Image image=new ImageIcon("MapPanelImage.jpg").getImage();
+	private Image image=new ImageIcon("images/MapPanelImage.jpg").getImage();
 	
     public void paintComponent(Graphics g) {
     	int xPos, yPos, xPosBegin, yPosBegin, xPosEnd, yPosEnd;
