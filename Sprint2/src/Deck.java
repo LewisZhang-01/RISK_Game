@@ -1,5 +1,3 @@
-
-
 import java.awt.BorderLayout;
 import java.util.LinkedList;
 
@@ -36,10 +34,10 @@ public class Deck {
 		
 		//the path of the graphs of cards
 		private String[] path = {"images/cards/1.jpg","images/cards/2.jpg","images/cards/3.jpg","images/cards/4.jpg","images/cards/5.jpg","images/cards/6.jpg","images/cards/7.jpg","images/cards/8.jpg","images/cards/9.jpg",
-								 "images/cards/10.jpg","images/cards/11.jpg","images/cards/12.jpg","images/cards/13.jpg","images/cards/14.jpg","images/cards/15.jpg","images/cards/16.jpg","images/cards/17.jpg","images/cards/18.jpg",
-								 "images/cards/19.jpg","images/cards/20.jpg","images/cards/21.jpg","images/cards/22.jpg","images/cards/23.jpg","images/cards/24.jpg","images/cards/25.jpg","images/cards/26.jpg","images/cards/27.jpg",
-								 "images/cards/28.jpg","images/cards/29.jpg","images/cards/30.jpg","images/cards/31.jpg","images/cards/32.jpg","images/cards/33.jpg","images/cards/34.jpg","images/cards/35.jpg","images/cards/36.jpg",
-								 "images/cards/37.jpg","images/cards/38.jpg","images/cards/39.jpg","images/cards/40.jpg","images/cards/41.jpg","images/cards/42.jpg"};
+				 "images/cards/10.jpg","images/cards/11.jpg","images/cards/12.jpg","images/cards/13.jpg","images/cards/14.jpg","images/cards/15.jpg","images/cards/16.jpg","images/cards/17.jpg","images/cards/18.jpg",
+				 "images/cards/19.jpg","images/cards/20.jpg","images/cards/21.jpg","images/cards/22.jpg","images/cards/23.jpg","images/cards/24.jpg","images/cards/25.jpg","images/cards/26.jpg","images/cards/27.jpg",
+				 "images/cards/28.jpg","images/cards/29.jpg","images/cards/30.jpg","images/cards/31.jpg","images/cards/32.jpg","images/cards/33.jpg","images/cards/34.jpg","images/cards/35.jpg","images/cards/36.jpg",
+				 "images/cards/37.jpg","images/cards/38.jpg","images/cards/39.jpg","images/cards/40.jpg","images/cards/41.jpg","images/cards/42.jpg"};
 
 		
 		public Deck() {
@@ -160,43 +158,68 @@ public class Deck {
 				
 				if(inf >= 3) {
 					int count = 0;
+					int remove_index[] = new int[3];
 					for(int i = 0; i < cardSet.size(); i++) {
-						if(cardSet.get(i).getType().equals(Card.type.Infantry) && count < 3) {
-							cardList.add(cardSet.remove(i));
-							count++;
+						if(cardSet.get(i).getType().equals(Card.type.Infantry) && count <= 3) {
+							remove_index[count] = i;
+							count+=1;
 						}
+					}
+					for(int i = 0; i < 3; i++) {
+						remove_index[i] -= i;
+						cardList.add(cardSet.remove(remove_index[i]));
 					}
 				}else if(art >= 3) {
 					int count = 0;
+					int remove_index[] = new int[3];
 					for(int i = 0; i < cardSet.size(); i++) {
-						if(cardSet.get(i).getType().equals(Card.type.Artillery) && count < 3) {
-							cardList.add(cardSet.remove(i));
-							count++;
+						if(cardSet.get(i).getType().equals(Card.type.Artillery) && count <= 3) {
+							remove_index[count] = i;
+							count+=1;
 						}
+					}
+					for(int i = 0; i < 3; i++) {
+						remove_index[i] -= i;
+						cardList.add(cardSet.remove(remove_index[i]));
 					}
 				}else if(cav >= 3) {
 					int count = 0;
+					int remove_index[] = new int[3];
 					for(int i = 0; i < cardSet.size(); i++) {
-						if(cardSet.get(i).getType().equals(Card.type.Cavalry) && count < 3) {
-							cardList.add(cardSet.remove(i));
-							count++;
+						if(cardSet.get(i).getType().equals(Card.type.Cavalry) && count <= 3) {
+							remove_index[count] = i;
+							count+=1;
 						}
+					}
+					for(int i = 0; i < 3; i++) {
+						remove_index[i] -= i;
+						cardList.add(cardSet.remove(remove_index[i]));
 					}
 				}else {
 					int first_i = 0;
 					int first_c = 0;
 					int first_a = 0;
+					int count = 0;
+					int remove_index[] = new int[3];
 					for(int i = 0; i < cardSet.size(); i++) {
 						if(first_i == 0 && cardSet.get(i).getType().equals(Card.type.Infantry)) {
-							cardList.add(cardSet.remove(i));
+							remove_index[count] = i;
 							first_i++;
+							count++;
 						}else if(first_c == 0 && cardSet.get(i).getType().equals(Card.type.Cavalry)) {
-							cardList.add(cardSet.remove(i));
+							remove_index[count] = i;
 							first_c++;
+							count++;
 						}else if(first_a == 0 && cardSet.get(i).getType().equals(Card.type.Artillery)) {
-							cardList.add(cardSet.remove(i));
+							remove_index[count] = i;
 							first_a++;
+							count++;
 						}
+					}
+					
+					for(int i = 0; i < 3; i++) {
+						remove_index[i] -= i;
+						cardList.add(cardSet.remove(remove_index[i]));
 					}
 				}
 				ui.displayString("Trade Success. The " + tradeNumber + " set is traded. You earn " + armiesGet + " armies to place. Traded cards are removed.");
