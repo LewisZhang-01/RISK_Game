@@ -7,6 +7,7 @@ class Sprint2Test {
 
 	Board board = new Board();
 	UI ui = new UI(board);
+	ArmyPlace ap = new ArmyPlace();
 	/*@Test
 	void test_Dice() {
 	}
@@ -45,7 +46,7 @@ class Sprint2Test {
 	void test_errorHandle() {
 		int playerId=0;
 		String territory = "CA";
-		territory = Sprint2.errorHandle(board, ui, playerId, territory);
+		territory = ap.errorHandle(board, ui, playerId, territory);
 		assertEquals("CA",territory);
 	}
 	
@@ -73,5 +74,76 @@ class Sprint2Test {
 		int num = board.getCountry(territory);
 		assertEquals(6,board.getNumUnits(num));
 	}
+	
+	/*
+	@Test
+	void test_player_1_GoFirst() {
+		int playerId = 0;
+		int first = 0;
+		if (first == 0) {
+			// For normal players.
+			for (playerId = first; playerId < GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
+				if (playerId < 2) {
+					if (ap.getPlayerArmyNum(board, playerId) == 36) {
+						if (ap.checkPlayerArmyNum(board) == true) {
+							break;
+						}
+					} else {
+						ap.realPlayerPlace(ui, board, playerId);
+					}
+				} else {
+					// For neutral players.
+					if (ap.getPlayerArmyNum(board, playerId) == 24) {
+						if (ap.checkPlayerArmyNum(board) == true) {
+							break;
+						}
+					} else {
+						ap.neutralPlayerPlace(ui, board, playerId);
+					}
+				}
+			}
+		}
+	}
 		
+	
+	@Test
+	void test() {
+		int playerId = 0;
+		int first = 1;
+		if (first > 0) {
+			// For normal players.
+			for (playerId = first; playerId < GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
+				if (playerId < 2) {
+					// For 1st player.
+					if (ap.getPlayerArmyNum(board, playerId) == 36) {
+						if (ap.checkPlayerArmyNum(board) == true) {
+							break;
+						}
+					} else {
+						ap.realPlayerPlace(ui, board, playerId);
+					}
+				} else {
+					// For neutral players.
+					if (ap.getPlayerArmyNum(board, playerId) == 24) {
+						if (ap.checkPlayerArmyNum(board) == true) {
+							break;
+						}
+					} else {
+						ap.neutralPlayerPlace(ui, board, playerId);
+					}
+				}
+			}
+			for (playerId = 0; playerId < first; playerId++) {
+				if (ap.getPlayerArmyNum(board, playerId) == 36) {
+					if (ap.checkPlayerArmyNum(board) == true) {
+						break;
+					}
+				} else {
+					ap.realPlayerPlace(ui, board, playerId);
+				}
+			}
+		}
+	}
+	*/
+	
 }
