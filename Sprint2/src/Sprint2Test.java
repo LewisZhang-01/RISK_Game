@@ -7,6 +7,18 @@ class Sprint2Test {
 
 	Board board = new Board();
 	UI ui = new UI(board);
+	/*@Test
+	void test_Dice() {
+	}
+	
+	@Test
+	void test_sequence() {
+		int playerId=0;
+		for (playerId = 0; playerId < GameData.NUM_PLAYERS; playerId++) {
+		
+		}		
+	}*/
+	
 	
 	@Test
 	void test_word_PLAYER_COLORS() {
