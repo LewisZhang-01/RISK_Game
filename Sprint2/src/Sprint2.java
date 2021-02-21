@@ -32,7 +32,11 @@ public class Sprint2 {
 		int playerId = 0 , countryId;
 		String name = null;
 		String[] nameList = new String[GameData.NUM_PLAYERS];
-
+		
+		Deck d = new Deck();
+		LinkedList<Card> p1_cards = new LinkedList<Card>();
+		LinkedList<Card> p2_cards = new LinkedList<Card>();
+	
 		// display blank board
 		ui.displayMap();
 
@@ -61,7 +65,7 @@ public class Sprint2 {
 	    int first = index.sequence(ui, playerId);
 
 		// place army
-		ap.place(board, ui, playerId, first);
+		ap.place(board, ui, playerId, first, d, p1_cards, p2_cards);
 
 		ui.displayString("\nAllocation of armies completed.\n");
 		

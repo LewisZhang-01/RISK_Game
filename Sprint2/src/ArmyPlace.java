@@ -11,11 +11,8 @@ public class ArmyPlace {
 
 	}
 
-	public void place(Board board, UI ui, int playerId, int first) {
+	public void place(Board board, UI ui, int playerId, int first, Deck d, LinkedList<Card> p1_cards, LinkedList<Card> p2_cards) {
 		while (checkPlayerArmyNum(board) == false) {
-			Deck d = new Deck();
-			LinkedList<Card> p1_cards = new LinkedList<Card>();
-			LinkedList<Card> p2_cards = new LinkedList<Card>();
 			if (first == 0) {
 				// For normal players.
 				for (playerId = first; playerId < GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
