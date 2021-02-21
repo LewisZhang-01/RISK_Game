@@ -1,6 +1,7 @@
 package sprint2;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 
 public class Sprint2 {
 	private static int Dice() {
@@ -25,7 +26,7 @@ public class Sprint2 {
 			ui.displayString("\nReroll!\n");
 			sequence(ui, playerId);
 		} else {
-			ui.displayString("\nThe player" + (index+1) + " play first.\n");
+			ui.displayString("\nThe player" + (index+1) + " play first.");
 		}
 		return index;
 	}
@@ -52,15 +53,14 @@ public class Sprint2 {
 		
 	}
 
-	public static void realPlayerPlace(UI ui, Board board, int playerId) {
+	public static void realPlayerPlace(UI ui, Board board, int playerId, int unit_num) {
 		ui.displayString("Enter the name of territory which you want place unit. {"+getPlayerArmyNum(board, playerId)+"/36}(player " + (playerId+1)+")[color: "+MapPanel.word_PLAYER_COLORS[playerId]+" ]");
 		String territory = ui.getCommand();
 		
 		//Check if input for territory name is invalid.
 		territory = errorHandle(board, ui, playerId, territory);
-		ui.displayString("> " + territory + "\nPlace 3 units to this territory.");
+		ui.displayString("> " + territory + "\nPlace "+unit_num+" units to this territory.");
 
-		int unit_num = 3;
 		board.placeUnits(territory, playerId, unit_num);//place 3 unit to this country.
 		
 		ui.displayMap();//refresh map.
@@ -77,7 +77,7 @@ public class Sprint2 {
 			}
 		}
 		
-		ui.displayString("> " + GameData.COUNTRY_NAMES[id]);
+		ui.displayString("\n> " + GameData.COUNTRY_NAMES[id]);
 		ui.displayMap();//refresh map.	
 	}
 	
@@ -109,10 +109,15 @@ public class Sprint2 {
 		}
 	}
 	
+	
 	public static void main(String args[]) {
 		Board board = new Board();
 		UI ui = new UI(board);
 		int playerId, countryId;
+		Deck d = new Deck();
+		LinkedList<Card> p1_cards = new LinkedList<Card>();
+		LinkedList<Card> p2_cards = new LinkedList<Card>();
+		
 		String name;
 
 		// display blank board
@@ -165,14 +170,45 @@ public class Sprint2 {
 								break;
 							}
 						}else {
-							ui.displayString("Enter 1 to draw a card, 0 to continue.");
+							ui.displayString("\nEnter 1 to draw a card, anything else to place armies.(player "+(playerId+1)+")\n");
 							String mode = ui.getCommand();
 							if(mode.equals("1")) {
-								Deck d = new Deck();
-								d.draw();
+								if(playerId == 0) {
+									p1_cards.add(d.draw());
+								}else {
+									p2_cards.add(d.draw());
+								}
 							}
 							
-							realPlayerPlace(ui, board, playerId);
+							realPlayerPlace(ui, board, playerId,3);
+							
+							ui.displayString("\nEnter 0 to check and trade your cards, anything else to do nothing.\n");
+							String mode2 = ui.getCommand();
+							if(mode2.equals("0")) {
+								if(playerId == 0) {
+									d.display(ui, p1_cards);
+									ui.displayString("Player 1 has: ");
+									for(int i = 0; i < p1_cards.size(); i++) {
+										ui.displayString(p1_cards.get(i).toString());
+									}
+									ui.displayString("Please enter trade to automatically trade your cards, and anything else to skip.");
+									String trade = ui.getCommand();
+									if(trade.equals("trade")) {
+										d.trade(ui,board,playerId,p1_cards);
+									}
+								}else {
+									d.display(ui, p2_cards);
+									ui.displayString("Player 2 has: ");
+									for(int i = 0; i < p2_cards.size(); i++) {
+										ui.displayString(p2_cards.get(i).toString());
+									}
+									ui.displayString("Please enter trade to automatically trade your cards, and anything else to skip.");
+									String trade = ui.getCommand();
+									if(trade.equals("trade")) {
+										d.trade(ui,board,playerId,p2_cards);
+									}
+								}
+							}
 						}
 					}else {
 						// For neutral players.
@@ -195,14 +231,45 @@ public class Sprint2 {
 								break;
 							}
 						}else {
-							ui.displayString("Enter 1 to draw, 0 to place armies.");
+							ui.displayString("\nEnter 1 to draw a card, anything else to place armies.(player "+(playerId+1)+")\n");
 							String mode = ui.getCommand();
 							if(mode.equals("1")) {
-								Deck d = new Deck();
-								d.draw();
+								if(playerId == 0) {
+									p1_cards.add(d.draw());
+								}else {
+									p2_cards.add(d.draw());
+								}
 							}
 							
-							realPlayerPlace(ui, board, playerId);
+							realPlayerPlace(ui, board, playerId,3);
+							
+							ui.displayString("\nEnter 0 to check and trade your cards, anything else to do nothing.\n");
+							String mode2 = ui.getCommand();
+							if(mode2.equals("0")) {
+								if(playerId == 0) {
+									d.display(ui, p1_cards);
+									ui.displayString("Player 1 has: ");
+									for(int i = 0; i < p1_cards.size(); i++) {
+										ui.displayString(p1_cards.get(i).toString());
+									}
+									ui.displayString("Please enter trade to automatically trade your cards, and anything else to skip.");
+									String trade = ui.getCommand();
+									if(trade.equals("trade")) {
+										d.trade(ui,board,playerId,p1_cards);
+									}
+								}else {
+									d.display(ui, p2_cards);
+									ui.displayString("Player 2 has: ");
+									for(int i = 0; i < p2_cards.size(); i++) {
+										ui.displayString(p2_cards.get(i).toString());
+									}
+									ui.displayString("Please enter trade to automatically trade your cards, and anything else to skip.");
+									String trade = ui.getCommand();
+									if(trade.equals("trade")) {
+										d.trade(ui,board,playerId,p2_cards);
+									}
+								}
+							}
 						}
 					}else{
 						// For neutral players.
@@ -221,7 +288,45 @@ public class Sprint2 {
 							break;
 						}
 					}else {
-						realPlayerPlace(ui, board, playerId);
+						ui.displayString("\nEnter 1 to draw a card, anything else to place armies.(player "+(playerId+1)+")\n");
+						String mode = ui.getCommand();
+						if(mode.equals("1")) {
+							if(playerId == 0) {
+								p1_cards.add(d.draw());
+							}else {
+								p2_cards.add(d.draw());
+							}
+						}
+						
+						realPlayerPlace(ui, board, playerId,3);
+						
+						ui.displayString("\nEnter 0 to check and trade your cards, anything else to do nothing.\n");
+						String mode2 = ui.getCommand();
+						if(mode2.equals("0")) {
+							if(playerId == 0) {
+								d.display(ui, p1_cards);
+								ui.displayString("Player 1 has: ");
+								for(int i = 0; i < p1_cards.size(); i++) {
+									ui.displayString(p1_cards.get(i).toString());
+								}
+								ui.displayString("Please enter trade to automatically trade your cards, and anything else to skip.");
+								String trade = ui.getCommand();
+								if(trade.equals("trade")) {
+									p1_cards = d.trade(ui,board,playerId,p1_cards);
+								}
+							}else {
+								d.display(ui, p2_cards);
+								ui.displayString("Player 2 has: ");
+								for(int i = 0; i < p2_cards.size(); i++) {
+									ui.displayString(p2_cards.get(i).toString());
+								}
+								ui.displayString("Please enter trade to automatically trade your cards, and anything else to skip.");
+								String trade = ui.getCommand();
+								if(trade.equals("trade")) {
+									p2_cards = d.trade(ui,board,playerId,p2_cards);
+								}
+							}
+						}
 					}
 				}
 			}
