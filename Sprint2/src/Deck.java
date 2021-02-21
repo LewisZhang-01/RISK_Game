@@ -53,7 +53,6 @@ public class Deck {
 			return (int) (Math.random() * cardList.size());
 		}
 		
-		@SuppressWarnings("deprecation")
 		public Card draw() {
 			int cardNum = Dice();
 			Card removed = cardList.remove(cardNum);
@@ -98,7 +97,6 @@ public class Deck {
 			return removed;
 		}
 		
-		@SuppressWarnings("deprecation")
 		public void display(UI ui, LinkedList<Card> cardSet) {
 			JFrame frame = new JFrame();
 		    frame.setSize(1300, 450);
@@ -131,6 +129,8 @@ public class Deck {
 
 			frame.setVisible(true);
 		}
+		
+		ArmyPlace ap = new ArmyPlace();
 		
 		public LinkedList<Card> trade(UI ui, Board board, int playerId, LinkedList<Card> cardSet) {
 			int inf,art,cav;
@@ -202,7 +202,7 @@ public class Deck {
 				ui.displayString("Trade Success. The " + tradeNumber + " set is traded. You earn " + armiesGet + " armies to place. Traded cards are removed.");
 				tradeNumber += 1;
 				ui.displayString("Place your extra armies:");
-				ArmyPlace.realPlayerPlace(ui, board, playerId, armiesGet);
+				ap.realPlayerPlace(ui, board, playerId, armiesGet);
 
 			}else {
 				ui.displayString("Trade false. No set fount in your cards.");

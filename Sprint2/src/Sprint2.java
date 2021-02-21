@@ -1,4 +1,4 @@
-
+import java.util.LinkedList;
 
 public class Sprint2 {
 
@@ -70,7 +70,7 @@ public class Sprint2 {
 		ui.displayString("\nAllocation of armies completed.\n");
 		
 		for (int id = 0; id < GameData.NUM_PLAYERS_PLUS_NEUTRALS; id++) {
-			ui.displayString("Player(" + (id + 1) + ") army number: " + ArmyPlace.getPlayerArmyNum(board, id));
+			ui.displayString("Player(" + (id + 1) + ") army number: " + ap.getPlayerArmyNum(board, id));
 		}
 
 		// display map

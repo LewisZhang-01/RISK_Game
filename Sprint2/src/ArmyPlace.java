@@ -12,13 +12,16 @@ public class ArmyPlace {
 	}
 
 	public void place(Board board, UI ui, int playerId, int first, Deck d, LinkedList<Card> p1_cards, LinkedList<Card> p2_cards) {
+		//Keep letting users place armies until they reach the maximum number they could to place.
 		while (checkPlayerArmyNum(board) == false) {
+			// player #1 go first.
 			if (first == 0) {
 				// For normal players.
 				for (playerId = first; playerId < GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
-					if (playerId < 2) {
+					if (playerId < GameData.NUM_PLAYERS) {
+						// check if this player reach the max number to place.
 						if (getPlayerArmyNum(board, playerId) == 36) {
-							if (checkPlayerArmyNum(board) == true) {
+							if (checkPlayerArmyNum(board) == true) {// if all player reach the max.
 								break;
 							}
 						} else {
@@ -33,6 +36,7 @@ public class ArmyPlace {
 								}
 							}
 
+							// player place army
 							realPlayerPlace(ui, board, playerId,3);
 
 							ui.displayString("\nEnter 0 to check and trade your cards, anything else to do nothing.\n");
@@ -67,22 +71,25 @@ public class ArmyPlace {
 						}
 					} else {
 						// For neutral players.
+						// check if this player reach the max number to place.
 						if (getPlayerArmyNum(board, playerId) == 24) {
-							if (checkPlayerArmyNum(board) == true) {
+							if (checkPlayerArmyNum(board) == true) {// if all player reach the max.
 								break;
 							}
 						} else {
+							// neutral player place army
 							neutralPlayerPlace(ui, board, playerId);
 						}
 					}
 				}
-			} else if (first > 0) {
+			} else if (first > 0) {// if not player #1 go first
 				// For normal players.
 				for (playerId = first; playerId < GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
-					if (playerId < 2) {
+					if (playerId < GameData.NUM_PLAYERS) {
 						// For 1st player.
+						// check if this player reach the max number to place.
 						if (getPlayerArmyNum(board, playerId) == 36) {
-							if (checkPlayerArmyNum(board) == true) {
+							if (checkPlayerArmyNum(board) == true) {// check if all player reach the max.
 								break;
 							}
 						} else {
@@ -97,6 +104,7 @@ public class ArmyPlace {
 								}
 							}
 
+							// player place army
 							realPlayerPlace(ui, board, playerId,3);
 
 							ui.displayString("\nEnter 0 to check and trade your cards, anything else to do nothing.\n");
@@ -131,18 +139,22 @@ public class ArmyPlace {
 						}
 					} else {
 						// For neutral players.
+						// check if this player reach the max number to place.
 						if (getPlayerArmyNum(board, playerId) == 24) {
-							if (checkPlayerArmyNum(board) == true) {
+							if (checkPlayerArmyNum(board) == true) {// check if all player reach the max.
 								break;
 							}
 						} else {
+							// neutral player place army
 							neutralPlayerPlace(ui, board, playerId);
 						}
 					}
 				}
+				// from player #1 to the "start player".
 				for (playerId = 0; playerId < first; playerId++) {
+					// check if this player reach the max number to place.
 					if (getPlayerArmyNum(board, playerId) == 36) {
-						if (checkPlayerArmyNum(board) == true) {
+						if (checkPlayerArmyNum(board) == true) {// check if all player reach the max.
 							break;
 						}
 					} else {
@@ -157,6 +169,7 @@ public class ArmyPlace {
 							}
 						}
 
+						// player place army
 						realPlayerPlace(ui, board, playerId,3);
 
 						ui.displayString("\nEnter 0 to check and trade your cards, anything else to do nothing.\n");
@@ -194,7 +207,8 @@ public class ArmyPlace {
 		}
 	}
 
-	public static String errorHandle(Board board, UI ui, int playerId, String territory) {
+	// special case for invalid user input command.
+	public String errorHandle(Board board, UI ui, int playerId, String territory) {
 
 		int country = board.getCountry(territory);
 		int occupier = board.getOccupier(country);
@@ -210,6 +224,7 @@ public class ArmyPlace {
 				ui.displayString("*You can only choose your territory (" + MapPanel.word_PLAYER_COLORS[playerId]
 						+ ").\nPlease enter again: ");
 			}
+			// Let user enter again.
 			territory = ui.getCommand();
 			country = board.getCountry(territory);
 			occupier = board.getOccupier(country);
@@ -218,22 +233,21 @@ public class ArmyPlace {
 
 	}
 
-	public static void realPlayerPlace(UI ui, Board board, int playerId, int armiesGet) {
+	// real player place units
+	public void realPlayerPlace(UI ui, Board board, int playerId, int unit_num) {
 		ui.displayString("Enter the name of territory which you want place unit. {" + getPlayerArmyNum(board, playerId)
 				+ "/36}(player " + (playerId + 1) + ")[color: " + MapPanel.word_PLAYER_COLORS[playerId] + " ]");
 		String territory = ui.getCommand();
 		// Check if input for territory name is invalid.
 		territory = errorHandle(board, ui, playerId, territory);
-		ui.displayString("> " + territory + "\nPlace 3 units to this territory.");
-
-		int unit_num = 3;
-		board.placeUnits(territory, playerId, unit_num);// place 3 unit to this country.
-
+		ui.displayString("> " + territory + "\nPlace "+unit_num+" units to this territory.");
+		board.placeUnits(territory, playerId, unit_num);
 		ui.displayMap();// refresh map.
 	}
 
+	// neutral player place units
 	public void neutralPlayerPlace(UI ui, Board board, int playerId) {
-		int unit_num = 1;
+		int unit_num = 1;// place 1 unit each time.
 		int id;
 		for (id = 0; id < GameData.NUM_COUNTRIES; id++) {
 			if (board.getOccupier(id) == playerId && board.getNumUnits(id) < 4) {
@@ -247,7 +261,8 @@ public class ArmyPlace {
 		ui.displayMap();// refresh map.
 	}
 
-	public static int getPlayerArmyNum(Board board, int playerId) {
+	// get total army number of player through player id.
+	public int getPlayerArmyNum(Board board, int playerId) {
 		int armyNum = 0;
 		for (int id = 0; id < GameData.COUNTRY_NAMES.length; id++) {
 			if (board.getOccupier(id) == playerId) {
@@ -257,6 +272,7 @@ public class ArmyPlace {
 		return armyNum;
 	}
 
+	// check if all players reach the max number army could to place.
 	public boolean checkPlayerArmyNum(Board board) {
 		int count = 0;
 		for (int id = 0; id < GameData.NUM_PLAYERS; id++) {
