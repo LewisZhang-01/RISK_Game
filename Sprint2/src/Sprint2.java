@@ -1,4 +1,5 @@
 
+
 public class Sprint2 {
 
 	private static void getName(UI ui, int playerId, String name, String[] nameList) {
@@ -63,9 +64,9 @@ public class Sprint2 {
 		ap.place(board, ui, playerId, first);
 
 		ui.displayString("\nAllocation of armies completed.\n");
-
+		
 		for (int id = 0; id < GameData.NUM_PLAYERS_PLUS_NEUTRALS; id++) {
-			ui.displayString("Player(" + (id + 1) + ") army number: " + ap.getPlayerArmyNum(board, id));
+			ui.displayString("Player(" + (id + 1) + ") army number: " + ArmyPlace.getPlayerArmyNum(board, id));
 		}
 
 		// display map

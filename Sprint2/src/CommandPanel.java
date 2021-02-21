@@ -15,7 +15,7 @@ public class CommandPanel extends JPanel  {
 	private LinkedList<String> commandBuffer = new LinkedList<String>();
 	
 	//Display Command Pane Background Image
-	private Image image=new ImageIcon("CommandPanelImage.jpg").getImage();
+	private Image image=new ImageIcon("images/CommandPanelImage.jpg").getImage();
 	protected void paintComponent(Graphics g) {  
         g.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), this);  
 	} 

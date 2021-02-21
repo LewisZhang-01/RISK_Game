@@ -14,7 +14,7 @@ public class InfoPanel extends JPanel {
 	DefaultCaret caret = (DefaultCaret)textArea.getCaret();
 	
 	//Display Info Panel Background Image
-	private Image image=new ImageIcon("InfoPanelImage.jpg").getImage();
+	private Image image=new ImageIcon("images/InfoPanelImage.jpg").getImage();
 	protected void paintComponent(Graphics g) {  
         g.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), this);  
 	}  

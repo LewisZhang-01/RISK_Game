@@ -46,7 +46,7 @@ class Sprint2Test {
 	void test_errorHandle() {
 		int playerId=0;
 		String territory = "CA";
-		territory = ap.errorHandle(board, ui, playerId, territory);
+		territory = ArmyPlace.errorHandle(board, ui, playerId, territory);
 		assertEquals("CA",territory);
 	}
 	

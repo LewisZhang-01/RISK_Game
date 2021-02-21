@@ -72,7 +72,7 @@ class MapPanel extends JPanel {
 		return;
 	}
 	
-	private Image image=new ImageIcon("MapPanelImage.jpg").getImage();
+	private Image image=new ImageIcon("images/MapPanelImage.jpg").getImage();
 	
     public void paintComponent(Graphics g) {
     	int xPos, yPos, xPosBegin, yPosBegin, xPosEnd, yPosEnd;

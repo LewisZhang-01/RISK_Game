@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 
 public class ArmyPlace {
 	/*
@@ -7,14 +8,14 @@ public class ArmyPlace {
 	 * name, so long as it is unambiguous. After each selection, update the map.
 	 */
 	public ArmyPlace() {
-		
-	}
-	
-	public void place(Board board, UI ui, int playerId, int first) {
 
-		// Give players 36 armies and neutrals 24 armies.
+	}
+
+	public void place(Board board, UI ui, int playerId, int first) {
 		while (checkPlayerArmyNum(board) == false) {
-			
+			Deck d = new Deck();
+			LinkedList<Card> p1_cards = new LinkedList<Card>();
+			LinkedList<Card> p2_cards = new LinkedList<Card>();
 			if (first == 0) {
 				// For normal players.
 				for (playerId = first; playerId < GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
@@ -24,7 +25,48 @@ public class ArmyPlace {
 								break;
 							}
 						} else {
-							realPlayerPlace(ui, board, playerId);
+							ui.displayString("\nEnter 1 to draw a card, anything else to place armies.(player "
+									+ (playerId + 1) + ")\n");
+							String mode = ui.getCommand();
+							if (mode.equals("1")) {
+								if (playerId == 0) {
+									p1_cards.add(d.draw());
+								} else {
+									p2_cards.add(d.draw());
+								}
+							}
+
+							realPlayerPlace(ui, board, playerId,3);
+
+							ui.displayString("\nEnter 0 to check and trade your cards, anything else to do nothing.\n");
+							String mode2 = ui.getCommand();
+							if (mode2.equals("0")) {
+								if (playerId == 0) {
+									d.display(ui, p1_cards);
+									ui.displayString("Player 1 has: ");
+									for (int i = 0; i < p1_cards.size(); i++) {
+										ui.displayString(p1_cards.get(i).toString());
+									}
+									ui.displayString(
+											"Please enter trade to automatically trade your cards, and anything else to skip.");
+									String trade = ui.getCommand();
+									if (trade.equals("trade")) {
+										d.trade(ui, board, playerId, p1_cards);
+									}
+								} else {
+									d.display(ui, p2_cards);
+									ui.displayString("Player 2 has: ");
+									for (int i = 0; i < p2_cards.size(); i++) {
+										ui.displayString(p2_cards.get(i).toString());
+									}
+									ui.displayString(
+											"Please enter trade to automatically trade your cards, and anything else to skip.");
+									String trade = ui.getCommand();
+									if (trade.equals("trade")) {
+										d.trade(ui, board, playerId, p2_cards);
+									}
+								}
+							}
 						}
 					} else {
 						// For neutral players.
@@ -47,7 +89,48 @@ public class ArmyPlace {
 								break;
 							}
 						} else {
-							realPlayerPlace(ui, board, playerId);
+							ui.displayString("\nEnter 1 to draw a card, anything else to place armies.(player "
+									+ (playerId + 1) + ")\n");
+							String mode = ui.getCommand();
+							if (mode.equals("1")) {
+								if (playerId == 0) {
+									p1_cards.add(d.draw());
+								} else {
+									p2_cards.add(d.draw());
+								}
+							}
+
+							realPlayerPlace(ui, board, playerId,3);
+
+							ui.displayString("\nEnter 0 to check and trade your cards, anything else to do nothing.\n");
+							String mode2 = ui.getCommand();
+							if (mode2.equals("0")) {
+								if (playerId == 0) {
+									d.display(ui, p1_cards);
+									ui.displayString("Player 1 has: ");
+									for (int i = 0; i < p1_cards.size(); i++) {
+										ui.displayString(p1_cards.get(i).toString());
+									}
+									ui.displayString(
+											"Please enter trade to automatically trade your cards, and anything else to skip.");
+									String trade = ui.getCommand();
+									if (trade.equals("trade")) {
+										d.trade(ui, board, playerId, p1_cards);
+									}
+								} else {
+									d.display(ui, p2_cards);
+									ui.displayString("Player 2 has: ");
+									for (int i = 0; i < p2_cards.size(); i++) {
+										ui.displayString(p2_cards.get(i).toString());
+									}
+									ui.displayString(
+											"Please enter trade to automatically trade your cards, and anything else to skip.");
+									String trade = ui.getCommand();
+									if (trade.equals("trade")) {
+										d.trade(ui, board, playerId, p2_cards);
+									}
+								}
+							}
 						}
 					} else {
 						// For neutral players.
@@ -66,14 +149,55 @@ public class ArmyPlace {
 							break;
 						}
 					} else {
-						realPlayerPlace(ui, board, playerId);
+						ui.displayString("\nEnter 1 to draw a card, anything else to place armies.(player "
+								+ (playerId + 1) + ")\n");
+						String mode = ui.getCommand();
+						if (mode.equals("1")) {
+							if (playerId == 0) {
+								p1_cards.add(d.draw());
+							} else {
+								p2_cards.add(d.draw());
+							}
+						}
+
+						realPlayerPlace(ui, board, playerId,3);
+
+						ui.displayString("\nEnter 0 to check and trade your cards, anything else to do nothing.\n");
+						String mode2 = ui.getCommand();
+						if (mode2.equals("0")) {
+							if (playerId == 0) {
+								d.display(ui, p1_cards);
+								ui.displayString("Player 1 has: ");
+								for (int i = 0; i < p1_cards.size(); i++) {
+									ui.displayString(p1_cards.get(i).toString());
+								}
+								ui.displayString(
+										"Please enter trade to automatically trade your cards, and anything else to skip.");
+								String trade = ui.getCommand();
+								if (trade.equals("trade")) {
+									p1_cards = d.trade(ui, board, playerId, p1_cards);
+								}
+							} else {
+								d.display(ui, p2_cards);
+								ui.displayString("Player 2 has: ");
+								for (int i = 0; i < p2_cards.size(); i++) {
+									ui.displayString(p2_cards.get(i).toString());
+								}
+								ui.displayString(
+										"Please enter trade to automatically trade your cards, and anything else to skip.");
+								String trade = ui.getCommand();
+								if (trade.equals("trade")) {
+									p2_cards = d.trade(ui, board, playerId, p2_cards);
+								}
+							}
+						}
 					}
 				}
 			}
 		}
 	}
-	
-	public String errorHandle(Board board, UI ui, int playerId, String territory) {
+
+	public static String errorHandle(Board board, UI ui, int playerId, String territory) {
 
 		int country = board.getCountry(territory);
 		int occupier = board.getOccupier(country);
@@ -97,7 +221,7 @@ public class ArmyPlace {
 
 	}
 
-	public void realPlayerPlace(UI ui, Board board, int playerId) {
+	public static void realPlayerPlace(UI ui, Board board, int playerId, int armiesGet) {
 		ui.displayString("Enter the name of territory which you want place unit. {" + getPlayerArmyNum(board, playerId)
 				+ "/36}(player " + (playerId + 1) + ")[color: " + MapPanel.word_PLAYER_COLORS[playerId] + " ]");
 		String territory = ui.getCommand();
@@ -126,7 +250,7 @@ public class ArmyPlace {
 		ui.displayMap();// refresh map.
 	}
 
-	public int getPlayerArmyNum(Board board, int playerId) {
+	public static int getPlayerArmyNum(Board board, int playerId) {
 		int armyNum = 0;
 		for (int id = 0; id < GameData.COUNTRY_NAMES.length; id++) {
 			if (board.getOccupier(id) == playerId) {
@@ -154,5 +278,5 @@ public class ArmyPlace {
 			return false;
 		}
 	}
-	
+
 }
