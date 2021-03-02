@@ -115,4 +115,39 @@ public class Board {
 		}
 		return -1;
 	}
+	
+	public void combat(UI ui) {
+		ui.displayString("Announce the territory you are attacking:");
+		String attackedTerritory = ui.inputModifiedTerritory();
+		ui.displayString("Announce the territory you are attacking from:");
+		String attackingTerritory = ui.inputModifiedTerritory();
+		//判断领地:
+		//不能自己打自己
+		//不能打不相邻
+		//不能操作不是自己的领地
+		//攻打方军队数大于1.
+		
+		//判断失败: 错误信息
+		//判断成功: 输入攻打的军队数量（不能大于军队数量-1）
+		
+		//roll点决定攻打是否成功
+		//若不成功攻打方损失攻打的军队
+		//若成功被攻打方减少攻打方数量的军队
+		//若被攻打方军队减少至零或以下
+		//攻打方占领该领地，该领地军队数为攻打的军队数
+		//combat 结束
+		
+		
+	}
+	
+	public void fortify(UI ui) {
+		//输入把军队从哪个领地移动到哪个领地
+		//判断领地:
+		//被移动军队的领地军队数大于1
+		//不能移动到别人的领地/不能操作不是自己的领地
+		//两个领地必须相邻
+		
+		//判断失败: 错误信息
+		//判断成功: 输入移动的军队数量（不能大于军队数量-1），并移动军队
+	}
 }

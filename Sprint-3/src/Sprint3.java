@@ -92,7 +92,7 @@ public class Sprint3 {
 		currPlayer = players[playerId];
 		ui.displayRollWinner(currPlayer);
 		
-		//Reinforcement Phase：
+		//Reinforcement Phase
 		ui.displayString("\n(P1)[REINFORCE COUNTRIES]");
 		while (currPlayer.getNumUnits() > 0) {
 			ui.inputPlacementP1(currPlayer, currPlayer);
@@ -115,7 +115,8 @@ public class Sprint3 {
 			ui.displayString("[num  of reinforcement: "+reinforce_num+"]");
 			board.addUnits(countryId, currPlayer, reinforce_num);
 			ui.displayMap();
-			
+	
+			/*
 			//place for neutrals
 			for (int i=GameData.NUM_PLAYERS; i<GameData.NUM_PLAYERS_PLUS_NEUTRALS; i++) {
 				ui.inputPlacement(currPlayer, players[i]);
@@ -123,6 +124,19 @@ public class Sprint3 {
 				currPlayer.subtractUnits(1);
 				board.addUnits(countryId, currPlayer, 1);	
 				ui.displayMap();
+			}
+			*/
+			
+			//Combat phase
+			String combatChoice = ui.inputCombatChoice(playerId);
+			if(combatChoice != "skip") {
+				board.combat(ui);
+			}
+			
+			//Fortify phase
+			String fortifyChoice = ui.inputFortifyChoice(playerId);
+			if(fortifyChoice != "skip") {
+				board.fortify(ui);
 			}
 			
 			//move on to next player.

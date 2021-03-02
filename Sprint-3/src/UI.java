@@ -134,4 +134,25 @@ public class UI {
 		} while (!placementOK);
 		return;
 	}
+	
+	public String inputCombatChoice(int playerId) {
+		String response;
+		displayString("Enter skip to skip the combat phase, or anything else to combat.");
+		response = commandPanel.getCommand();
+		return response;
+	}
+	
+	public String inputFortifyChoice(int playerId) {
+		String response;
+		displayString("Enter skip to skip the fortify phase, or anything else to fortify.");
+		response = commandPanel.getCommand();
+		return response;
+	}
+	
+	public String inputModifiedTerritory() {
+		String response;
+		displayString("Choose a territory:");
+		response = commandPanel.getCommand();
+		return response;
+	}
 }
