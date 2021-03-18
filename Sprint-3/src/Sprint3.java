@@ -128,15 +128,16 @@ public class Sprint3 {
 			*/
 			
 			//Combat phase
-			String combatChoice = ui.inputCombatChoice(playerId);
+			String combatChoice = ui.inputCombatChoice();
 			if(combatChoice != "skip") {
-				board.combat(ui);
+				board.combat(ui, currPlayer);
+				ui.displayMap();
 			}
 			
 			//Fortify phase
-			String fortifyChoice = ui.inputFortifyChoice(playerId);
+			String fortifyChoice = ui.inputFortifyChoice();
 			if(fortifyChoice != "skip") {
-				board.fortify(ui);
+				board.fortify(ui, currPlayer);
 			}
 			
 			//move on to next player.

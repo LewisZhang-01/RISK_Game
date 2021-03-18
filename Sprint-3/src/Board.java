@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Board {
 	
@@ -116,31 +117,76 @@ public class Board {
 		return -1;
 	}
 	
-	public void combat(UI ui) {
-		ui.displayString("Announce the territory you are attacking:");
-		String attackedTerritory = ui.inputModifiedTerritory();
-		ui.displayString("Announce the territory you are attacking from:");
-		String attackingTerritory = ui.inputModifiedTerritory();
-		//判断领地:
-		//不能自己打自己
-		//不能打不相邻
-		//不能操作不是自己的领地
-		//攻打方军队数大于1.
+	public void combat(UI ui, Player player) {
+		int[] attack = ui.attackAction(player);
 		
-		//判断失败: 错误信息
-		//判断成功: 输入攻打的军队数量（不能大于军队数量-1）
+		int attackedTerritory = attack[0];	//defending territory must have at least 1 army
+		int attackingTerritory = attack[1];	//the attackingTerritory must be greater than 1.
+		int armyNum,limit;
 		
-		//roll点决定攻打是否成功
-		//若不成功攻打方损失攻打的军队
-		//若成功被攻打方减少攻打方数量的军队
-		//若被攻打方军队减少至零或以下
-		//攻打方占领该领地，该领地军队数为攻打的军队数
-		//combat 结束
+		if(getNumUnits(attackingTerritory) <= 3) {
+			limit = getNumUnits(attackingTerritory) - 1;
+		}else {
+			limit = 3;
+		}
 		
+		ui.displayString("Enter the number of armies you want to use for this attack:");
+		armyNum = ui.inputArmyNum(limit);
+		
+		//roll dice!
+		
+		player.rollDice(armyNum);
+		ArrayList<Integer> p1Dice = player.getDice();
+		
+		if(getNumUnits(attackedTerritory) == 1) {
+			player.rollDice(1);
+		}else {
+			player.rollDice(2);
+		}
+		
+		ArrayList<Integer> p2Dice = player.getDice();
+		
+		int p1Max = 0, p1SMax = 0, p2Max = 0, p2SMax = 0;
+		
+		for(int i = 0; i < p1Dice.size(); i++) {
+			if(p1Max < p1Dice.get(i)) {
+				p1SMax = p1Max;
+				p1Max = p1Dice.get(i);
+			}
+		}
+		
+		for(int i = 0; i < p2Dice.size(); i++) {
+			if(p2Max < p2Dice.get(i)) {
+				p2SMax = p2Max;
+				p2Max = p2Dice.get(i);
+			}
+		}
+		
+		if(p1Max <= p2Max) {
+			numUnits[attackingTerritory] -= 1;
+		}else {
+			numUnits[attackedTerritory] -= 1;
+		}
+		
+		
+		if(p1Dice.size() > 1 && p2Dice.size() > 1) {
+			if(p1SMax <= p2SMax) {
+				numUnits[attackingTerritory] -= 1;
+			}else {
+				numUnits[attackedTerritory] -= 1;
+			}
+		}
+		
+		if(numUnits[attackedTerritory] == 0) {
+			int movedArmyNum = ui.inputMovedArmyNumber(p1Dice.size(), getNumUnits(attackingTerritory));
+			numUnits[attackingTerritory] -= movedArmyNum;
+			occupier[attackedTerritory] = player.getId();
+			numUnits[attackedTerritory] = movedArmyNum;
+		}
 		
 	}
 	
-	public void fortify(UI ui) {
+	public void fortify(UI ui, Player player) {
 		//输入把军队从哪个领地移动到哪个领地
 		//判断领地:
 		//被移动军队的领地军队数大于1
