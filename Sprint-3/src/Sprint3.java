@@ -126,18 +126,28 @@ public class Sprint3 {
 				ui.displayMap();
 			}
 			*/
-			
+			boolean b = false;
 			//Combat phase
 			String combatChoice = ui.inputCombatChoice();
-			if(combatChoice != "skip") {
+			while(!combatChoice.equals("skip")) {
+				if(b) {
+					ui.displayString("You do not have extra army to combat. Combat phase ends automatically.");
+					break;
+				}
 				board.combat(ui, currPlayer);
 				ui.displayMap();
+				combatChoice = ui.inputCombatChoice();
 			}
 			
 			//Fortify phase
 			String fortifyChoice = ui.inputFortifyChoice();
-			if(fortifyChoice != "skip") {
+			if(!fortifyChoice.equals("skip")) {
+				if(b) {
+					ui.displayString("You do not have extra army to fortify. Fortify phase ends automatically.");
+					break;
+				}
 				board.fortify(ui, currPlayer);
+				ui.displayMap();
 			}
 			
 			//move on to next player.

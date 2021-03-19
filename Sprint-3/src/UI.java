@@ -142,6 +142,34 @@ public class UI {
 		return response;
 	}
 	
+	public String inputFortifyChoice() {
+		String response;
+		displayString("Enter skip to skip the fortify phase, or anything else to fortify.");
+		response = commandPanel.getCommand();
+		return response;
+	}
+	
+	public int inputModifiedTerritory(Player player, int mode) {	//mode 0 means the country chosen should belong to the player
+																	//mode 1 means the country chosen does not belong to the player
+		String response;
+		response = commandPanel.getCommand();
+		parse.countryId(response);
+		if(mode == 1) {
+			while(board.checkOccupier(player, parse.getCountryId())) {
+				displayString("Error: Cannot choose your territory. Please choose another one:");
+				response = commandPanel.getCommand();
+				parse.countryId(response);
+			}
+		}else {
+			while(!board.checkOccupier(player, parse.getCountryId())) {
+				displayString("Error: You must choose your own territory. Please choose another one:");
+				response = commandPanel.getCommand();
+				parse.countryId(response);
+			}
+		}
+		return parse.getCountryId();
+	}
+	
 	public int inputArmyNum(int limit) {
 		String response;
 		response = commandPanel.getCommand();
@@ -157,8 +185,8 @@ public class UI {
 	        }
 	    }
 		
-		while(armyNum > limit) {
-			displayString("You must leave at least one army on your territory, and you can attack with at most 3 armies.");
+		while(armyNum > limit || armyNum < 1) {
+			displayString("You must leave at least one army on your territory.");
 			displayString("Please enter a correct number:");
 			
 			response = commandPanel.getCommand();
@@ -212,37 +240,6 @@ public class UI {
 		return armyNum;
 	}
 	
-	
-	public String inputFortifyChoice() {
-		String response;
-		displayString("Enter skip to skip the fortify phase, or anything else to fortify.");
-		response = commandPanel.getCommand();
-		return response;
-	}
-	
-	public int inputModifiedTerritory(Player player, int mode) {	//mode 0 means the country chosen should belong to the player
-																	//mode 1 means the country chosen does not belong to the player
-		String response;
-		displayString("Choose a territory:");
-		response = commandPanel.getCommand();
-		parse.countryId(response);
-		if(mode == 1) {
-			while(board.checkOccupier(player, parse.getCountryId())) {
-				displayString("Error: Cannot choose your territory. Please choose another one:");
-				response = commandPanel.getCommand();
-				parse.countryId(response);
-			}
-		}else {
-			while(!board.checkOccupier(player, parse.getCountryId())) {
-				displayString("Error: You must choose your own territory. Please choose another one:");
-				response = commandPanel.getCommand();
-				parse.countryId(response);
-			}
-		}
-		return parse.getCountryId();
-	}
-	
-	
 	public int[] attackAction(Player player) {
 		
 		displayString("Announce the territory you are attacking:");
@@ -286,5 +283,50 @@ public class UI {
 		
 		int[] attack = {attackedTerritory, attackingTerritory};
 		return attack;
+	}
+	
+public int[] fortifyAction(Player player) {
+		displayString("Tip: Unlike combat phase, you can only do fortify once.");
+		displayString("Announce the territory you are fortifying to:");
+		int to = inputModifiedTerritory(player, 0);
+		displayString("Announce the territory you are fortifying from:");
+		int from = inputModifiedTerritory(player, 0);
+		
+		int numUnits = board.getNumUnits(from);
+		while(numUnits <= 1) {
+			displayString("Error: You must fortify from a country that has more than one unit on it. Reselect the territory:");
+			displayString("Announce the territory you are fortifying from:");
+			from = inputModifiedTerritory(player, 0);
+		}
+		
+		int[] adjacent = GameData.ADJACENT[from];
+		boolean adjacentBool = false;
+		
+		for(int i = 0; i < adjacent.length; i++) {
+			if(to == adjacent[i]) {
+				adjacentBool = true;
+				break;
+			}
+		}
+		
+		while(adjacentBool == false) {
+			displayString("Error: Cannot fortify territories that are not adjacent. "
+							+ "Please reselect fortifyied territory and fortifing territory:");
+			
+			displayString("Announce the territory you are fortifying to:");
+			to = inputModifiedTerritory(player, 0);
+			displayString("Announce the territory you are fortifying from:");
+			from = inputModifiedTerritory(player, 0);
+			
+			for(int i = 0; i < adjacent.length; i++) {
+				if(to == adjacent[i]) {
+					adjacentBool = true;
+					break;
+				}
+			}
+		}
+		
+		int[] fortify = {to, from};
+		return fortify;
 	}
 }

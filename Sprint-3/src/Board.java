@@ -124,19 +124,38 @@ public class Board {
 		int attackingTerritory = attack[1];	//the attackingTerritory must be greater than 1.
 		int armyNum,limit;
 		
+		
 		if(getNumUnits(attackingTerritory) <= 3) {
 			limit = getNumUnits(attackingTerritory) - 1;
 		}else {
 			limit = 3;
 		}
 		
-		ui.displayString("Enter the number of armies you want to use for this attack:");
+		ui.displayString("Enter the number of armies you want to use for this attack. You must leave at least 1 army on your"
+				+ " territory and you can choose at most 3 armies.");
 		armyNum = ui.inputArmyNum(limit);
 		
 		//roll dice!
 		
 		player.rollDice(armyNum);
 		ArrayList<Integer> p1Dice = player.getDice();
+
+		int p1Max = p1Dice.get(0), p1SMax = 0;
+		
+		
+		ui.displayString("The result of attacker rolling dice:");
+		ui.displayString("" + player.getDice());
+		
+		for(int i = 0; i < p1Dice.size(); i++) {
+			if(p1Max < p1Dice.get(i)) {
+				p1SMax = p1Max;
+				p1Max = p1Dice.get(i);
+			}else {
+				if(p1SMax < p1Dice.get(i)) {
+					p1SMax = p1Dice.get(i);
+				}
+			}
+		}
 		
 		if(getNumUnits(attackedTerritory) == 1) {
 			player.rollDice(1);
@@ -146,39 +165,47 @@ public class Board {
 		
 		ArrayList<Integer> p2Dice = player.getDice();
 		
-		int p1Max = 0, p1SMax = 0, p2Max = 0, p2SMax = 0;
+		int p2Max = p2Dice.get(0), p2SMax = 0;
 		
-		for(int i = 0; i < p1Dice.size(); i++) {
-			if(p1Max < p1Dice.get(i)) {
-				p1SMax = p1Max;
-				p1Max = p1Dice.get(i);
-			}
-		}
+		ui.displayString("The result of defender rolling dice:");
+		ui.displayString("" + player.getDice());
 		
+
 		for(int i = 0; i < p2Dice.size(); i++) {
 			if(p2Max < p2Dice.get(i)) {
 				p2SMax = p2Max;
 				p2Max = p2Dice.get(i);
+			}else {
+				if(p2SMax < p2Dice.get(i)) {
+					p2SMax = p2Dice.get(i);
+				}
 			}
 		}
+		//System.out.println("test: "+p1Max+", "+p1SMax+" "+p2Max+" "+p2SMax);
 		
 		if(p1Max <= p2Max) {
+			ui.displayString("Defender wins the first battle. Attacker loses a unit.");
 			numUnits[attackingTerritory] -= 1;
 		}else {
+			ui.displayString("Attacker wins the first battle. Defender loses a unit.");
 			numUnits[attackedTerritory] -= 1;
 		}
 		
 		
 		if(p1Dice.size() > 1 && p2Dice.size() > 1) {
 			if(p1SMax <= p2SMax) {
+				ui.displayString("Defender wins the second battle. Attacker loses a unit.");
 				numUnits[attackingTerritory] -= 1;
 			}else {
+				ui.displayString("Attacker wins the second battle. Defender loses a unit.");
 				numUnits[attackedTerritory] -= 1;
 			}
 		}
 		
 		if(numUnits[attackedTerritory] == 0) {
-			int movedArmyNum = ui.inputMovedArmyNumber(p1Dice.size(), getNumUnits(attackingTerritory));
+			ui.displayString("Attacker wins the territory. Please move at least as many armies as you used "
+					+ "in this attack to your new territory.\nEnter the number of armies you want to move:");
+			int movedArmyNum = ui.inputMovedArmyNumber(armyNum, getNumUnits(attackingTerritory));
 			numUnits[attackingTerritory] -= movedArmyNum;
 			occupier[attackedTerritory] = player.getId();
 			numUnits[attackedTerritory] = movedArmyNum;
@@ -187,13 +214,20 @@ public class Board {
 	}
 	
 	public void fortify(UI ui, Player player) {
-		//输入把军队从哪个领地移动到哪个领地
-		//判断领地:
-		//被移动军队的领地军队数大于1
-		//不能移动到别人的领地/不能操作不是自己的领地
-		//两个领地必须相邻
 		
-		//判断失败: 错误信息
-		//判断成功: 输入移动的军队数量（不能大于军队数量-1），并移动军队
+		int[] fortify = ui.fortifyAction(player);
+		
+		int to = fortify[0];	
+		int from = fortify[1];	
+		
+		int armyNum, limit;
+		limit = getNumUnits(from) - 1;
+		
+		ui.displayString("Enter the number of armies you want to use for this attack. You must leave at least 1 army on your"
+				+ "territory and you can choose at most 3 armies.");
+		armyNum = ui.inputArmyNum(limit);
+		
+		numUnits[to] += armyNum;
+		numUnits[from] -= armyNum;
 	}
 }
