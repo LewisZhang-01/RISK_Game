@@ -135,6 +135,53 @@ public class UI {
 		return;
 	}
 
+	public int inputPlacement(Player Player, int num) {
+		String message, countryID;
+		int responseNum;
+		boolean placementOK = false;
+		do {
+			// display messages
+			message = makeLongName(Player) + ": Enter a country to reinforce with your own units";
+			displayString(message);
+
+			// get inputs & display
+			countryID = commandPanel.getCommand();
+			displayString(PROMPT + countryID);
+			
+			// handle error input.
+			parse.countryId(countryID);
+			if (parse.isError()) {
+				displayString("Error: Not a country");
+			} else {
+				if (!board.checkOccupier(Player, parse.getCountryId())) {
+					displayString("Error: Cannot place the units on that country");
+				} else {
+					placementOK = true;
+				}
+			}
+		} while (!placementOK);
+		
+		placementOK = false;
+		do {
+			// display messages
+			message = makeLongName(Player) + ": Enter the number of units.";
+			displayString(message);
+
+			// get inputs & display
+			responseNum = Integer.valueOf(commandPanel.getCommand());
+			displayString(PROMPT + responseNum);
+
+			// handle error input.
+			if (responseNum>num || responseNum<0) {
+				displayString("You need choose a num between 0~"+num);
+			} else {
+				placementOK = true;	
+			}
+		} while (!placementOK);
+		
+		return responseNum;
+	}
+	
 	public String inputCombatChoice() {
 		String response;
 		displayString("Enter skip to skip the combat phase, or anything else to combat.");

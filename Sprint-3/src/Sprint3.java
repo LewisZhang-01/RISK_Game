@@ -54,20 +54,30 @@ public class Sprint3 {
 		} else {
 			playerId = 1;
 		}
+		
 		currPlayer = players[playerId];
 		ui.displayRollWinner(currPlayer);
-		/*
-		 * ui.displayString("\nREINFORCE INITIAL COUNTRIES"); while
-		 * (currPlayer.getNumUnits() > 0) { ui.inputPlacement(currPlayer, currPlayer);
-		 * countryId = ui.getCountryId(); currPlayer.subtractUnits(3);
-		 * board.addUnits(countryId, currPlayer, 3); ui.displayMap(); for (int
-		 * i=GameData.NUM_PLAYERS; i<GameData.NUM_PLAYERS_PLUS_NEUTRALS; i++) {
-		 * ui.inputPlacement(currPlayer, players[i]); countryId = ui.getCountryId();
-		 * currPlayer.subtractUnits(1); board.addUnits(countryId, currPlayer, 1);
-		 * ui.displayMap(); } playerId = (++playerId)%GameData.NUM_PLAYERS; currPlayer =
-		 * players[playerId]; }
-		 */
+		
+		ui.displayString("\nREINFORCE INITIAL COUNTRIES");
+		while (currPlayer.getNumUnits() > 0) {
+			ui.inputPlacement(currPlayer, currPlayer);
+			countryId = ui.getCountryId();
+			currPlayer.subtractUnits(3);
+			board.addUnits(countryId, currPlayer, 3);
+			ui.displayMap();
+			for (int i=GameData.NUM_PLAYERS; i<GameData.NUM_PLAYERS_PLUS_NEUTRALS; i++) {
+				ui.inputPlacement(currPlayer, players[i]);
+				countryId = ui.getCountryId();
+				currPlayer.subtractUnits(1);
+				board.addUnits(countryId, currPlayer, 1);	
+				ui.displayMap();
+			}
+			playerId = (++playerId)%GameData.NUM_PLAYERS;
+			currPlayer = players[playerId];
+		}
+		
 		/* Sprint3 start here: */
+		
 		// Roll dice first.
 		ui.displayString("\nROLL DICE TO SEE WHO START FIRST");
 		do {
@@ -84,12 +94,12 @@ public class Sprint3 {
 		currPlayer = players[playerId];
 		ui.displayRollWinner(currPlayer);
 
-		// Reinforcement Phase
-		ui.displayString("\n(P1)[REINFORCE COUNTRIES]");
-		while (currPlayer.getNumUnits() > 0) {
-			ui.inputPlacementP1(currPlayer, currPlayer);
-			countryId = ui.getCountryId();
-
+		// Start turns here:
+		ui.displayString("\n***START TURNS***\n<REINFORCEMENT PHASE>");
+		while (true) {
+			
+			/* Reinforcement Phase */
+			
 			// Calculate number of reinforcements
 			int reinforce_num = board.getNumOfCountry(playerId);
 			if (reinforce_num / 3 < 3) {
@@ -104,18 +114,25 @@ public class Sprint3 {
 			} else {
 				ui.displayString("[Occupied Continent: false]");
 			}
-			ui.displayString("[num  of reinforcement: " + reinforce_num + "]");
-			board.addUnits(countryId, currPlayer, reinforce_num);
-			ui.displayMap();
-
-			/*
-			 * //place for neutrals for (int i=GameData.NUM_PLAYERS;
-			 * i<GameData.NUM_PLAYERS_PLUS_NEUTRALS; i++) { ui.inputPlacement(currPlayer,
-			 * players[i]); countryId = ui.getCountryId(); currPlayer.subtractUnits(1);
-			 * board.addUnits(countryId, currPlayer, 1); ui.displayMap(); }
-			 */
+			ui.displayString("[num of reinforcement: " + reinforce_num + "]");
+			int n = reinforce_num;
+			
+			while(reinforce_num!=0) {
+				ui.displayString("Residual for distribute (" + reinforce_num + "/" + n + ")");
+				//Ask user input country name and number of reinforcement to this country.
+				int inputNum = ui.inputPlacement(currPlayer, reinforce_num);
+				countryId = ui.getCountryId();
+				board.addUnits(countryId, currPlayer, inputNum);
+				reinforce_num -= inputNum;
+				ui.displayMap();
+			}
+			
+			
+			
+			
+			/* Combat phase */
+			ui.displayString("\n<COMBAT PHASE>");
 			boolean b = false;
-			// Combat phase
 			String combatChoice = ui.inputCombatChoice();
 			while (!combatChoice.equals("skip")) {
 				if (b) {
@@ -127,7 +144,8 @@ public class Sprint3 {
 				combatChoice = ui.inputCombatChoice();
 			}
 
-			// Fortify phase
+			/* Fortify phase */
+			ui.displayString("\n<FORTIFY PHASE>");
 			String fortifyChoice = ui.inputFortifyChoice();
 			if (!fortifyChoice.equals("skip")) {
 				if (b) {
@@ -142,6 +160,8 @@ public class Sprint3 {
 			playerId = (++playerId) % GameData.NUM_PLAYERS;
 			currPlayer = players[playerId];
 		}
+		
+		
 		// Deal with neutral player’s armies are eliminated
 		for (playerId = 2; playerId < GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
 			if (numUnits == 0) {
