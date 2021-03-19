@@ -242,10 +242,10 @@ public class UI {
 	
 	public int[] attackAction(Player player) {
 		
-		displayString("Announce the territory you are attacking:");
-		int attackedTerritory = inputModifiedTerritory(player, 1);
 		displayString("Announce the territory you are attacking from:");
 		int attackingTerritory = inputModifiedTerritory(player, 0);
+		displayString("Announce the territory you are attacking:");
+		int attackedTerritory = inputModifiedTerritory(player, 1);
 		
 		int numUnits = board.getNumUnits(attackingTerritory);
 		while(numUnits <= 1) {
@@ -287,10 +287,12 @@ public class UI {
 	
 public int[] fortifyAction(Player player) {
 		displayString("Tip: Unlike combat phase, you can only do fortify once.");
-		displayString("Announce the territory you are fortifying to:");
-		int to = inputModifiedTerritory(player, 0);
+		
 		displayString("Announce the territory you are fortifying from:");
 		int from = inputModifiedTerritory(player, 0);
+		displayString("Announce the territory you are fortifying to:");
+		int to = inputModifiedTerritory(player, 0);
+		
 		
 		int numUnits = board.getNumUnits(from);
 		while(numUnits <= 1) {
