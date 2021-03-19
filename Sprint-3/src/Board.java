@@ -117,7 +117,7 @@ public class Board {
 		return -1;
 	}
 	
-	public void combat(UI ui, Player player) {
+	public void combat(UI ui, Player player, Player[] players) {
 		int[] attack = ui.attackAction(player);
 		
 		int attackedTerritory = attack[0];	//defending territory must have at least 1 army
@@ -186,9 +186,11 @@ public class Board {
 		if(p1Max <= p2Max) {
 			ui.displayString("Defender wins the first battle. Attacker loses a unit.");
 			numUnits[attackingTerritory] -= 1;
+			players[occupier[attackingTerritory]].subtractUnits(1);
 		}else {
 			ui.displayString("Attacker wins the first battle. Defender loses a unit.");
 			numUnits[attackedTerritory] -= 1;
+			players[occupier[attackedTerritory]].subtractUnits(1);
 		}
 		
 		
@@ -196,9 +198,11 @@ public class Board {
 			if(p1SMax <= p2SMax) {
 				ui.displayString("Defender wins the second battle. Attacker loses a unit.");
 				numUnits[attackingTerritory] -= 1;
+				players[occupier[attackingTerritory]].subtractUnits(1);
 			}else {
 				ui.displayString("Attacker wins the second battle. Defender loses a unit.");
 				numUnits[attackedTerritory] -= 1;
+				players[occupier[attackedTerritory]].subtractUnits(1);
 			}
 		}
 		

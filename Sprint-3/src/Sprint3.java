@@ -134,7 +134,7 @@ public class Sprint3 {
 					ui.displayString("You do not have extra army to combat. Combat phase ends automatically.");
 					break;
 				}
-				board.combat(ui, currPlayer);
+				board.combat(ui, currPlayer,players);
 				ui.displayMap();
 				combatChoice = ui.inputCombatChoice();
 			}
@@ -154,12 +154,6 @@ public class Sprint3 {
 			playerId = (++playerId)%GameData.NUM_PLAYERS;
 			currPlayer = players[playerId];
 		}
-		
-		//Combat:
-		
-		
-		//Fortify:
-		
 		
 		return;
 	}

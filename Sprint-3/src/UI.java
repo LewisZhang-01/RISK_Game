@@ -285,7 +285,7 @@ public class UI {
 		return attack;
 	}
 	
-public int[] fortifyAction(Player player) {
+	public int[] fortifyAction(Player player) {
 		displayString("Tip: Unlike combat phase, you can only do fortify once.");
 		
 		displayString("Announce the territory you are fortifying from:");
