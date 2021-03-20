@@ -5,7 +5,7 @@ public class Sprint3 {
 		Board board = new Board();
 		UI ui = new UI(board);
 		Player[] players = new Player[GameData.NUM_PLAYERS_PLUS_NEUTRALS];
-		Player currPlayer, winner = null;
+		Player currPlayer, winner = null, eliminatedPlayer = null;
 		Card card;
 		int playerId, countryId, numUnits = 0, numCards;
 		String name;
@@ -139,8 +139,8 @@ public class Sprint3 {
 				}
 				board.combat(ui, currPlayer, players);
 				ui.displayMap();
-				board.ifWin(ui, players,winner, currPlayer, numUnits, playerId);
-				if (board.ifWin(ui, players, winner, currPlayer, numUnits, playerId)==true)
+				board.ifWin(ui, players, winner, currPlayer, eliminatedPlayer,numUnits, playerId);
+				if (board.ifWin(ui, players, winner, currPlayer, eliminatedPlayer, numUnits, playerId)==true)
 					break;
 				combatChoice = ui.inputCombatChoice();
 			}

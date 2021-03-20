@@ -388,4 +388,9 @@ public class UI {
 		displayString("GAME OVER!");
 		return;
 	}
+	
+	public void displayeliminatedPlayers(Player player) {
+		displayString(makeLongName(player) + " is eliminated.");
+		return;
+	}
 }
