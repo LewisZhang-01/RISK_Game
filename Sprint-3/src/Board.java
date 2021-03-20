@@ -264,10 +264,9 @@ public class Board {
 		for (playerId = 0; playerId < GameData.NUM_PLAYERS; playerId++) {
 			if (numUnits == 0) {
 				if (playerId == 0)
-					playerId = 0;
+					winner = players[1];
 				else
-					playerId = 1;
-				winner = players[playerId];
+				    winner = players[0]; 
 				ui.displayWinner(winner);
 				return true;
 			}
