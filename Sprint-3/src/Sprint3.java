@@ -5,7 +5,7 @@ public class Sprint3 {
 		Board board = new Board();
 		UI ui = new UI(board);
 		Player[] players = new Player[GameData.NUM_PLAYERS_PLUS_NEUTRALS];
-		Player currPlayer, winner;
+		Player currPlayer, winner = null;
 		Card card;
 		int playerId, countryId, numUnits = 0, numCards;
 		String name;
@@ -128,8 +128,6 @@ public class Sprint3 {
 			}
 			
 			
-			
-			
 			/* Combat phase */
 			ui.displayString("\n<COMBAT PHASE>");
 			boolean b = false;
@@ -143,6 +141,9 @@ public class Sprint3 {
 				ui.displayMap();
 				combatChoice = ui.inputCombatChoice();
 			}
+			board.ifWin(ui, players,winner, numUnits, playerId);
+			if (board.ifWin(ui, players,winner, numUnits, playerId)==true)
+				break;
 
 			/* Fortify phase */
 			ui.displayString("\n<FORTIFY PHASE>");
@@ -161,7 +162,7 @@ public class Sprint3 {
 			currPlayer = players[playerId];
 		}
 		
-		
+	
 		// Deal with neutral player’s armies are eliminated
 		for (playerId = 2; playerId < GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
 			if (numUnits == 0) {
@@ -172,17 +173,6 @@ public class Sprint3 {
 
 		}
 
-		// Deal with human player’s armies are eliminated
-		for (playerId = 0; playerId < GameData.NUM_PLAYERS; playerId++) {
-			if (numUnits == 0) {
-				if (playerId == 0)
-					playerId = 0;
-				else
-					playerId = 1;
-				winner = players[playerId];
-				ui.displayWinner(winner);
-			}
-		}
 
 		return;
 	}
