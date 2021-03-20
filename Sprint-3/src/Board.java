@@ -273,7 +273,7 @@ public class Board {
 		}
 		
 		// Deal with neutral player’s armies are eliminated
-		for (playerId = 2; playerId < GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
+		for (playerId = GameData.NUM_PLAYERS; playerId < GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
 			if (numUnits == 0) {
 				// move to next player.
 				playerId = -1;
