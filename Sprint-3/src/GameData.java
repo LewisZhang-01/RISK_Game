@@ -63,7 +63,7 @@ public final class GameData {
 	public static final int NUM_CONTINENTS = 6;
 	public static final String[] CONTINENT_NAMES = {"N America","Europe","Asia","Australia","S America","Africa"};  // for reference 
 	public static final int[] CONTINENTS = {0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,5,5};
-	public static int[] eliminatedPlayers = {1,1,1,1};
+	public static int[] eliminatedPlayers = {1,1,1,1,1,1};
     private GameData() {
 	    //this prevents even the native class from calling this constructor
 	    throw new AssertionError();

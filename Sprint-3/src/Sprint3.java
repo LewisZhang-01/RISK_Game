@@ -57,7 +57,7 @@ public class Sprint3 {
 		
 		currPlayer = players[playerId];
 		ui.displayRollWinner(currPlayer);
-		
+
 		ui.displayString("\nREINFORCE INITIAL COUNTRIES");
 		while (currPlayer.getNumUnits() > 0) {
 			ui.inputPlacement(currPlayer, currPlayer);
@@ -139,8 +139,7 @@ public class Sprint3 {
 				}
 				board.combat(ui, currPlayer, players);
 				ui.displayMap();
-				board.ifWin(ui, players, winner, currPlayer, eliminatedPlayer,numUnits, playerId);
-				if (board.ifWin(ui, players, winner, currPlayer, eliminatedPlayer, numUnits, playerId)==true)
+				if (board.ifWin(ui, players, winner, currPlayer, eliminatedPlayer, playerId)==true)
 					break;
 				combatChoice = ui.inputCombatChoice();
 			}

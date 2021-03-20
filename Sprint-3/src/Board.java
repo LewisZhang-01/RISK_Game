@@ -61,86 +61,61 @@ public class Board {
 	}
 
 	// 9 7 12 4 4 6
-	public int getOccupieContinent(int player) {
-		int num_0 = 0, num_1 = 0, num_2 = 0, num_3 = 0, num_4 = 0, num_5 = 0;
-		for (int id = 0; id < GameData.NUM_COUNTRIES; id++) {
-			if (occupier[id] == player) {
-
-				if (GameData.CONTINENTS[id] == 0) {
-					if (occupier[id] == player) {
-						num_0++;
+	public int getOccupieContinent (int player) {
+		int num_NAmerica=0,num_Europe=0,num_Asia=0,num_Australia=0,num_SAmerica=0,num_Africa=0;
+		for(int id=0;id<GameData.NUM_COUNTRIES;id++) {
+			if(occupier[id]==player) {
+				
+				if(GameData.CONTINENTS[id]==0) {
+					if(occupier[id]==player) {
+						num_NAmerica++;
 					}
 				}
-				if (GameData.CONTINENTS[id] == 1) {
-					if (occupier[id] == player) {
-						num_1++;
+				if(GameData.CONTINENTS[id]==1) {
+					if(occupier[id]==player) {
+						num_Europe++;
 					}
 				}
-				if (GameData.CONTINENTS[id] == 2) {
-					if (occupier[id] == player) {
-						num_2++;
+				if(GameData.CONTINENTS[id]==2) {
+					if(occupier[id]==player) {
+						num_Asia++;
 					}
 				}
-				if (GameData.CONTINENTS[id] == 3) {
-					if (occupier[id] == player) {
-						num_3++;
+				if(GameData.CONTINENTS[id]==3) {
+					if(occupier[id]==player) {
+						num_Australia++;
 					}
 				}
-				if (GameData.CONTINENTS[id] == 4) {
-					if (occupier[id] == player) {
-						num_4++;
+				if(GameData.CONTINENTS[id]==4) {
+					if(occupier[id]==player) {
+						num_SAmerica++;
 					}
 				}
-				if (GameData.CONTINENTS[id] == 5) {
-					if (occupier[id] == player) {
-						num_5++;
+				if(GameData.CONTINENTS[id]==5) {
+					if(occupier[id]==player) {
+						num_Africa++;
 					}
 				}
 			}
 		}
-		System.out.println(num_0 + " for " + GameData.CONTINENT_NAMES[0] + "\n" + num_1 + " for "
-				+ GameData.CONTINENT_NAMES[1] + "\n" + num_2 + " for " + GameData.CONTINENT_NAMES[2] + "\n" + num_3
-				+ " for " + GameData.CONTINENT_NAMES[3] + "\n" + num_4 + " for " + GameData.CONTINENT_NAMES[4] + "\n"
-				+ num_5 + " for " + GameData.CONTINENT_NAMES[5] + "\n");
-		if (num_0 == 8 || num_1 == 6 || num_2 == 11 || num_3 == 3 || num_4 == 3 || num_5 == 5) {
-			// 5 5 7 2 2 3
-			if (num_0 == 8) {
-				/*
-				 * ui.displayString("Continent "+GameData.CONTINENT_NAMES[0]
-				 * +"is fully occupied by player "+player);
-				 */ return 5;
-			}
-			if (num_1 == 6) {
-				/*
-				 * ui.displayString("Continent "+GameData.CONTINENT_NAMES[1]
-				 * +"is fully occupied by player "+player);
-				 */ return 5;
-			}
-			if (num_2 == 11) {
-				/*
-				 * ui.displayString("Continent "+GameData.CONTINENT_NAMES[2]
-				 * +"is fully occupied by player "+player);
-				 */ return 7;
-			}
-			if (num_3 == 3) {
-				/*
-				 * ui.displayString("Continent "+GameData.CONTINENT_NAMES[3]
-				 * +"is fully occupied by player "+player);
-				 */ return 2;
-			}
-			if (num_4 == 3) {
-				/*
-				 * ui.displayString("Continent "+GameData.CONTINENT_NAMES[4]
-				 * +"is fully occupied by player "+player);
-				 */ return 2;
-			}
-			if (num_5 == 5) {
-				/*
-				 * ui.displayString("Continent "+GameData.CONTINENT_NAMES[5]
-				 * +"is fully occupied by player "+player);
-				 */ return 3;
-			}
-		}
+		System.out.println("[ player: " + player + "]\n" 
+						+num_NAmerica+" for "+GameData.CONTINENT_NAMES[0]+"\n"
+						+num_Europe+" for "+GameData.CONTINENT_NAMES[1]+"\n"
+						+num_Asia+" for "+GameData.CONTINENT_NAMES[2]+"\n"
+						+num_Australia+" for "+GameData.CONTINENT_NAMES[3]+"\n"
+						+num_SAmerica+" for "+GameData.CONTINENT_NAMES[4]+"\n"
+						+num_Africa+" for "+GameData.CONTINENT_NAMES[5]+"\n");
+		
+		//5 5 7 2 2 3
+		int sum = 0;
+		if(num_NAmerica  == 9) { System.out.println("Continent "+GameData.CONTINENT_NAMES[0]+"is fully occupied by player "+player); sum += 5;}
+		if(num_Europe    == 7) { System.out.println("Continent "+GameData.CONTINENT_NAMES[1]+"is fully occupied by player "+player); sum += 5;}
+		if(num_Asia      == 12){ System.out.println("Continent "+GameData.CONTINENT_NAMES[2]+"is fully occupied by player "+player); sum += 7;}
+		if(num_Australia == 4) { System.out.println("Continent "+GameData.CONTINENT_NAMES[3]+"is fully occupied by player "+player); sum += 2;}
+		if(num_SAmerica  == 4) { System.out.println("Continent "+GameData.CONTINENT_NAMES[4]+"is fully occupied by player "+player); sum += 2;}
+		if(num_Africa    == 6) { System.out.println("Continent "+GameData.CONTINENT_NAMES[5]+"is fully occupied by player "+player); sum += 3;}
+		
+		if(sum!=0) return sum;
 		return -1;
 	}
 
@@ -260,10 +235,10 @@ public class Board {
 		numUnits[from] -= armyNum;
 	}
 
-	public boolean ifWin(UI ui, Player[] players, Player winner, Player currPlayer, Player eliminatedPlayer,
-			int numUnits, int playerId) {
+	public boolean ifWin(UI ui, Player[] players, Player winner, Player currPlayer, Player eliminatedPlayer, int playerId) {
+		
 		for (playerId = 0; playerId < GameData.NUM_PLAYERS; playerId++) {
-			if (numUnits == 0) {
+			if (getPlayerArmyNum(playerId) == 0) {
 				if (playerId == 0)
 					winner = players[1];
 				else
@@ -276,7 +251,7 @@ public class Board {
 		// Deal with neutral player’s armies are eliminated
 		for (playerId = GameData.NUM_PLAYERS; playerId < GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
 			if (GameData.eliminatedPlayers[playerId] == 1) {
-				if (numUnits == 0) {
+				if (getPlayerArmyNum(playerId) == 0) {
 					GameData.eliminatedPlayers[playerId] = -1;
 					eliminatedPlayer = players[playerId];
 					ui.displayeliminatedPlayers(eliminatedPlayer);
@@ -285,6 +260,17 @@ public class Board {
 			}
 		}
 		return false;
+	}
+	
+	// get total army number of player through player id.
+	public int getPlayerArmyNum(int playerId) {
+		int armyNum = 0;
+		for (int id = 0; id < GameData.COUNTRY_NAMES.length; id++) {
+			if (getOccupier(id) == playerId) {
+				armyNum += getNumUnits(id);
+			}
+		}
+		return armyNum;
 	}
 
 }
