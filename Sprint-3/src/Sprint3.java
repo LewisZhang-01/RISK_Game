@@ -139,11 +139,12 @@ public class Sprint3 {
 				}
 				board.combat(ui, currPlayer, players);
 				ui.displayMap();
+				board.ifWin(ui, players,winner, currPlayer, numUnits, playerId);
+				if (board.ifWin(ui, players, winner, currPlayer, numUnits, playerId)==true)
+					break;
 				combatChoice = ui.inputCombatChoice();
 			}
-			board.ifWin(ui, players,winner, numUnits, playerId);
-			if (board.ifWin(ui, players,winner, numUnits, playerId)==true)
-				break;
+			
 
 			/* Fortify phase */
 			ui.displayString("\n<FORTIFY PHASE>");
@@ -161,19 +162,6 @@ public class Sprint3 {
 			playerId = (++playerId) % GameData.NUM_PLAYERS;
 			currPlayer = players[playerId];
 		}
-		
-	
-		// Deal with neutral player’s armies are eliminated
-		for (playerId = 2; playerId < GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
-			if (numUnits == 0) {
-				// move to next player.
-				playerId = (++playerId) % GameData.NUM_PLAYERS;
-				currPlayer = players[playerId];
-			}
-
-		}
-
-
 		return;
 	}
 

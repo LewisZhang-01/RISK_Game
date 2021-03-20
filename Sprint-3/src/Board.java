@@ -260,7 +260,7 @@ public class Board {
 		numUnits[from] -= armyNum;
 	}
 
-	public boolean ifWin(UI ui, Player[] players, Player winner, int numUnits, int playerId) {
+	public boolean ifWin(UI ui, Player[] players, Player winner, Player currPlayer, int numUnits, int playerId) {
 		for (playerId = 0; playerId < GameData.NUM_PLAYERS; playerId++) {
 			if (numUnits == 0) {
 				if (playerId == 0)
@@ -270,6 +270,16 @@ public class Board {
 				winner = players[playerId];
 				ui.displayWinner(winner);
 				return true;
+			}
+		}
+		
+		// Deal with neutral player’s armies are eliminated
+		for (playerId = 2; playerId < GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
+			if (numUnits == 0) {
+				// move to next player.
+				playerId = -1;
+				currPlayer = players[playerId];
+				return false;
 			}
 		}
 		return false;
