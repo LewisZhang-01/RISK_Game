@@ -1,3 +1,11 @@
+/*
+ * BadGuys
+ * Zhonghe Chen 19203048
+ * Zhi Zhang 18210054
+ * Yunlong Cheng 18210611
+ * 
+ * */
+
 import java.util.ArrayList;
 
 public class Board {
@@ -46,6 +54,7 @@ public class Board {
 		return numUnits[country];
 	}
 
+	// Traversal all countries to count the total number belonging to a given player.
 	public int getNumOfCountry(int player) {
 		int num = 0;
 		for (int id = 0; id < GameData.NUM_COUNTRIES; id++) {
@@ -59,9 +68,11 @@ public class Board {
 	// 9 7 12 4 4 6
 	public int getOccupieContinent (int player) {
 		int num_NAmerica=0,num_Europe=0,num_Asia=0,num_Australia=0,num_SAmerica=0,num_Africa=0;
-		for(int id=0;id<GameData.NUM_COUNTRIES;id++) {
+		// traversal all countries to check if each owner matches the given player.
+		for(int id=0; id<GameData.NUM_COUNTRIES; id++) {
+			
 			if(occupier[id]==player) {
-				
+				// If any of the countries within the continent found a match, increment the correspond counter.
 				if(GameData.CONTINENTS[id]==0) {
 					if(occupier[id]==player) {
 						num_NAmerica++;
@@ -94,6 +105,8 @@ public class Board {
 				}
 			}
 		}
+		
+		/*
 		System.out.println("[ player: " + player + "]\n" 
 						+num_NAmerica+" for "+GameData.CONTINENT_NAMES[0]+"\n"
 						+num_Europe+" for "+GameData.CONTINENT_NAMES[1]+"\n"
@@ -101,18 +114,20 @@ public class Board {
 						+num_Australia+" for "+GameData.CONTINENT_NAMES[3]+"\n"
 						+num_SAmerica+" for "+GameData.CONTINENT_NAMES[4]+"\n"
 						+num_Africa+" for "+GameData.CONTINENT_NAMES[5]+"\n");
+		 */
 		
 		//5 5 7 2 2 3
+		// Check each counter to see if they have reached their maximum value.
 		int sum = 0;
-		if(num_NAmerica  == 9) { System.out.println("Continent "+GameData.CONTINENT_NAMES[0]+"is fully occupied by player "+player); sum += 5;}
-		if(num_Europe    == 7) { System.out.println("Continent "+GameData.CONTINENT_NAMES[1]+"is fully occupied by player "+player); sum += 5;}
-		if(num_Asia      == 12){ System.out.println("Continent "+GameData.CONTINENT_NAMES[2]+"is fully occupied by player "+player); sum += 7;}
-		if(num_Australia == 4) { System.out.println("Continent "+GameData.CONTINENT_NAMES[3]+"is fully occupied by player "+player); sum += 2;}
-		if(num_SAmerica  == 4) { System.out.println("Continent "+GameData.CONTINENT_NAMES[4]+"is fully occupied by player "+player); sum += 2;}
-		if(num_Africa    == 6) { System.out.println("Continent "+GameData.CONTINENT_NAMES[5]+"is fully occupied by player "+player); sum += 3;}
+		if(num_NAmerica  == 9) { sum += 5;}
+		if(num_Europe    == 7) { sum += 5;}
+		if(num_Asia      == 12){ sum += 7;}
+		if(num_Australia == 4) { sum += 2;}
+		if(num_SAmerica  == 4) { sum += 2;}
+		if(num_Africa    == 6) { sum += 3;}
 		
-		if(sum!=0) return sum;
-		return -1;
+		if(sum!=0) return sum;// At least one continent was occupied.
+		return -1;// No continent was occupied.
 	}
 
 	public void combat(UI ui, Player player, Player[] players) {
@@ -268,7 +283,7 @@ public class Board {
 		}
 
 		// Deal with neutral player armies are eliminated
-		for (playerId = GameData.NUM_PLAYERS; playerId < GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
+		for (playerId = 2; playerId < 6; playerId++) {
 			if (GameData.eliminatedPlayers[playerId] == 1) {
 				if (getPlayerArmyNum(playerId) == 0) {
 					GameData.eliminatedPlayers[playerId] = -1;

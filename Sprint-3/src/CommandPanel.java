@@ -1,3 +1,11 @@
+/*
+ * BadGuys
+ * Zhonghe Chen 19203048
+ * Zhi Zhang 18210054
+ * Yunlong Cheng 18210611
+ * 
+ * */
+
 import java.awt.event.ActionEvent;
 import java.util.*;
 import java.awt.event.ActionListener;

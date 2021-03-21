@@ -1,3 +1,11 @@
+/*
+ * BadGuys
+ * Zhonghe Chen 19203048
+ * Zhi Zhang 18210054
+ * Yunlong Cheng 18210611
+ * 
+ * */
+
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 
@@ -135,10 +143,11 @@ public class UI {
 		return;
 	}
 
-	public int inputPlacement(Player Player, int num) {
+	public int inputPlacement_re(Player Player, int num) {
 		String message, response, countryID;
 		int responseNum;
 		boolean placementOK = false;
+		// Ask user input a country name (country to be reinforced)
 		do {
 			// display messages
 			message = makeLongName(Player) + ": Enter a country to reinforce with your own units";
@@ -161,6 +170,7 @@ public class UI {
 			}
 		} while (!placementOK);
 		
+		// Ask user input reinforced number.
 		placementOK = false;
 		do {
 			// display messages

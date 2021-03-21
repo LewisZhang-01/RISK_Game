@@ -1,3 +1,10 @@
+/*
+ * BadGuys
+ * Zhonghe Chen 19203048
+ * Zhi Zhang 18210054
+ * Yunlong Cheng 18210611
+ * 
+ * */
 
 public class Sprint3 {
 
@@ -58,7 +65,7 @@ public class Sprint3 {
 		
 		currPlayer = players[playerId];
 		ui.displayRollWinner(currPlayer);
-/*
+
 		ui.displayString("\nREINFORCE INITIAL COUNTRIES");
 		while (currPlayer.getNumUnits() > 0) {
 			ui.inputPlacement(currPlayer, currPlayer);
@@ -76,7 +83,7 @@ public class Sprint3 {
 			playerId = (++playerId)%GameData.NUM_PLAYERS;
 			currPlayer = players[playerId];
 		}
-		*/
+
 		/* Sprint3 start here: */
 		
 		// Roll dice first.
@@ -101,28 +108,35 @@ public class Sprint3 {
 		while (true) {
 			
 			/* Reinforcement Phase */
-			//System.out.println(currPlayer.getName() + " " + currPlayer.getNumTerrs() + " " + currPlayer.getNumUnits());
-			// Calculate number of reinforcements
+			
+			// Calculate number of reinforcements based on countries.
 			int reinforce_num = board.getNumOfCountry(playerId);
+			// If current player's total countries number divide by 3 is less than 3.
 			if (reinforce_num / 3 < 3) {
-				reinforce_num = 3;
+				reinforce_num = 3;// Get 3 reinforcement.
 			} else {
-				reinforce_num = reinforce_num / 3;
+				reinforce_num = reinforce_num / 3;// Otherwise, calculate the corresponding number.
 			}
+			// Calculate number of reinforcements based on continent.
 			int num = board.getOccupieContinent(playerId);
+			// If the continents are not occupied, return -1.
+			// Otherwise, return corresponding value.
 			if (num != -1) {
+				// Add this bonus unit to the total number of units the player will earn.
 				reinforce_num += num;
-				ui.displayString("[Occupied Continent: true]");
+				ui.displayString("[Occupied Continent: true]");// Inform the user.
 			} else {
-				ui.displayString("[Occupied Continent: false]");
+				ui.displayString("[Occupied Continent: false]");// Inform the user.
 			}
+			// Displays the total number of units earned by the player.
 			ui.displayString("[num of reinforcement: " + reinforce_num + "]");
 			int n = reinforce_num;
-			
+			// Allows players to allocate their reinforcements freely to their country.
 			while(reinforce_num!=0) {
+				// Display a hint: shows the remainder of the distribution.
 				ui.displayString("Residual for distribute (" + reinforce_num + "/" + n + ")");
 				//Ask user input country name and number of reinforcement to this country.
-				int inputNum = ui.inputPlacement(currPlayer, reinforce_num);
+				int inputNum = ui.inputPlacement_re(currPlayer, reinforce_num);
 				countryId = ui.getCountryId();
 				board.addUnits(countryId, currPlayer, inputNum);
 				reinforce_num -= inputNum;
