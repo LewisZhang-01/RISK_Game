@@ -202,6 +202,7 @@ public class UI {
 		return responseNum;
 	}
 	
+	//allow user to enter skip to skip the combat phase
 	public String inputCombatChoice(Player player) {
 		String response;
 		displayString(makeLongName(player) + ": Enter skip to skip the combat phase, or anything else to combat.");
@@ -210,6 +211,8 @@ public class UI {
 		return response;
 	}
 
+	
+	//allow user to enter skip to skip the fortify phase
 	public String inputFortifyChoice(Player player) {
 		String response;
 		displayString(makeLongName(player) + ": Enter skip to skip the fortify phase, or anything else to fortify.\n"+
@@ -223,14 +226,16 @@ public class UI {
 																	// player
 																	// mode 1 means the country chosen does not belong
 																	// to the player
-		String response;
-		response = commandPanel.getCommand();
+		String response;						//used to receive user input
+		response = commandPanel.getCommand();	//receive user input
 		displayString("> "+response);
-		if(response.equals("skip")) {
+		if(response.equals("skip")) {			//if user enter skip, return 404 to inform other functions that action needs to be exited immediately.
 			return 404;
 		}
-		parse.countryId(response);
-		while(parse.isError()) {
+		
+		parse.countryId(response);				//try to parse the user input country string to countryId
+		
+		while(parse.isError()) {				//if parse failed, the user input country does not exist, have user try again
 			displayString("Error: Not a country. Enter again:");
 			response = commandPanel.getCommand();
 			displayString("> "+response);
@@ -240,12 +245,13 @@ public class UI {
 			parse.countryId(response);
 		}
 		
-		if (mode == 1) {
-			while (board.checkOccupier(player, parse.getCountryId())) {
+		if (mode == 1) {						//the country chosen should not belong to the current player
+			while (board.checkOccupier(player, parse.getCountryId())) {		//check if the country belongs to current player, have player try again
 				displayString("Error: Cannot choose your territory. Please choose another one:");
+				//repeated codes below. I will try my best to avoid this in the future.
 				response = commandPanel.getCommand();
 				displayString("> "+response);
-				if(response.equals("skip")) {
+				if(response.equals("skip")) {	//if skip entered, 404 is a signal to exit the current action immediately
 					return 404;
 				}
 				parse.countryId(response);
@@ -260,6 +266,7 @@ public class UI {
 				}
 			}
 		} else {
+			//the country chosen should belong to the current player, almost the same as the previous condition
 			while (!board.checkOccupier(player, parse.getCountryId())) {
 				displayString("Error: You must choose your own territory. Please choose another one:");
 				response = commandPanel.getCommand();
@@ -282,18 +289,18 @@ public class UI {
 		return parse.getCountryId();
 	}
 
-	public int inputArmyNum(int limit) {
-		String response;
+	public int inputArmyNum(int limit) {		//have user input number of armies they want to do a combat or fortify
+		String response;						//receive user input
 		response = commandPanel.getCommand();
 		displayString("> "+response);
-		if(response.equals("skip")) {
+		if(response.equals("skip")) {			//if skip entered, 404 is a signal to exit the current action immediately
 			return 404;
 		}
 		int armyNum;
 
-		while (true) {
+		while (true) {						//handle integer type errors.
 			try {
-				armyNum = Integer.parseInt(response);
+				armyNum = Integer.parseInt(response);	//only if user enter an integer, game will continue
 				break;
 			} catch (NumberFormatException e) {
 				displayString("Error: Input is not a number. Please enter a number:");
@@ -305,16 +312,16 @@ public class UI {
 			}
 		}
 
-		while (armyNum > limit || armyNum < 1) {
+		while (armyNum > limit || armyNum < 1) {		//if the army number is not in the range, have user try again
 			displayString("You must leave at least one army on your territory.");
 			displayString("Please enter a correct number:");
 
 			response = commandPanel.getCommand();
 			displayString("> "+response);
 			if(response.equals("skip")) {
-				return 404;
+				return 404;					//if skip entered, 404 is a signal to exit the current action immediately
 			}
-
+			
 			while (true) {
 				try {
 					armyNum = Integer.parseInt(response);
@@ -330,10 +337,11 @@ public class UI {
 			}
 		}
 
-		return armyNum;
+		return armyNum;	//return selected army number
 	}
 
-	public int inputMovedArmyNumber(int least, int most) {
+	public int inputMovedArmyNumber(int least, int most) {		//have users input number of armies they want move to their new territory
+																//similar to previous method. Only some information and limit changes.
 		String response;
 		response = commandPanel.getCommand();
 		displayString("> "+response);
@@ -384,34 +392,37 @@ public class UI {
 		return armyNum;
 	}
 
-	public int[] attackAction(Player player) {
+	public int[] attackAction(Player player) {			//the ready phase of an attack action, prepare the information of 
+														//attacking territory and defending territory
 		
 		displayString(makeLongName(player) + ": Announce the territory you are attacking from:");
-		int attackingTerritory = inputModifiedTerritory(player, 0);
+		int attackingTerritory = inputModifiedTerritory(player, 0);	//have user input attacking territory
 		
-		if(attackingTerritory == 404) {
+		if(attackingTerritory == 404) {			//if 404 detected, return null and then exit the combat action
 			return null;
 		}
 		
 		displayString(makeLongName(player) + ": Announce the territory you are attacking:");
-		int attackedTerritory = inputModifiedTerritory(player, 1);
+		int attackedTerritory = inputModifiedTerritory(player, 1);	//have user input defending territory
 		
-		if(attackedTerritory == 404) {
+		if(attackedTerritory == 404) {			//if 404 detected, return null and then exit the combat action
 			return null;
 		}
 
-		int numUnits = board.getNumUnits(attackingTerritory);
+		int numUnits = board.getNumUnits(attackingTerritory);	//check whether the attacking territory has more than one armies on it
 		while (numUnits <= 1) {
 			displayString(
 					"Error: You must attack from a country that has more than one unit on it. Reselect the attacking territory:");
 			displayString(makeLongName(player) + ": Announce the territory you are attacking from:");
 			attackingTerritory = inputModifiedTerritory(player, 0);
 			
-			if(attackingTerritory == 404) {
+			if(attackingTerritory == 404) {		//if 404 detected, return null and then exit the combat action
 				return null;
 			}
 		}
 
+		
+		//determine whether the attacking territory is adjacent to the defending territory
 		int[] adjacent = GameData.ADJACENT[attackingTerritory];
 		boolean adjacentBool = false;
 
@@ -422,7 +433,8 @@ public class UI {
 			}
 		}
 
-		while (adjacentBool == false) {
+		while (adjacentBool == false) {			//if not adjacent, have user input attacking country and defending country until 
+												//they enter right countries, or they can skip
 			displayString("Error: Cannot attack territories that are not adjacent. "
 					+ "Please reselect attacking territory and attacked territory:");
 
@@ -448,28 +460,29 @@ public class UI {
 			}
 		}
 
-		int[] attack = { attackedTerritory, attackingTerritory };
-		return attack;
+		int[] attack = { attackedTerritory, attackingTerritory };	
+		return attack;		//return the two territory ids
 	}
 
-	public int[] fortifyAction(Player player) {
+	public int[] fortifyAction(Player player) {				//the ready phase of an fortify action, prepare the information of 
+															//territory that sends armies and territory that receives armies
 		displayString("Tip: Unlike combat phase, you can only do fortify once.");
 
 		displayString(makeLongName(player) + ": Announce the territory you are fortifying from:");
-		int from = inputModifiedTerritory(player, 0);
+		int from = inputModifiedTerritory(player, 0);		//territory that sends armies
 		
-		if(from == 404) {
+		if(from == 404) {			//404 - the exit signal, appears when "skip" is entered
 			return null;
 		}
 		
 		displayString(makeLongName(player) + ": Announce the territory you are fortifying to:");
-		int to = inputModifiedTerritory(player, 0);
+		int to = inputModifiedTerritory(player, 0);			//territory that receives armies
 		
-		if(to == 404) {
+		if(to == 404) {				//404 - the exit signal, appears when "skip" is entered
 			return null;
 		}
 
-		int numUnits = board.getNumUnits(from);
+		int numUnits = board.getNumUnits(from);		//only territory having more than one armies on it can send armies to other adjacent territories 
 		while (numUnits <= 1) {
 			displayString(
 					"Error: You must fortify from a country that has more than one unit on it. Reselect the territory:");
@@ -479,7 +492,9 @@ public class UI {
 				return null;
 			}
 		}
-
+		
+		
+		//check whether the two selected territories are adjacent
 		int[] adjacent = GameData.ADJACENT[from];
 		boolean adjacentBool = false;
 
@@ -489,7 +504,8 @@ public class UI {
 				break;
 			}
 		}
-
+		
+		//if not adjacent, select again until select correct countries, or players can skip
 		while (adjacentBool == false) {
 			displayString("Error: Cannot fortify territories that are not adjacent. "
 					+ "Please reselect fortifyied territory and fortifing territory:");
@@ -515,7 +531,7 @@ public class UI {
 		}
 
 		int[] fortify = { to, from };
-		return fortify;
+		return fortify;		//send the id of two selected countries back
 	}
 
 

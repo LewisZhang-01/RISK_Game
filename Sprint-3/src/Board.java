@@ -130,19 +130,23 @@ public class Board {
 		return -1;// No continent was occupied.
 	}
 
-	public void combat(UI ui, Player player, Player[] players) {
-		int[] attack = ui.attackAction(player);
+	public void combat(UI ui, Player player, Player[] players) {	//a single combat action
 		
-		if(attack == null) {
+		int[] attack = ui.attackAction(player);		//int[] attack consists of two territory ids, one is the one that attacks and the other is being attacked.
+		
+		if(attack == null) {						//when user enter "skip", a null will be returned by attackAction,
+													//and then we end the action immediately
 			ui.displayString(ui.makeLongName(player) + ": This combat skipped.");
 			return;
 		}
-
-		int attackedTerritory = attack[0]; // defending territory must have at least 1 army
+		
+		int attackedTerritory = attack[0]; 	// defending territory must have at least 1 army.
 		int attackingTerritory = attack[1]; // the attackingTerritory must be greater than 1.
-		int armyNum, limit;
+		int armyNum, limit;					//armyNum stores the army number used to attack; limit stores the limit of armyNum 
 
-		if (getNumUnits(attackingTerritory) <= 3) {
+		if (getNumUnits(attackingTerritory) <= 3) {			//If there are more than three armies on the territory, only at most 3 can be
+															//selected for a single attack action. Also at least 1 army is required to be 
+															//left on the territory. 
 			limit = getNumUnits(attackingTerritory) - 1;
 		} else {
 			limit = 3;
@@ -151,24 +155,25 @@ public class Board {
 		ui.displayString(
 				ui.makeLongName(player) + ": Enter the number of armies you want to use for this attack.\nYou must leave at least 1 army on your"
 						+ " territory and you can choose at most 3 armies.");
-		armyNum = ui.inputArmyNum(limit);
+		armyNum = ui.inputArmyNum(limit);		//get user input of armyNum
 		
-		if(armyNum == 404) {
+		if(armyNum == 404) {					//when user input is "skip", 404 will be returned by inputArmyNum(), and we need to exit this 
+												//attack action immediately. (I chose 404 for no reason. Only feels familiar to this number.)
 			ui.displayString(ui.makeLongName(player) + ": This combat skipped.");
 			return;
 		}
 
-		// roll dice!
-
-		player.rollDice(armyNum);
+		// roll dice
+		player.rollDice(armyNum);		//attackers roll the dice as many times as the number of attacking army they choose 
 		ArrayList<Integer> p1Dice = player.getDice();
 
-		int p1Max = p1Dice.get(0), p1SMax = 0;
+		int p1Max = p1Dice.get(0), p1SMax = 0;	//p1Max store the max value of the attacker rolling dice
+												//p1SMax store the second max value of the attacker rolling dice
 
 		ui.displayString(ui.makeLongName(player) + ": The result of attacker rolling dice:");
-		ui.displayString("" + player.getDice());
+		ui.displayString("" + player.getDice());	//display the result of dice to make the game fair
 
-		for (int i = 0; i < p1Dice.size(); i++) {
+		for (int i = 0; i < p1Dice.size(); i++) {	//find the max value and second max value of the attacker rolling dice
 			if (p1Max < p1Dice.get(i)) {
 				p1SMax = p1Max;
 				p1Max = p1Dice.get(i);
@@ -179,12 +184,14 @@ public class Board {
 			}
 		}
 
+		//determine the number of army defender uses.
+		//if only one army on the defending territory, roll dice once, else roll dice twice.
 		if (getNumUnits(attackedTerritory) == 1) {
 			player.rollDice(1);
 		} else {
 			player.rollDice(2);
 		}
-
+		//same steps as attacker rolling dice
 		ArrayList<Integer> p2Dice = player.getDice();
 
 		int p2Max = p2Dice.get(0), p2SMax = 0;
@@ -202,9 +209,16 @@ public class Board {
 				}
 			}
 		}
-		// System.out.println("test: "+p1Max+", "+p1SMax+" "+p2Max+" "+p2SMax);
+		//rolling dice finishes
 
-		if (p1Max <= p2Max) {
+		//determine the result of this combat:
+		
+		//if the max dice value of attacker is greater than the max dice value of defender, attacker wins and defender loses an army
+		//if the max dice value of attacker is less than or equal to the max dice value of defender, defender wins and attacker loses an army
+		
+		//the same process will do again with second max dice values if both attacker and defender uses 2 or more armies in this combat.
+		
+		if (p1Max <= p2Max) {		
 			ui.displayString(ui.makeLongName(player) + ": Defender wins the first battle. Attacker loses a unit.");
 			numUnits[attackingTerritory] -= 1;
 			players[occupier[attackingTerritory]].subtractUnits(1);
@@ -225,7 +239,15 @@ public class Board {
 				players[occupier[attackedTerritory]].subtractUnits(1);
 			}
 		}
-
+		
+		
+		//determine whether the attacker conquers the territory:
+		
+		//if the army number of defending territory decreases to 0, defender loses the territory
+		//and attacker wins this territory. Attacker is forced to move at least as many armies as
+		//the number of armies he/she used in this combat to the new territory. Also at least one
+		//army needs to be left on the original territory. This process cannot be skipped since
+		//combat is finished and the result should be dealt with.
 		if (numUnits[attackedTerritory] == 0) {
 			players[occupier[attackedTerritory]].subtractTerrs(1);
 			ui.displayString(ui.makeLongName(player) + ": Attacker wins the territory.\n"+ui.makeLongName(player) + ": Please move at least as many armies as you used "
@@ -240,33 +262,35 @@ public class Board {
 
 	}
 
-	public void fortify(UI ui, Player player) {
+	public void fortify(UI ui, Player player) {			//in my understanding of the rule of RISK GAME, only one fortify action is allowed in
+														//a fortify phase, so here I only allowed one fortify to be done.
 
-		int[] fortify = ui.fortifyAction(player);
+		int[] fortify = ui.fortifyAction(player);		//int[] fortify stores the territory that receives armies and the territory that sends armies.
 		
 		if(fortify == null) {
 			ui.displayString(ui.makeLongName(player) + ": Fortify skipped.");
 			return;
 		}
 
-		int to = fortify[0];
-		int from = fortify[1];
+		int to = fortify[0];			//to is the territory id of the territory that receives armies
+		int from = fortify[1];			//from is the territory id of the territory that sends armies
 
-		int armyNum, limit;
+		int armyNum, limit;				//similar to combat action. armyNum represents the number of armies being sent and limit is the limit of armyNum
 		limit = getNumUnits(from) - 1;
 
 		ui.displayString(
 				ui.makeLongName(player) + ": Enter the number of armies you want to use for this fortify.\n"+ui.makeLongName(player) + 
 				": You must leave at least 1 army on your territory.");
-		armyNum = ui.inputArmyNum(limit);
+		armyNum = ui.inputArmyNum(limit);		//user input armyNum under limit
 		
-		if(armyNum == 404) {
+		if(armyNum == 404) {		//if user enter "skip", fortify action needs to be exited immediately, and fortify phase will end since the
+									//only fortify action allowed is exited.
 			ui.displayString(ui.makeLongName(player) + ": Fortify skipped.");
 			return;
 		}
 
-		numUnits[to] += armyNum;
-		numUnits[from] -= armyNum;
+		numUnits[to] += armyNum;		//receives armies
+		numUnits[from] -= armyNum;		//sends armies
 	}
 
 	public boolean ifWin(UI ui, Player[] players, Player winner, Player currPlayer, Player eliminatedPlayer, int playerId) {

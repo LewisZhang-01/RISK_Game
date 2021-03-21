@@ -147,32 +147,42 @@ public class Sprint3 {
 			/* Combat phase */
 			ui.displayString("\n<COMBAT PHASE>");
 			
-			String combatChoice = ui.inputCombatChoice(currPlayer);
+			String combatChoice = ui.inputCombatChoice(currPlayer);		//if players type skip here, skip the whole combat phase(which is consisted of one or more combat action)
 			while (!combatChoice.equals("skip")) {
 				
-				if (board.getPlayerArmyNum(currPlayer.getId()) == currPlayer.getNumTerrs()) {
+				if (board.getPlayerArmyNum(currPlayer.getId()) == currPlayer.getNumTerrs()) {	//test whether player have only 1 army on all territories.
+																								//if yes, no combat can be done, since a combat needs at least 2 armies.
+																								//skip the combat phase autumatically.
 					ui.displayString("You do not have extra army to combat. Combat phase ends automatically.");
 					break;
 				}
+				
+				//Cause mistyping always happens, I add a functionality to allow players exit a single combat action whenever they want using "skip" as well.
+				
+				//but now skip will not skip the whole combat phase. It will only bring players back to the beginning of the combat phase
+				//and again choose whether to skip.
+				
 				ui.displayString(ui.makeLongName(currPlayer) + ": Tip: You can exit a single combat with skip whenever you want, and it will bring you back to the beginning of combat phase.");
-				board.combat(ui, currPlayer, players);
-				ui.displayMap();
+				board.combat(ui, currPlayer, players);	//enter a single combat action
+				ui.displayMap();						//refresh the map
+				
 				if (board.ifWin(ui, players, winner, currPlayer, eliminatedPlayer, playerId)==true)
 					break;
-				combatChoice = ui.inputCombatChoice(currPlayer);
+				
+				combatChoice = ui.inputCombatChoice(currPlayer);	//if players type skip here, skip the whole combat phase
 			}
 			
 
 			/* Fortify phase */
 			ui.displayString("\n<FORTIFY PHASE>");
-			String fortifyChoice = ui.inputFortifyChoice(currPlayer);
+			String fortifyChoice = ui.inputFortifyChoice(currPlayer);		//player can choose skip fortify phase by entering "skip"
 			if (!fortifyChoice.equals("skip")) {
-				if (board.getPlayerArmyNum(currPlayer.getId()) == currPlayer.getNumTerrs()) {
+				if (board.getPlayerArmyNum(currPlayer.getId()) == currPlayer.getNumTerrs()) {		//again test whether player can do any fortify
 					ui.displayString("You do not have extra army to fortify. Fortify phase ends automatically.");
 					break;
 				}
-				board.fortify(ui, currPlayer);
-				ui.displayMap();
+				board.fortify(ui, currPlayer);		//enter fortify action
+				ui.displayMap();					//refresh the map
 			}
 
 			// move on to next player.
