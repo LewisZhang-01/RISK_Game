@@ -136,7 +136,7 @@ public class UI {
 	}
 
 	public int inputPlacement(Player Player, int num) {
-		String message, countryID;
+		String message, response, countryID;
 		int responseNum;
 		boolean placementOK = false;
 		do {
@@ -168,8 +168,18 @@ public class UI {
 			displayString(message);
 
 			// get inputs & display
-			responseNum = Integer.valueOf(commandPanel.getCommand());
-			displayString(PROMPT + responseNum);
+			response = commandPanel.getCommand();
+			displayString(PROMPT + response);
+			while (true) {
+				try {
+					responseNum = Integer.parseInt(response);
+					break;
+				} catch (NumberFormatException e) {
+					displayString("Error: Input is not a number. Please enter a number:");
+					response = commandPanel.getCommand();
+					displayString(PROMPT+response);
+				}
+			}
 
 			// handle error input.
 			if (responseNum>num || responseNum<0) {
@@ -210,6 +220,16 @@ public class UI {
 			return 404;
 		}
 		parse.countryId(response);
+		while(parse.isError()) {
+			displayString("Error: Not a country. Enter again:");
+			response = commandPanel.getCommand();
+			displayString("> "+response);
+			if(response.equals("skip")) {
+				return 404;
+			}
+			parse.countryId(response);
+		}
+		
 		if (mode == 1) {
 			while (board.checkOccupier(player, parse.getCountryId())) {
 				displayString("Error: Cannot choose your territory. Please choose another one:");
@@ -219,6 +239,15 @@ public class UI {
 					return 404;
 				}
 				parse.countryId(response);
+				while(parse.isError()) {
+					displayString("Error: Not a country. Enter again:");
+					response = commandPanel.getCommand();
+					displayString("> "+response);
+					if(response.equals("skip")) {
+						return 404;
+					}
+					parse.countryId(response);
+				}
 			}
 		} else {
 			while (!board.checkOccupier(player, parse.getCountryId())) {
@@ -229,6 +258,15 @@ public class UI {
 					return 404;
 				}
 				parse.countryId(response);
+				while(parse.isError()) {
+					displayString("Error: Not a country. Enter again:");
+					response = commandPanel.getCommand();
+					displayString("> "+response);
+					if(response.equals("skip")) {
+						return 404;
+					}
+					parse.countryId(response);
+				}
 			}
 		}
 		return parse.getCountryId();
