@@ -5,12 +5,14 @@ public class Player {
 	private int id;
 	private String name;
 	private int numUnits;
+	private int numTerrs;
 	private ArrayList<Integer> dice = new ArrayList<Integer>();
 	
-	Player (int inId, String inName, int inNumUnits) {
+	Player (int inId, String inName, int inNumUnits, int inNumTerrs) {
 		id = inId;
 		name = inName;
 		numUnits = inNumUnits;
+		numTerrs = inNumTerrs;
 		return;
 	}
 	
@@ -22,8 +24,18 @@ public class Player {
 		return;
 	}
 
+	public void addTerrs (int inNum) {
+		numTerrs = numTerrs + inNum;
+		return;
+	}
+	
 	public void addUnits (int inNum) {
 		numUnits = numUnits + inNum;
+		return;
+	}
+	
+	public void subtractTerrs (int inNum) {
+		numTerrs = numTerrs - inNum;
 		return;
 	}
 	
@@ -38,6 +50,10 @@ public class Player {
 	
 	public String getName () {
 		return name;
+	}
+	
+	public int getNumTerrs() {
+		return numTerrs;
 	}
 	
 	public int getNumUnits () {

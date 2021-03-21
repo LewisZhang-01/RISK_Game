@@ -182,37 +182,52 @@ public class UI {
 		return responseNum;
 	}
 	
-	public String inputCombatChoice() {
+	public String inputCombatChoice(Player player) {
 		String response;
-		displayString("Enter skip to skip the combat phase, or anything else to combat.");
+		displayString(makeLongName(player) + ": Enter skip to skip the combat phase, or anything else to combat.");
 		response = commandPanel.getCommand();
+		displayString("> "+response);
 		return response;
 	}
 
-	public String inputFortifyChoice() {
+	public String inputFortifyChoice(Player player) {
 		String response;
-		displayString("Enter skip to skip the fortify phase, or anything else to fortify.");
+		displayString(makeLongName(player) + ": Enter skip to skip the fortify phase, or anything else to fortify.\n"+
+					  makeLongName(player) + ": Tip: You can exit this phase with skip whenever you want.");
 		response = commandPanel.getCommand();
+		displayString("> "+response);
 		return response;
 	}
 
-	public int inputModifiedTerritory(Player player, int mode) { // mode 0 means the country chosen should belong to the
+	public int inputModifiedTerritory(Player player, int mode) {    // mode 0 means the country chosen should belong to the
 																	// player
 																	// mode 1 means the country chosen does not belong
 																	// to the player
 		String response;
 		response = commandPanel.getCommand();
+		displayString("> "+response);
+		if(response.equals("skip")) {
+			return 404;
+		}
 		parse.countryId(response);
 		if (mode == 1) {
 			while (board.checkOccupier(player, parse.getCountryId())) {
 				displayString("Error: Cannot choose your territory. Please choose another one:");
 				response = commandPanel.getCommand();
+				displayString("> "+response);
+				if(response.equals("skip")) {
+					return 404;
+				}
 				parse.countryId(response);
 			}
 		} else {
 			while (!board.checkOccupier(player, parse.getCountryId())) {
 				displayString("Error: You must choose your own territory. Please choose another one:");
 				response = commandPanel.getCommand();
+				displayString("> "+response);
+				if(response.equals("skip")) {
+					return 404;
+				}
 				parse.countryId(response);
 			}
 		}
@@ -222,6 +237,10 @@ public class UI {
 	public int inputArmyNum(int limit) {
 		String response;
 		response = commandPanel.getCommand();
+		displayString("> "+response);
+		if(response.equals("skip")) {
+			return 404;
+		}
 		int armyNum;
 
 		while (true) {
@@ -231,6 +250,10 @@ public class UI {
 			} catch (NumberFormatException e) {
 				displayString("Error: Input is not a number. Please enter a number:");
 				response = commandPanel.getCommand();
+				displayString("> "+response);
+				if(response.equals("skip")) {
+					return 404;
+				}
 			}
 		}
 
@@ -239,6 +262,10 @@ public class UI {
 			displayString("Please enter a correct number:");
 
 			response = commandPanel.getCommand();
+			displayString("> "+response);
+			if(response.equals("skip")) {
+				return 404;
+			}
 
 			while (true) {
 				try {
@@ -247,6 +274,10 @@ public class UI {
 				} catch (NumberFormatException e) {
 					displayString("Error: Input is not a number. Please enter a number:");
 					response = commandPanel.getCommand();
+					displayString("> "+response);
+					if(response.equals("skip")) {
+						return 404;
+					}
 				}
 			}
 		}
@@ -257,6 +288,12 @@ public class UI {
 	public int inputMovedArmyNumber(int least, int most) {
 		String response;
 		response = commandPanel.getCommand();
+		displayString("> "+response);
+		while(response.equals("skip")) {
+			displayString("This step could not be skipped. You must move armies to your new territory.");
+			response = commandPanel.getCommand();
+			displayString("> "+response);
+		}
 		int armyNum;
 
 		while (true) {
@@ -266,6 +303,7 @@ public class UI {
 			} catch (NumberFormatException e) {
 				displayString("Error: Input is not a number. Please enter a number:");
 				response = commandPanel.getCommand();
+				displayString("> "+response);
 			}
 		}
 
@@ -275,6 +313,10 @@ public class UI {
 			displayString("Please enter a correct number:");
 
 			response = commandPanel.getCommand();
+			displayString("> "+response);
+			if(response.equals("skip")) {
+				return 404;
+			}
 
 			while (true) {
 				try {
@@ -283,6 +325,10 @@ public class UI {
 				} catch (NumberFormatException e) {
 					displayString("Error: Input is not a number. Please enter a number:");
 					response = commandPanel.getCommand();
+					displayString("> "+response);
+					if(response.equals("skip")) {
+						return 404;
+					}
 				}
 			}
 		}
@@ -291,18 +337,31 @@ public class UI {
 	}
 
 	public int[] attackAction(Player player) {
-
-		displayString("Announce the territory you are attacking from:");
+		
+		displayString(makeLongName(player) + ": Announce the territory you are attacking from:");
 		int attackingTerritory = inputModifiedTerritory(player, 0);
-		displayString("Announce the territory you are attacking:");
+		
+		if(attackingTerritory == 404) {
+			return null;
+		}
+		
+		displayString(makeLongName(player) + ": Announce the territory you are attacking:");
 		int attackedTerritory = inputModifiedTerritory(player, 1);
+		
+		if(attackedTerritory == 404) {
+			return null;
+		}
 
 		int numUnits = board.getNumUnits(attackingTerritory);
 		while (numUnits <= 1) {
 			displayString(
 					"Error: You must attack from a country that has more than one unit on it. Reselect the attacking territory:");
-			displayString("Announce the territory you are attacking from:");
+			displayString(makeLongName(player) + ": Announce the territory you are attacking from:");
 			attackingTerritory = inputModifiedTerritory(player, 0);
+			
+			if(attackingTerritory == 404) {
+				return null;
+			}
 		}
 
 		int[] adjacent = GameData.ADJACENT[attackingTerritory];
@@ -319,11 +378,20 @@ public class UI {
 			displayString("Error: Cannot attack territories that are not adjacent. "
 					+ "Please reselect attacking territory and attacked territory:");
 
-			displayString("Announce the territory you are attacking:");
-			attackedTerritory = inputModifiedTerritory(player, 1);
-			displayString("Announce the territory you are attacking from:");
+			displayString(makeLongName(player) + ": Announce the territory you are attacking from:");
 			attackingTerritory = inputModifiedTerritory(player, 0);
+			
+			if(attackingTerritory == 404) {
+				return null;
+			}
+			
+			displayString(makeLongName(player) + ": Announce the territory you are attacking:");
+			attackedTerritory = inputModifiedTerritory(player, 1);
 
+			if(attackedTerritory == 404) {
+				return null;
+			}
+			
 			for (int i = 0; i < adjacent.length; i++) {
 				if (attackedTerritory == adjacent[i]) {
 					adjacentBool = true;
@@ -339,17 +407,29 @@ public class UI {
 	public int[] fortifyAction(Player player) {
 		displayString("Tip: Unlike combat phase, you can only do fortify once.");
 
-		displayString("Announce the territory you are fortifying from:");
+		displayString(makeLongName(player) + ": Announce the territory you are fortifying from:");
 		int from = inputModifiedTerritory(player, 0);
-		displayString("Announce the territory you are fortifying to:");
+		
+		if(from == 404) {
+			return null;
+		}
+		
+		displayString(makeLongName(player) + ": Announce the territory you are fortifying to:");
 		int to = inputModifiedTerritory(player, 0);
+		
+		if(to == 404) {
+			return null;
+		}
 
 		int numUnits = board.getNumUnits(from);
 		while (numUnits <= 1) {
 			displayString(
 					"Error: You must fortify from a country that has more than one unit on it. Reselect the territory:");
-			displayString("Announce the territory you are fortifying from:");
+			displayString(makeLongName(player) + ": Announce the territory you are fortifying from:");
 			from = inputModifiedTerritory(player, 0);
+			if(from == 404) {
+				return null;
+			}
 		}
 
 		int[] adjacent = GameData.ADJACENT[from];
@@ -366,10 +446,17 @@ public class UI {
 			displayString("Error: Cannot fortify territories that are not adjacent. "
 					+ "Please reselect fortifyied territory and fortifing territory:");
 
-			displayString("Announce the territory you are fortifying to:");
-			to = inputModifiedTerritory(player, 0);
-			displayString("Announce the territory you are fortifying from:");
+			displayString(makeLongName(player) + ": Announce the territory you are fortifying from:");
 			from = inputModifiedTerritory(player, 0);
+			if(from == 404) {
+				return null;
+			}
+			
+			displayString(makeLongName(player) + ": Announce the territory you are fortifying to:");
+			to = inputModifiedTerritory(player, 0);
+			if(to == 404) {
+				return null;
+			}
 
 			for (int i = 0; i < adjacent.length; i++) {
 				if (to == adjacent[i]) {
@@ -382,6 +469,7 @@ public class UI {
 		int[] fortify = { to, from };
 		return fortify;
 	}
+
 
 	public void displayWinner(Player player) {
 		displayString(makeLongName(player) + " wins the game.");

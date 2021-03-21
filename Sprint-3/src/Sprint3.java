@@ -7,7 +7,7 @@ public class Sprint3 {
 		Player[] players = new Player[GameData.NUM_PLAYERS_PLUS_NEUTRALS];
 		Player currPlayer, winner = null, eliminatedPlayer = null;
 		Card card;
-		int playerId, countryId, numUnits = 0, numCards;
+		int playerId, countryId, numUnits = 0, numTerrs = 0, numCards;
 		String name;
 
 		ui.displayString("ENTER PLAYER NAMES");
@@ -21,7 +21,7 @@ public class Sprint3 {
 				ui.displayName(playerId, name);
 				numUnits = GameData.INIT_UNITS_NEUTRAL;
 			}
-			players[playerId] = new Player(playerId, name, numUnits);
+			players[playerId] = new Player(playerId, name, numUnits, numTerrs);
 		}
 
 		ui.displayString("\nDRAW TERRITORY CARDS FOR STARTING COUNTRIES");
@@ -40,6 +40,7 @@ public class Sprint3 {
 				board.addUnits(card, currPlayer, 1);
 			}
 		}
+		
 		ui.displayMap();
 
 		ui.displayString("\nROLL DICE TO SEE WHO REINFORCES THEIR COUNTRIES FIRST");
@@ -57,7 +58,7 @@ public class Sprint3 {
 		
 		currPlayer = players[playerId];
 		ui.displayRollWinner(currPlayer);
-
+/*
 		ui.displayString("\nREINFORCE INITIAL COUNTRIES");
 		while (currPlayer.getNumUnits() > 0) {
 			ui.inputPlacement(currPlayer, currPlayer);
@@ -75,11 +76,12 @@ public class Sprint3 {
 			playerId = (++playerId)%GameData.NUM_PLAYERS;
 			currPlayer = players[playerId];
 		}
-		
+		*/
 		/* Sprint3 start here: */
 		
 		// Roll dice first.
 		ui.displayString("\nROLL DICE TO SEE WHO START FIRST");
+		
 		do {
 			for (int i = 0; i < GameData.NUM_PLAYERS; i++) {
 				players[i].rollDice(1);
@@ -99,7 +101,7 @@ public class Sprint3 {
 		while (true) {
 			
 			/* Reinforcement Phase */
-			
+			//System.out.println(currPlayer.getName() + " " + currPlayer.getNumTerrs() + " " + currPlayer.getNumUnits());
 			// Calculate number of reinforcements
 			int reinforce_num = board.getNumOfCountry(playerId);
 			if (reinforce_num / 3 < 3) {
@@ -130,26 +132,28 @@ public class Sprint3 {
 			
 			/* Combat phase */
 			ui.displayString("\n<COMBAT PHASE>");
-			boolean b = false;
-			String combatChoice = ui.inputCombatChoice();
+			
+			String combatChoice = ui.inputCombatChoice(currPlayer);
 			while (!combatChoice.equals("skip")) {
-				if (b) {
+				
+				if (board.getPlayerArmyNum(currPlayer.getId()) == currPlayer.getNumTerrs()) {
 					ui.displayString("You do not have extra army to combat. Combat phase ends automatically.");
 					break;
 				}
+				ui.displayString(ui.makeLongName(currPlayer) + ": Tip: You can exit a single combat with skip whenever you want, and it will bring you back to the beginning of combat phase.");
 				board.combat(ui, currPlayer, players);
 				ui.displayMap();
 				if (board.ifWin(ui, players, winner, currPlayer, eliminatedPlayer, playerId)==true)
 					break;
-				combatChoice = ui.inputCombatChoice();
+				combatChoice = ui.inputCombatChoice(currPlayer);
 			}
 			
 
 			/* Fortify phase */
 			ui.displayString("\n<FORTIFY PHASE>");
-			String fortifyChoice = ui.inputFortifyChoice();
+			String fortifyChoice = ui.inputFortifyChoice(currPlayer);
 			if (!fortifyChoice.equals("skip")) {
-				if (b) {
+				if (board.getPlayerArmyNum(currPlayer.getId()) == currPlayer.getNumTerrs()) {
 					ui.displayString("You do not have extra army to fortify. Fortify phase ends automatically.");
 					break;
 				}

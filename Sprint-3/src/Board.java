@@ -14,23 +14,19 @@ public class Board {
 		return;
 	}
 
-	public void addUnits(int countryId, int player, int addNumUnits) {
-		// prerequisite: country must be unoccupied or already occupied by this player
-		if (!occupied[countryId]) {
-			occupied[countryId] = true;
-			occupier[countryId] = player;
-		}
-		numUnits[countryId] = numUnits[countryId] + addNumUnits;
-		return;
-	}
-
 	public void addUnits(Card card, Player player, int addNumUnits) {
-		addUnits(card.getCountryId(), player.getId(), addNumUnits);
+		addUnits(card.getCountryId(), player, addNumUnits);
 		return;
 	}
 
 	public void addUnits(int countryId, Player player, int addNumUnits) {
-		addUnits(countryId, player.getId(), addNumUnits);
+		// prerequisite: country must be unoccupied or already occupied by this player
+		if (!occupied[countryId]) {
+			occupied[countryId] = true;
+			occupier[countryId] = player.getId();
+			player.addTerrs(1);
+		}
+		numUnits[countryId] = numUnits[countryId] + addNumUnits;
 		return;
 	}
 
@@ -121,6 +117,11 @@ public class Board {
 
 	public void combat(UI ui, Player player, Player[] players) {
 		int[] attack = ui.attackAction(player);
+		
+		if(attack == null) {
+			ui.displayString(ui.makeLongName(player) + ": This combat skipped.");
+			return;
+		}
 
 		int attackedTerritory = attack[0]; // defending territory must have at least 1 army
 		int attackingTerritory = attack[1]; // the attackingTerritory must be greater than 1.
@@ -133,9 +134,14 @@ public class Board {
 		}
 
 		ui.displayString(
-				"Enter the number of armies you want to use for this attack. You must leave at least 1 army on your"
+				ui.makeLongName(player) + ": Enter the number of armies you want to use for this attack.\nYou must leave at least 1 army on your"
 						+ " territory and you can choose at most 3 armies.");
 		armyNum = ui.inputArmyNum(limit);
+		
+		if(armyNum == 404) {
+			ui.displayString(ui.makeLongName(player) + ": This combat skipped.");
+			return;
+		}
 
 		// roll dice!
 
@@ -144,7 +150,7 @@ public class Board {
 
 		int p1Max = p1Dice.get(0), p1SMax = 0;
 
-		ui.displayString("The result of attacker rolling dice:");
+		ui.displayString(ui.makeLongName(player) + ": The result of attacker rolling dice:");
 		ui.displayString("" + player.getDice());
 
 		for (int i = 0; i < p1Dice.size(); i++) {
@@ -168,7 +174,7 @@ public class Board {
 
 		int p2Max = p2Dice.get(0), p2SMax = 0;
 
-		ui.displayString("The result of defender rolling dice:");
+		ui.displayString(ui.makeLongName(player) + ": The result of defender rolling dice:");
 		ui.displayString("" + player.getDice());
 
 		for (int i = 0; i < p2Dice.size(); i++) {
@@ -184,34 +190,37 @@ public class Board {
 		// System.out.println("test: "+p1Max+", "+p1SMax+" "+p2Max+" "+p2SMax);
 
 		if (p1Max <= p2Max) {
-			ui.displayString("Defender wins the first battle. Attacker loses a unit.");
+			ui.displayString(ui.makeLongName(player) + ": Defender wins the first battle. Attacker loses a unit.");
 			numUnits[attackingTerritory] -= 1;
 			players[occupier[attackingTerritory]].subtractUnits(1);
 		} else {
-			ui.displayString("Attacker wins the first battle. Defender loses a unit.");
+			ui.displayString(ui.makeLongName(player) + ": Attacker wins the first battle. Defender loses a unit.");
 			numUnits[attackedTerritory] -= 1;
 			players[occupier[attackedTerritory]].subtractUnits(1);
 		}
 
 		if (p1Dice.size() > 1 && p2Dice.size() > 1) {
 			if (p1SMax <= p2SMax) {
-				ui.displayString("Defender wins the second battle. Attacker loses a unit.");
+				ui.displayString(ui.makeLongName(player) + ": Defender wins the second battle. Attacker loses a unit.");
 				numUnits[attackingTerritory] -= 1;
 				players[occupier[attackingTerritory]].subtractUnits(1);
 			} else {
-				ui.displayString("Attacker wins the second battle. Defender loses a unit.");
+				ui.displayString(ui.makeLongName(player) + ": Attacker wins the second battle. Defender loses a unit.");
 				numUnits[attackedTerritory] -= 1;
 				players[occupier[attackedTerritory]].subtractUnits(1);
 			}
 		}
 
 		if (numUnits[attackedTerritory] == 0) {
-			ui.displayString("Attacker wins the territory. Please move at least as many armies as you used "
-					+ "in this attack to your new territory.\nEnter the number of armies you want to move:");
+			players[occupier[attackedTerritory]].subtractTerrs(1);
+			ui.displayString(ui.makeLongName(player) + ": Attacker wins the territory.\n"+ui.makeLongName(player) + ": Please move at least as many armies as you used "
+					+ "in this attack to your new territory.\n"+ui.makeLongName(player) + ": Enter the number of armies you want to move:");
 			int movedArmyNum = ui.inputMovedArmyNumber(armyNum, getNumUnits(attackingTerritory));
+			
 			numUnits[attackingTerritory] -= movedArmyNum;
 			occupier[attackedTerritory] = player.getId();
 			numUnits[attackedTerritory] = movedArmyNum;
+			player.addTerrs(1);
 		}
 
 	}
@@ -219,6 +228,11 @@ public class Board {
 	public void fortify(UI ui, Player player) {
 
 		int[] fortify = ui.fortifyAction(player);
+		
+		if(fortify == null) {
+			ui.displayString(ui.makeLongName(player) + ": Fortify skipped.");
+			return;
+		}
 
 		int to = fortify[0];
 		int from = fortify[1];
@@ -227,9 +241,14 @@ public class Board {
 		limit = getNumUnits(from) - 1;
 
 		ui.displayString(
-				"Enter the number of armies you want to use for this attack. You must leave at least 1 army on your"
-						+ "territory and you can choose at most 3 armies.");
+				ui.makeLongName(player) + ": Enter the number of armies you want to use for this fortify.\n"+ui.makeLongName(player) + 
+				": You must leave at least 1 army on your territory.");
 		armyNum = ui.inputArmyNum(limit);
+		
+		if(armyNum == 404) {
+			ui.displayString(ui.makeLongName(player) + ": Fortify skipped.");
+			return;
+		}
 
 		numUnits[to] += armyNum;
 		numUnits[from] -= armyNum;
@@ -248,7 +267,7 @@ public class Board {
 			}
 		}
 
-		// Deal with neutral player’s armies are eliminated
+		// Deal with neutral player armies are eliminated
 		for (playerId = GameData.NUM_PLAYERS; playerId < GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
 			if (GameData.eliminatedPlayers[playerId] == 1) {
 				if (getPlayerArmyNum(playerId) == 0) {
