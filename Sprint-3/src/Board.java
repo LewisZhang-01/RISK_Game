@@ -185,14 +185,20 @@ public class Board {
 		}
 
 		//determine the number of army defender uses.
-		//if only one army on the defending territory, roll dice once, else roll dice twice.
+				//defender select how many armies for defending
+		int def_limit,def_armyNum;
 		if (getNumUnits(attackedTerritory) == 1) {
-			player.rollDice(1);
+			def_limit = 1;
 		} else {
-			player.rollDice(2);
+			def_limit = 2;
 		}
+		ui.displayString(
+				ui.makeLongName(players[occupier[attackedTerritory]]) + ": Enter the number of armies you want to use for this defend.\nYou can only select 1 or 2.");
+		def_armyNum = ui.inputArmyNum(def_limit);
+		players[occupier[attackedTerritory]].rollDice(def_armyNum);
+				
 		//same steps as attacker rolling dice
-		ArrayList<Integer> p2Dice = player.getDice();
+		ArrayList<Integer> p2Dice = players[occupier[attackedTerritory]].getDice();
 
 		int p2Max = p2Dice.get(0), p2SMax = 0;
 
