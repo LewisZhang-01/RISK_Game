@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class Test_Sprint3 {
+class Sprint3Test {
 
 	@Test
 	void test_getOccupieContinent() {

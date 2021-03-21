@@ -203,7 +203,7 @@ public class Board {
 		int p2Max = p2Dice.get(0), p2SMax = 0;
 
 		ui.displayString(ui.makeLongName(player) + ": The result of defender rolling dice:");
-		ui.displayString("" + player.getDice());
+		ui.displayString("" + players[occupier[attackedTerritory]].getDice());
 
 		for (int i = 0; i < p2Dice.size(); i++) {
 			if (p2Max < p2Dice.get(i)) {
