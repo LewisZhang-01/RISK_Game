@@ -534,13 +534,13 @@ public class UI {
 		return fortify;		//send the id of two selected countries back
 	}
 
-
+    //Display winner's message
 	public void displayWinner(Player player) {
 		displayString(makeLongName(player) + " wins the game.");
 		displayString("GAME OVER!");
 		return;
 	}
-	
+	//Display eliminated players
 	public void displayeliminatedPlayers(Player player) {
 		displayString(makeLongName(player) + " is eliminated.");
 		return;

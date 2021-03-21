@@ -293,32 +293,34 @@ public class Board {
 		numUnits[from] -= armyNum;		//sends armies
 	}
 
-	public boolean ifWin(UI ui, Player[] players, Player winner, Player currPlayer, Player eliminatedPlayer, int playerId) {
-		
-		for (playerId = 0; playerId < GameData.NUM_PLAYERS; playerId++) {
-			if (getPlayerArmyNum(playerId) == 0) {
-				if (playerId == 0)
-					winner = players[1];
-				else
-					winner = players[0];
-				ui.displayWinner(winner);
-				return true;
-			}
-		}
-
-		// Deal with neutral player armies are eliminated
-		for (playerId = 2; playerId < 6; playerId++) {
-			if (GameData.eliminatedPlayers[playerId] == 1) {
+	//Check if some one has been win the game, if it is, end the game.
+		public boolean ifWin(UI ui, Player[] players, Player winner, Player currPlayer, Player eliminatedPlayer, int playerId) {
+			
+			for (playerId = 0; playerId < GameData.NUM_PLAYERS; playerId++) {
 				if (getPlayerArmyNum(playerId) == 0) {
-					GameData.eliminatedPlayers[playerId] = -1;
-					eliminatedPlayer = players[playerId];
-					ui.displayeliminatedPlayers(eliminatedPlayer);
-					return false;
+					if (playerId == 0)
+						winner = players[1];
+					else
+						winner = players[0];
+					ui.displayWinner(winner);
+					return true;
 				}
 			}
+
+			// Deal with neutral player armies are eliminated
+			for (playerId = GameData.NUM_PLAYERS; playerId < GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
+				if (GameData.eliminatedPlayers[playerId] == 1) {
+					if (getPlayerArmyNum(playerId) == 0) {
+						//If the neutral player armies are eliminated, give it value of -1 to make it not having a turn, and output a message.
+						GameData.eliminatedPlayers[playerId] = -1;
+						eliminatedPlayer = players[playerId];
+						ui.displayeliminatedPlayers(eliminatedPlayer);
+						return false;
+					}
+				}
+			}
+			return false;
 		}
-		return false;
-	}
 	
 	// get total army number of player through player id.
 	public int getPlayerArmyNum(int playerId) {
