@@ -79,4 +79,28 @@ public final class GameData {
 	    //this prevents even the native class from calling this constructor
 	    throw new AssertionError();
     }
+    
+
+	//Type of each card
+    public static final Card.type[] cardType = {Card.type.Cavalry,Card.type.Artillery,Card.type.Artillery,
+							Card.type.Infantry,Card.type.Cavalry,Card.type.Artillery,
+							Card.type.Infantry,Card.type.Cavalry,Card.type.Infantry,
+							Card.type.Cavalry,Card.type.Infantry,Card.type.Cavalry,
+							Card.type.Artillery,Card.type.Cavalry,Card.type.Infantry,
+							Card.type.Artillery,Card.type.Infantry,Card.type.Infantry,
+							Card.type.Artillery,Card.type.Infantry,Card.type.Cavalry,
+							Card.type.Cavalry,Card.type.Cavalry,Card.type.Artillery,
+							Card.type.Infantry,Card.type.Artillery,Card.type.Artillery,
+							Card.type.Cavalry,Card.type.Infantry,Card.type.Cavalry,
+							Card.type.Artillery,Card.type.Cavalry,Card.type.Artillery,
+							Card.type.Cavalry,Card.type.Artillery,Card.type.Infantry,
+							Card.type.Cavalry,Card.type.Infantry,Card.type.Artillery,
+							Card.type.Infantry,Card.type.Artillery,Card.type.Infantry};
+	
+    //the path of the graphs of cards
+    public static final String[] path = {"images/cards/1.jpg","images/cards/2.jpg","images/cards/3.jpg","images/cards/4.jpg","images/cards/5.jpg","images/cards/6.jpg","images/cards/7.jpg","images/cards/8.jpg","images/cards/9.jpg",
+  			 "images/cards/10.jpg","images/cards/11.jpg","images/cards/12.jpg","images/cards/13.jpg","images/cards/14.jpg","images/cards/15.jpg","images/cards/16.jpg","images/cards/17.jpg","images/cards/18.jpg",
+  			 "images/cards/19.jpg","images/cards/20.jpg","images/cards/21.jpg","images/cards/22.jpg","images/cards/23.jpg","images/cards/24.jpg","images/cards/25.jpg","images/cards/26.jpg","images/cards/27.jpg",
+  			 "images/cards/28.jpg","images/cards/29.jpg","images/cards/30.jpg","images/cards/31.jpg","images/cards/32.jpg","images/cards/33.jpg","images/cards/34.jpg","images/cards/35.jpg","images/cards/36.jpg",
+  			 "images/cards/37.jpg","images/cards/38.jpg","images/cards/39.jpg","images/cards/40.jpg","images/cards/41.jpg","images/cards/42.jpg"};
 }

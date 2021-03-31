@@ -1,5 +1,6 @@
+import java.util.ArrayList;
 
-public class Sprint3 {
+public class Sprint4 {
 
 	public static void main (String args[]) {	   
 		Board board = new Board();
@@ -9,6 +10,8 @@ public class Sprint3 {
 		Card card;
 		int playerId, otherPlayerId, numUnits, numCards, attackUnits, defenceUnits, countryId, attackCountryId, defenceCountryId;
 		String name;
+		ArrayList<Card> p1_cardset = new ArrayList<Card>();
+		ArrayList<Card> p2_cardset = new ArrayList<Card>();
 		
 		ui.displayString("ENTER PLAYER NAMES");
 		ui.displayMap();
@@ -123,11 +126,21 @@ public class Sprint3 {
 					board.calcBattle(currPlayer,defencePlayer,attackCountryId,defenceCountryId,attackUnits,defenceUnits);
 					ui.displayBattle(currPlayer,defencePlayer);
 					ui.displayMap();
+					
 					if ( board.isInvasionSuccess() && (board.getNumUnits(attackCountryId) > 1) ) {
 						ui.inputMoveIn(currPlayer,attackCountryId);
 						board.subtractUnits(attackCountryId, ui.getNumUnits());
 						board.addUnits(defenceCountryId, currPlayer, ui.getNumUnits());
 						ui.displayMap();
+						
+						
+						
+						/* Card part */
+						ui.displayString("Player ["+currPlayer.getName()+"] DRAW TERRITORY CARDS");		
+						deck.drawCard(board,ui,playerId,p1_cardset,p2_cardset);
+						
+						
+						
 					}
 				} 
 				

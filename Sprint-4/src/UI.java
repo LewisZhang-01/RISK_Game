@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 
+
 public class UI {
 
 	private static final int FRAME_WIDTH = 1000;
@@ -13,6 +14,7 @@ public class UI {
 	private CommandPanel commandPanel = new CommandPanel();
 	private Parse parse = new Parse();
 	private Board board;
+	
 	
 	UI (Board inBoard) {
 		board = inBoard;
@@ -268,6 +270,40 @@ public class UI {
 			}
 		} while (!responseOK);
 		return;		
+	}
+	
+	
+
+	public String inputDrawChoose () {
+		String response;
+		boolean responseOK = false;
+		do {
+			response = commandPanel.getCommand();
+			displayString(PROMPT + response);
+			
+			if (response.equals("draw")) {
+				responseOK = true;
+			} else {
+				displayString("Error: Incorrect command! [hint] enter: draw");
+			}
+		} while (!responseOK);
+		return response;		
+	}
+	
+	public String inputTradeChoose () {
+		String response;
+		boolean responseOK = false;
+		do {
+			response = commandPanel.getCommand();
+			displayString(PROMPT + response);
+			
+			if (!response.equals("trade")) {
+				displayString("Error: Incorrect command! [hint] enter: trade");
+			} else {
+				responseOK = true;
+			}
+		} while (!responseOK);
+		return response;		
 	}
 }
 
