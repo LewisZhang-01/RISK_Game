@@ -244,8 +244,7 @@ public class Deck {
 						// when card type is Infantry, and no more than 3 Infantry cards have been
 						// removed,
 						// remove this card from inventory.
-						cards.add(cardSet.remove(i)); // remove the card from user inventory and add it back to game
-														// deck
+						cardSet.remove(i);				 // remove the card from user inventory
 						i--; // remove a card decreases the index
 						count++; // one more card has been removed
 					}
@@ -254,7 +253,7 @@ public class Deck {
 				int count = 0;
 				for (int i = 0; i < cardSet.size(); i++) {
 					if (cardSet.get(i).getType().equals(Card.type.Artillery) && count < 3) {
-						cards.add(cardSet.remove(i));
+						cardSet.remove(i);
 						i--;
 						count++;
 					}
@@ -263,7 +262,7 @@ public class Deck {
 				int count = 0;
 				for (int i = 0; i < cardSet.size(); i++) {
 					if (cardSet.get(i).getType().equals(Card.type.Cavalry) && count < 3) {
-						cards.add(cardSet.remove(i));
+						cardSet.remove(i);
 						i--;
 						count++;
 					}
@@ -276,22 +275,22 @@ public class Deck {
 				for (int i = 0; i < cardSet.size(); i++) {
 					if (first_i == 0 && cardSet.get(i).getType().equals(Card.type.Infantry)) {
 						// remove the first infantry card found
-						cards.add(cardSet.remove(i));
+						cardSet.remove(i);
 						i--;
 						first_i++; // first infantry is found, no more infantry cards need to be delete
 					} else if (first_c == 0 && cardSet.get(i).getType().equals(Card.type.Cavalry)) {
 						// remove the first cavalry card found
-						cards.add(cardSet.remove(i));
+						cardSet.remove(i);
 						i--;
 						first_c++;
 					} else if (first_a == 0 && cardSet.get(i).getType().equals(Card.type.Artillery)) {
 						// remove the first artillery card found
-						cards.add(cardSet.remove(i));
+						cardSet.remove(i);
 						i--;
 						first_a++;
 					} else if (first_w == 0 && cardSet.get(i).getType().equals(Card.type.Artillery)) {
 						// remove the first artillery card found
-						cards.add(cardSet.remove(i));
+						cardSet.remove(i);
 						i--;
 						first_w++;
 					}
