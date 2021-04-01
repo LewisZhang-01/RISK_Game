@@ -18,8 +18,8 @@ public class Deck {
 		for (cardId = 0; cardId < GameData.NUM_COUNTRIES; cardId++) {
 			cards.add(new Card(cardId, GameData.COUNTRY_NAMES[cardId], GameData.cardType[cardId]));
 		}
-		//Add extra 2 wild cards.
-		for (cardId = GameData.NUM_COUNTRIES; cardId < GameData.NUM_COUNTRIES+2; cardId++) {
+		// Add extra 2 wild cards.
+		for (cardId = GameData.NUM_COUNTRIES; cardId < GameData.NUM_COUNTRIES + 2; cardId++) {
 			cards.add(new Card(cardId, "Wild Card", GameData.cardType[cardId]));
 		}
 		return;
@@ -43,7 +43,7 @@ public class Deck {
 	private int Dice() {
 		return (int) (Math.random() * cards.size());
 	}
-	
+
 	public Card draw() {
 		int cardNum = Dice(); // roll dice to decide which card is drawn
 		Card removed = cards.remove(cardNum); // remove the card being drawn from the deck
@@ -175,8 +175,9 @@ public class Deck {
 	}
 
 	public ArrayList<Card> trade(UI ui, Board board, int playerId, Player currPlayer, ArrayList<Card> cardSet) {
-		int inf, art, cav;
-		inf = art = cav = 0; // inf for type Infantry, art for type Artillery, cav for type Cavalry
+		int inf, art, cav, wild;
+		inf = art = cav = wild = 0; // inf for type Infantry, art for type Artillery, cav for type Cavalry, wild for
+									// wild card
 
 		// count the number of each type of cards player own
 		for (int i = 0; i < cardSet.size(); i++) {
@@ -187,13 +188,17 @@ public class Deck {
 			case Artillery:
 				art++;
 				break;
-			default:
+			case Cavalry:
 				cav++;
+				break;
+			default:
+				wild++;
 				break;
 			}
 		}
 
-		if (inf >= 3 || art >= 3 || cav >= 3 || (inf > 0 && art > 0 && cav > 0)) { // when player have a set of cards
+		if (inf + wild >= 3 || art + wild >= 3 || cav + wild >= 3
+				|| (inf + wild > 0 && art + wild > 0 && cav + wild > 0)) { // when player have a set of cards
 			int armiesGet = 0; // the number of extra armies players get from trading cards
 
 			// calculate the extra armies players get
@@ -203,7 +208,7 @@ public class Deck {
 				armiesGet = (tradeNumber - 6) * 5 + 15;
 			}
 
-			if (inf >= 3) { // 3 infantry set
+			if (inf + wild >= 3) { // 3 infantry set
 				int count = 0; // count whether 3 cards have been removed from players' inventory
 				for (int i = 0; i < cardSet.size(); i++) {
 					if (cardSet.get(i).getType().equals(Card.type.Infantry) && count < 3) {
@@ -211,12 +216,12 @@ public class Deck {
 						// removed,
 						// remove this card from inventory.
 						cards.add(cardSet.remove(i)); // remove the card from user inventory and add it back to game
-															// deck
+														// deck
 						i--; // remove a card decreases the index
 						count++; // one more card has been removed
 					}
 				}
-			} else if (art >= 3) { // 3 artillery set, similar to infantry
+			} else if (art + wild >= 3) { // 3 artillery set, similar to infantry
 				int count = 0;
 				for (int i = 0; i < cardSet.size(); i++) {
 					if (cardSet.get(i).getType().equals(Card.type.Artillery) && count < 3) {
@@ -225,7 +230,7 @@ public class Deck {
 						count++;
 					}
 				}
-			} else if (cav >= 3) { // 3 cavalry set, similar to infantry
+			} else if (cav + wild >= 3) { // 3 cavalry set, similar to infantry
 				int count = 0;
 				for (int i = 0; i < cardSet.size(); i++) {
 					if (cardSet.get(i).getType().equals(Card.type.Cavalry) && count < 3) {
@@ -238,6 +243,7 @@ public class Deck {
 				int first_i = 0; // to record the deletion of first infantry card
 				int first_c = 0; // to record the deletion of first cavalry card
 				int first_a = 0; // to record the deletion of first artillery card
+				int first_w = 0; // to record the deletion of first wild card
 				for (int i = 0; i < cardSet.size(); i++) {
 					if (first_i == 0 && cardSet.get(i).getType().equals(Card.type.Infantry)) {
 						// remove the first infantry card found
@@ -254,6 +260,11 @@ public class Deck {
 						cards.add(cardSet.remove(i));
 						i--;
 						first_a++;
+					} else if (first_w == 0 && cardSet.get(i).getType().equals(Card.type.Artillery)) {
+						// remove the first artillery card found
+						cards.add(cardSet.remove(i));
+						i--;
+						first_w++;
 					}
 				}
 			}
