@@ -2,7 +2,7 @@
 public class Card {
 	
 	private int countryId;
-	public enum type{Infantry,Cavalry,Artillery};
+	public enum type{Infantry,Cavalry,Artillery,Wild};
 	private type cardType;
 	private String countryName;
 
