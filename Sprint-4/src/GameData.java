@@ -83,20 +83,20 @@ public final class GameData {
 
 	//Type of each card
     public static final Card.type[] cardType = {Card.type.Cavalry,Card.type.Artillery,Card.type.Artillery,
-							Card.type.Infantry,Card.type.Cavalry,Card.type.Artillery,
-							Card.type.Infantry,Card.type.Cavalry,Card.type.Infantry,
-							Card.type.Cavalry,Card.type.Infantry,Card.type.Cavalry,
-							Card.type.Artillery,Card.type.Cavalry,Card.type.Infantry,
-							Card.type.Artillery,Card.type.Infantry,Card.type.Infantry,
-							Card.type.Artillery,Card.type.Infantry,Card.type.Cavalry,
-							Card.type.Cavalry,Card.type.Cavalry,Card.type.Artillery,
-							Card.type.Infantry,Card.type.Artillery,Card.type.Artillery,
-							Card.type.Cavalry,Card.type.Infantry,Card.type.Cavalry,
-							Card.type.Artillery,Card.type.Cavalry,Card.type.Artillery,
-							Card.type.Cavalry,Card.type.Artillery,Card.type.Infantry,
-							Card.type.Cavalry,Card.type.Infantry,Card.type.Artillery,
-							Card.type.Infantry,Card.type.Artillery,Card.type.Infantry,
-							Card.type.Wild,Card.type.Wild};
+    											Card.type.Infantry,Card.type.Cavalry,Card.type.Artillery,
+    											Card.type.Infantry,Card.type.Cavalry,Card.type.Infantry,
+    											Card.type.Cavalry,Card.type.Infantry,Card.type.Cavalry,
+    											Card.type.Artillery,Card.type.Cavalry,Card.type.Infantry,
+    											Card.type.Artillery,Card.type.Infantry,Card.type.Infantry,
+    											Card.type.Artillery,Card.type.Infantry,Card.type.Cavalry,
+    											Card.type.Cavalry,Card.type.Cavalry,Card.type.Artillery,
+    											Card.type.Infantry,Card.type.Artillery,Card.type.Artillery,
+    											Card.type.Cavalry,Card.type.Infantry,Card.type.Cavalry,
+    											Card.type.Artillery,Card.type.Cavalry,Card.type.Artillery,
+    											Card.type.Cavalry,Card.type.Artillery,Card.type.Infantry,
+    											Card.type.Cavalry,Card.type.Infantry,Card.type.Artillery,
+    											Card.type.Infantry,Card.type.Artillery,Card.type.Infantry,
+    											Card.type.Wild,Card.type.Wild};
 	
     //the path of the graphs of cards
     public static final String[] path = {"images/cards/1.jpg","images/cards/2.jpg","images/cards/3.jpg","images/cards/4.jpg","images/cards/5.jpg","images/cards/6.jpg","images/cards/7.jpg","images/cards/8.jpg","images/cards/9.jpg",

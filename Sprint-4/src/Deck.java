@@ -19,9 +19,10 @@ public class Deck {
 			cards.add(new Card(cardId, GameData.COUNTRY_NAMES[cardId], GameData.cardType[cardId]));
 		}
 		// Add extra 2 wild cards.
-		for (cardId = GameData.NUM_COUNTRIES; cardId < GameData.NUM_COUNTRIES + 2; cardId++) {
-			cards.add(new Card(cardId, "Wild Card", GameData.cardType[cardId]));
-		}
+		
+		cards.add(new Card(42, "Wild Card", GameData.cardType[42]));
+		cards.add(new Card(43, "Wild Card", GameData.cardType[43]));
+		
 		return;
 	}
 
@@ -51,9 +52,25 @@ public class Deck {
 		return (int) (Math.random() * cards.size());
 	}
 
-	public Card draw() {
-		int cardNum = Dice(); // roll dice to decide which card is drawn
-		Card removed = cards.remove(cardNum); // remove the card being drawn from the deck
+	public Card draw(ArrayList<Card> p1_cardset, ArrayList<Card> p2_cardset) {
+		int cardNum = 0; 
+		boolean repeat = true;
+		while(repeat) {			// roll dice to decide which card is drawn
+			repeat = false;
+			cardNum = Dice();
+			
+			for(int i = 0; i < p1_cardset.size(); i++) {
+				if(p1_cardset.get(i).getCountryId() == cardNum) {
+					repeat = true;
+				}
+			}
+			
+			for(int i = 0; i < p2_cardset.size(); i++) {
+				if(p1_cardset.get(i).getCountryId() == cardNum) {
+					repeat = true;
+				}
+			}
+		}
 
 		// display the card in another frame
 		JFrame frame = new JFrame();
@@ -92,7 +109,7 @@ public class Deck {
 
 		frame.setVisible(true);
 
-		return removed;
+		return cards.get(cardNum);
 	}
 
 	// Enable players to see what cards they own in another frame.
@@ -113,7 +130,7 @@ public class Deck {
 		for (int i = 0; i < cardSet.size(); i++) {
 			// Add Card Photo Part as above
 			int cardNo = cardSet.get(i).getCountryId();
-
+			System.out.println("trade: "+GameData.COUNTRY_NAMES[cardNo]);
 			ImageIcon icon = new ImageIcon(GameData.path[cardNo]);
 
 			// put photo into lable
@@ -145,9 +162,9 @@ public class Deck {
 
 		if (mode.equals("draw")) {
 			if (playerId == 0) {
-				p1_cardset.add(draw());
+				p1_cardset.add(draw(p1_cardset,p2_cardset));
 			} else {
-				p2_cardset.add(draw());
+				p2_cardset.add(draw(p1_cardset,p2_cardset));
 			}
 		}
 
