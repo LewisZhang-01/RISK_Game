@@ -99,7 +99,7 @@ public class SprintTest {
 						
 						/* Card part */
 						ui.displayString("Player ["+currPlayer.getName()+"] DRAW TERRITORY CARDS");		
-						deck.drawCard(board,ui,playerId,p1_cardset,p2_cardset);
+						deck.drawCard(board,ui,playerId,currPlayer, p1_cardset,p2_cardset);
 						
 					}
 				} 

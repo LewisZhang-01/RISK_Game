@@ -108,7 +108,6 @@ public class Sprint4 {
 				board.addUnits(ui.getCountryId(),currPlayer,ui.getNumUnits());	
 				ui.displayMap();
 			} while (currPlayer.getNumUnits() > 0);
-
 			// 2. Combat
 			do {
 				ui.inputBattle(currPlayer);
@@ -137,7 +136,7 @@ public class Sprint4 {
 						
 						/* Card part */
 						ui.displayString("Player ["+currPlayer.getName()+"] DRAW TERRITORY CARDS");		
-						deck.drawCard(board,ui,playerId,p1_cardset,p2_cardset);
+						deck.drawCard(board,ui,playerId,currPlayer, p1_cardset,p2_cardset);
 						
 						
 						
