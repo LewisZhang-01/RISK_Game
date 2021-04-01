@@ -40,6 +40,13 @@ public class Deck {
 		return card;
 	}
 
+	public void getBackgroundPicture(JLabel bglabel, JPanel contentPane, String path){
+		ImageIcon background = new ImageIcon(path);
+		bglabel.setIcon(background);
+		bglabel.setBounds(0, 0, background.getIconWidth(), background.getIconHeight());
+		contentPane.setOpaque(false);
+	}
+	
 	private int Dice() {
 		return (int) (Math.random() * cards.size());
 	}
@@ -55,36 +62,34 @@ public class Deck {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setResizable(false);
 
+		// set background label
+		JLabel bglabel = new JLabel();
+		JPanel contentPane = (JPanel) frame.getContentPane();
+		getBackgroundPicture(bglabel,contentPane,"images/CardImage.png");
+		frame.getLayeredPane().add(bglabel,new Integer(Integer.MIN_VALUE));
+		
 		// information of the card
 		JLabel cName = new JLabel(GameData.COUNTRY_NAMES[cardNum]);
 		JLabel cType = new JLabel(GameData.cardType[cardNum].toString());
-
-		// panel holds information
-		JPanel panel1 = new JPanel();
-		JPanel panel2 = new JPanel();
-		panel1.add(cName, BorderLayout.SOUTH);
-		panel2.add(cType, BorderLayout.NORTH);
-
+		cName.setHorizontalAlignment(JLabel.CENTER);
+		cType.setHorizontalAlignment(JLabel.CENTER);
+		
+		// get card photo
 		ImageIcon icon = new ImageIcon(GameData.path[cardNum]);
-
 		// put photo into lable
-		JLabel label = new JLabel(icon);
-
+		JLabel cPhoto = new JLabel(icon);
 		// set label size
-		label.setBounds(5, 25, icon.getIconWidth(), icon.getIconHeight());
+		cPhoto.setBounds(5, 25, icon.getIconWidth(), icon.getIconHeight());
 
-		// Gets the second layer of the window and places the Label in.
-		frame.getLayeredPane().add(label, Integer.MIN_VALUE);
-
+		// add labels into frame.
+		frame.add(cType, BorderLayout.NORTH);
+		frame.add(cPhoto, BorderLayout.CENTER);
+		frame.add(cName, BorderLayout.SOUTH);
+		
 		// Gets the top-level container of the Frame and sets it to transparent.
 		JPanel j = (JPanel) frame.getContentPane();
 		j.setOpaque(false);
 
-		// end
-
-		// add information panel to the frame
-		frame.add(panel1, BorderLayout.SOUTH);
-		frame.add(panel2, BorderLayout.NORTH);
 		frame.setVisible(true);
 
 		return removed;
@@ -98,6 +103,13 @@ public class Deck {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setResizable(false);
 
+
+		// set background label
+		JLabel bglabel = new JLabel();
+		JPanel contentPane = (JPanel) frame.getContentPane();
+		getBackgroundPicture(bglabel,contentPane,"images/DeckImage.jpg");
+		frame.getLayeredPane().add(bglabel,new Integer(Integer.MIN_VALUE));
+		
 		for (int i = 0; i < cardSet.size(); i++) {
 			// Add Card Photo Part as above
 			int cardNo = cardSet.get(i).getCountryId();

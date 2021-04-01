@@ -72,10 +72,16 @@ class MapPanel extends JPanel {
 		return;
 	}
 
+	private Image image=new ImageIcon("images/MapPanelImage.jpg").getImage();
+	
     public void paintComponent(Graphics g) {
     	int xPos, yPos, xPosBegin, yPosBegin, xPosEnd, yPosEnd;
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+        
+        //Display Background Image
+        g.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), this);
+        
         // Display adjacent lines
         g2.setStroke(new BasicStroke(ADJACENT_LINE));
         g2.setColor(ADJACENT_COLOR);
