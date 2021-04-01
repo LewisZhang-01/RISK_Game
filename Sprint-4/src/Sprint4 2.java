@@ -1,19 +1,18 @@
 import java.util.ArrayList;
 
-public class SprintTest {
-	
+public class Sprint4 {
+
 	public static void main (String args[]) {	   
 		Board board = new Board();
 		UI ui = new UI(board);
 		Player[] players = new Player[GameData.NUM_PLAYERS_PLUS_NEUTRALS];
 		Player currPlayer, otherPlayer, defencePlayer;
-		int playerId, otherPlayerId, numUnits, attackUnits, defenceUnits, attackCountryId, defenceCountryId;
+		Card card;
+		int playerId, otherPlayerId, numUnits, numCards, attackUnits, defenceUnits, countryId, attackCountryId, defenceCountryId;
 		String name;
-		Deck deck = new Deck();
 		ArrayList<Card> p1_cardset = new ArrayList<Card>();
 		ArrayList<Card> p2_cardset = new ArrayList<Card>();
 		
-		ui.displayString("***********TEST***********");
 		ui.displayString("ENTER PLAYER NAMES");
 		ui.displayMap();
 		for (playerId=0; playerId<GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
@@ -25,42 +24,79 @@ public class SprintTest {
 			}
 			players[playerId] = new Player (playerId, name, 0);
 		}
-
-		//hard code assign player to 0 (red)
-		playerId = 0;
-		currPlayer = players[0];
-		//give player 0 (red) all countries and each country assign specific units.
-		//red
-		for(int i=0;i<9;i++) {
-			board.addUnits(i, players[0], 50);
-		}
-		//blue
-		for(int i=9;i<18;i++) {
-			board.addUnits(i, players[1], 3);
-		}
-		//yello
-		for(int i=18;i<24;i++) {
-			board.addUnits(i, players[2], 3);
-		}
-		//green
-		for(int i=24;i<30;i++) {
-			board.addUnits(i, players[3], 3);
-		}
-		//magent
-		for(int i=30;i<36;i++) {
-			board.addUnits(i, players[4], 3);
-		}
-		//white
-		for(int i=36;i<42;i++) {
-			board.addUnits(i, players[5], 3);
+		
+		ui.displayString("\nDRAW TERRITORY CARDS FOR STARTING COUNTRIES");
+		Deck deck = new Deck();
+		for (playerId=0; playerId<GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
+			currPlayer = players[playerId];
+			if (playerId < GameData.NUM_PLAYERS) {
+				numCards = GameData.INIT_COUNTRIES_PLAYER;
+			} else {
+				numCards = GameData.INIT_COUNTRIES_NEUTRAL;
+			}
+			for (int c=0; c<numCards; c++) {
+				card = deck.getCard();
+				ui.displayCardDraw(currPlayer, card);
+				board.addUnits(card, currPlayer, 1);
+			}
 		}
 		ui.displayMap();
+		
+		ui.displayString("\nROLL DICE TO SEE WHO REINFORCES THEIR COUNTRIES FIRST");
+		do {
+			for (int i=0; i<GameData.NUM_PLAYERS; i++) {
+				players[i].rollDice(1);
+				ui.displayDice(players[i]);
+			}
+		} while (players[0].getDie(0) == players[1].getDie(0)); 
+		if (players[0].getDie(0) > players[1].getDie(0)) {
+			playerId = 0;
+		} else {
+			playerId = 1;
+		}
+		currPlayer = players[playerId];
+		ui.displayRollWinner(currPlayer);
+		
+		ui.displayString("\nREINFORCE INITIAL COUNTRIES");
+		for (int r=0; r<2*GameData.NUM_REINFORCE_ROUNDS; r++) {
+			ui.displayReinforcements(currPlayer, 3);
+			currPlayer.addUnits(3);
+			do {
+				ui.inputReinforcement(currPlayer);
+				currPlayer.subtractUnits(ui.getNumUnits());
+				board.addUnits(ui.getCountryId(), currPlayer, ui.getNumUnits());
+				ui.displayMap();
+			} while (currPlayer.getNumUnits() > 0);
+			ui.displayMap();
+			for (int p=GameData.NUM_PLAYERS; p<GameData.NUM_PLAYERS_PLUS_NEUTRALS; p++) {
+				ui.inputPlacement(currPlayer, players[p]);
+				countryId = ui.getCountryId();
+				board.addUnits(countryId, players[p], 1);	
+				ui.displayMap();
+			}
+			playerId = (++playerId)%GameData.NUM_PLAYERS;
+			currPlayer = players[playerId];
+		}
+		
+		ui.displayString("\nROLL DICE TO SEE WHO TAKES THE FIRST TURN");
+		do {
+			for (int i=0; i<GameData.NUM_PLAYERS; i++) {
+				players[i].rollDice(1);
+				ui.displayDice(players[i]);
+			}
+		} while (players[0].getDie(0) == players[1].getDie(0)); 
+		if (players[0].getDie(0) > players[1].getDie(0)) {
+			playerId = 0;
+		} else {
+			playerId = 1;
+		}
+		currPlayer = players[playerId];
+		ui.displayRollWinner(currPlayer);
 		
 		ui.displayString("\nSTART TURNS");
 		do {
 			otherPlayerId = (playerId+1)%GameData.NUM_PLAYERS;
 			otherPlayer = players[otherPlayerId];
-			int conquestRecord = 0;
 			
 			// 1. Reinforcements
 			numUnits = board.calcReinforcements(currPlayer);
@@ -72,7 +108,6 @@ public class SprintTest {
 				board.addUnits(ui.getCountryId(),currPlayer,ui.getNumUnits());	
 				ui.displayMap();
 			} while (currPlayer.getNumUnits() > 0);
-
 			// 2. Combat
 			do {
 				ui.inputBattle(currPlayer);
@@ -97,7 +132,14 @@ public class SprintTest {
 						board.addUnits(defenceCountryId, currPlayer, ui.getNumUnits());
 						ui.displayMap();
 						
-						conquestRecord++;
+						
+						
+						/* Card part */
+						ui.displayString("Player ["+currPlayer.getName()+"] DRAW TERRITORY CARDS");		
+						deck.drawCard(board,ui,playerId,currPlayer, p1_cardset,p2_cardset);
+						
+						
+						
 					}
 				} 
 				
@@ -113,13 +155,6 @@ public class SprintTest {
 				}
 			}			
 
-			/* Card part */
-			// if player conquered at lease 1 territory, then player can get one card.
-			if(conquestRecord >=1) {
-				ui.displayString("Player ["+currPlayer.getName()+"] DRAW TERRITORY CARDS");		
-				deck.drawCard(board,ui,playerId,currPlayer, p1_cardset,p2_cardset);
-			}
-			
 			playerId = (playerId+1)%GameData.NUM_PLAYERS;
 			currPlayer = players[playerId];			
 
@@ -129,10 +164,6 @@ public class SprintTest {
 		ui.displayString("GAME OVER");
 		
 		return;
-		
-		
-		
-		
 	}
 
 }

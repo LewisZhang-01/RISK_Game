@@ -60,7 +60,6 @@ public class SprintTest {
 		do {
 			otherPlayerId = (playerId+1)%GameData.NUM_PLAYERS;
 			otherPlayer = players[otherPlayerId];
-			int conquestRecord = 0;
 			
 			// 1. Reinforcements
 			numUnits = board.calcReinforcements(currPlayer);
@@ -97,7 +96,11 @@ public class SprintTest {
 						board.addUnits(defenceCountryId, currPlayer, ui.getNumUnits());
 						ui.displayMap();
 						
-						conquestRecord++;
+						
+						/* Card part */
+						ui.displayString("Player ["+currPlayer.getName()+"] DRAW TERRITORY CARDS");		
+						deck.drawCard(board,ui,playerId,currPlayer, p1_cardset,p2_cardset);
+						
 					}
 				} 
 				
@@ -113,13 +116,6 @@ public class SprintTest {
 				}
 			}			
 
-			/* Card part */
-			// if player conquered at lease 1 territory, then player can get one card.
-			if(conquestRecord >=1) {
-				ui.displayString("Player ["+currPlayer.getName()+"] DRAW TERRITORY CARDS");		
-				deck.drawCard(board,ui,playerId,currPlayer, p1_cardset,p2_cardset);
-			}
-			
 			playerId = (playerId+1)%GameData.NUM_PLAYERS;
 			currPlayer = players[playerId];			
 
