@@ -19,10 +19,10 @@ public class Deck {
 			cards.add(new Card(cardId, GameData.COUNTRY_NAMES[cardId], GameData.cardType[cardId]));
 		}
 		// Add extra 2 wild cards.
-		
+
 		cards.add(new Card(42, "Wild Card", GameData.cardType[42]));
 		cards.add(new Card(43, "Wild Card", GameData.cardType[43]));
-		
+
 		return;
 	}
 
@@ -41,32 +41,32 @@ public class Deck {
 		return card;
 	}
 
-	public void getBackgroundPicture(JLabel bglabel, JPanel contentPane, String path){
+	public void getBackgroundPicture(JLabel bglabel, JPanel contentPane, String path) {
 		ImageIcon background = new ImageIcon(path);
 		bglabel.setIcon(background);
 		bglabel.setBounds(0, 0, background.getIconWidth(), background.getIconHeight());
 		contentPane.setOpaque(false);
 	}
-	
+
 	private int Dice() {
 		return (int) (Math.random() * cards.size());
 	}
 
 	public Card draw(ArrayList<Card> p1_cardset, ArrayList<Card> p2_cardset) {
-		int cardNum = 0; 
+		int cardNum = 0;
 		boolean repeat = true;
-		while(repeat) {			// roll dice to decide which card is drawn
+		while (repeat) { // roll dice to decide which card is drawn
 			repeat = false;
 			cardNum = Dice();
-			
-			for(int i = 0; i < p1_cardset.size(); i++) {
-				if(p1_cardset.get(i).getCountryId() == cardNum) {
+
+			for (int i = 0; i < p1_cardset.size(); i++) {
+				if (p1_cardset.get(i).getCountryId() == cardNum) {
 					repeat = true;
 				}
 			}
-			
-			for(int i = 0; i < p2_cardset.size(); i++) {
-				if(p1_cardset.get(i).getCountryId() == cardNum) {
+
+			for (int i = 0; i < p2_cardset.size(); i++) {
+				if (p1_cardset.get(i).getCountryId() == cardNum) {
 					repeat = true;
 				}
 			}
@@ -82,15 +82,15 @@ public class Deck {
 		// set background label
 		JLabel bglabel = new JLabel();
 		JPanel contentPane = (JPanel) frame.getContentPane();
-		getBackgroundPicture(bglabel,contentPane,"images/CardImage.png");
-		frame.getLayeredPane().add(bglabel,new Integer(Integer.MIN_VALUE));
-		
+		getBackgroundPicture(bglabel, contentPane, "images/CardImage.png");
+		frame.getLayeredPane().add(bglabel, new Integer(Integer.MIN_VALUE));
+
 		// information of the card
 		JLabel cName = new JLabel(GameData.COUNTRY_NAMES[cardNum]);
 		JLabel cType = new JLabel(GameData.cardType[cardNum].toString());
 		cName.setHorizontalAlignment(JLabel.CENTER);
 		cType.setHorizontalAlignment(JLabel.CENTER);
-		
+
 		// get card photo
 		ImageIcon icon = new ImageIcon(GameData.path[cardNum]);
 		// put photo into lable
@@ -102,7 +102,7 @@ public class Deck {
 		frame.add(cType, BorderLayout.NORTH);
 		frame.add(cPhoto, BorderLayout.CENTER);
 		frame.add(cName, BorderLayout.SOUTH);
-		
+
 		// Gets the top-level container of the Frame and sets it to transparent.
 		JPanel j = (JPanel) frame.getContentPane();
 		j.setOpaque(false);
@@ -120,17 +120,16 @@ public class Deck {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setResizable(false);
 
-
 		// set background label
 		JLabel bglabel = new JLabel();
 		JPanel contentPane = (JPanel) frame.getContentPane();
-		getBackgroundPicture(bglabel,contentPane,"images/DeckImage.jpg");
-		frame.getLayeredPane().add(bglabel,new Integer(Integer.MIN_VALUE));
-		
+		getBackgroundPicture(bglabel, contentPane, "images/DeckImage.jpg");
+		frame.getLayeredPane().add(bglabel, new Integer(Integer.MIN_VALUE));
+
 		for (int i = 0; i < cardSet.size(); i++) {
 			// Add Card Photo Part as above
 			int cardNo = cardSet.get(i).getCountryId();
-			System.out.println("trade: "+GameData.COUNTRY_NAMES[cardNo]);
+			System.out.println("trade: " + GameData.COUNTRY_NAMES[cardNo]);
 			ImageIcon icon = new ImageIcon(GameData.path[cardNo]);
 
 			// put photo into lable
@@ -153,7 +152,7 @@ public class Deck {
 		frame.setVisible(true);
 	}
 
-	public void drawCard(Board board, UI ui, int playerId, Player currPlayer, ArrayList<Card> p1_cardset,
+	public void drawCard(Board board, UI ui, int playerId, int numUnits, Player currPlayer, ArrayList<Card> p1_cardset,
 			ArrayList<Card> p2_cardset) {
 
 		ui.displayString(
@@ -162,9 +161,9 @@ public class Deck {
 
 		if (mode.equals("draw")) {
 			if (playerId == 0) {
-				p1_cardset.add(draw(p1_cardset,p2_cardset));
+				p1_cardset.add(draw(p1_cardset, p2_cardset));
 			} else {
-				p2_cardset.add(draw(p1_cardset,p2_cardset));
+				p2_cardset.add(draw(p1_cardset, p2_cardset));
 			}
 		}
 
@@ -180,7 +179,7 @@ public class Deck {
 				ui.displayString("Please enter \"trade\" to automatically trade your cards,or skip to skip.");
 				String trade = ui.inputTradeChoose();
 				if (trade.equals("trade")) {
-					trade(ui, board, playerId, currPlayer, p1_cardset);
+					trade(ui, board, playerId, playerId, currPlayer, p1_cardset);
 				}
 			} else {
 				display(ui, p2_cardset);
@@ -191,19 +190,20 @@ public class Deck {
 				ui.displayString("Please enter \"trade\" to automatically trade your cards,or skip to skip.");
 				String trade = ui.inputTradeChoose();
 				if (trade.equals("trade")) {
-					trade(ui, board, playerId, currPlayer, p2_cardset);
+					trade(ui, board, playerId, numUnits, currPlayer, p2_cardset);
 				}
 			}
 		} else if (p1_cardset.size() == 5) {
 			ui.displayString("You could only have at most 5 cards. Auto-trade is forced to process now.");
-			trade(ui, board, playerId, currPlayer, p1_cardset);
+			trade(ui, board, playerId, numUnits, currPlayer, p1_cardset);
 		} else if (p2_cardset.size() == 5) {
 			ui.displayString("You could only have at most 5 cards. Auto-trade is forced to process now.");
-			trade(ui, board, playerId, currPlayer, p2_cardset);
+			trade(ui, board, playerId, numUnits, currPlayer, p2_cardset);
 		}
 	}
 
-	public ArrayList<Card> trade(UI ui, Board board, int playerId, Player currPlayer, ArrayList<Card> cardSet) {
+	public ArrayList<Card> trade(UI ui, Board board, int playerId, int numUnits, Player currPlayer,
+			ArrayList<Card> cardSet) {
 		int inf, art, cav, wild;
 		inf = art = cav = wild = 0; // inf for type Infantry, art for type Artillery, cav for type Cavalry, wild for
 									// wild card
@@ -244,7 +244,7 @@ public class Deck {
 						// when card type is Infantry, and no more than 3 Infantry cards have been
 						// removed,
 						// remove this card from inventory.
-						cardSet.remove(i);				 // remove the card from user inventory
+						cardSet.remove(i); // remove the card from user inventory
 						i--; // remove a card decreases the index
 						count++; // one more card has been removed
 					}
@@ -304,8 +304,8 @@ public class Deck {
 			ui.displayString("Place your extra armies:"); // inform players to place extra armies they get from trading
 															// cards
 			// put extra army
-			currPlayer.addUnits(armiesGet);
-			ui.displayReinforcements(currPlayer, armiesGet);
+			currPlayer.addUnits(armiesGet + numUnits);
+			ui.displayReinforcements(currPlayer, armiesGet + numUnits);
 			do {
 				ui.inputReinforcement(currPlayer);
 				currPlayer.subtractUnits(ui.getNumUnits());

@@ -153,7 +153,7 @@ public class Sprint4 {
 			// if player conquered at lease 1 territory, then player can get one card.
 			if(conquestRecord >=1) {
 				ui.displayString("Player ["+currPlayer.getName()+"] DRAW TERRITORY CARDS");		
-				deck.drawCard(board,ui,playerId,currPlayer, p1_cardset,p2_cardset);
+				deck.drawCard(board,ui,playerId,numUnits, currPlayer, p1_cardset,p2_cardset);
 			}
 			
 			playerId = (playerId+1)%GameData.NUM_PLAYERS;
