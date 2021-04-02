@@ -166,7 +166,9 @@ public class Deck {
 				p2_cardset.add(draw(p1_cardset, p2_cardset));
 			}
 		}
-
+	}
+	public void tradeCard(Board board, UI ui, int playerId, int numUnits, Player currPlayer, ArrayList<Card> p1_cardset,
+			ArrayList<Card> p2_cardset) {
 		ui.displayString("\nEnter \"trade\" to check and trade your cards, or skip to skip.\n");
 		String mode2 = ui.inputTradeChoose();
 		if (mode2.equals("trade")) {
@@ -204,6 +206,8 @@ public class Deck {
 
 	public ArrayList<Card> trade(UI ui, Board board, int playerId, int numUnits, Player currPlayer,
 			ArrayList<Card> cardSet) {
+			display(ui, cardSet);
+		
 		int inf, art, cav, wild;
 		inf = art = cav = wild = 0; // inf for type Infantry, art for type Artillery, cav for type Cavalry, wild for
 									// wild card
@@ -304,8 +308,8 @@ public class Deck {
 			ui.displayString("Place your extra armies:"); // inform players to place extra armies they get from trading
 															// cards
 			// put extra army
-			currPlayer.addUnits(armiesGet + numUnits);
-			ui.displayReinforcements(currPlayer, armiesGet + numUnits);
+			currPlayer.addUnits(armiesGet);
+			ui.displayReinforcements(currPlayer, armiesGet);
 			do {
 				ui.inputReinforcement(currPlayer);
 				currPlayer.subtractUnits(ui.getNumUnits());

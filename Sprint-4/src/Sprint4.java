@@ -8,6 +8,7 @@ public class Sprint4 {
 		Player[] players = new Player[GameData.NUM_PLAYERS_PLUS_NEUTRALS];
 		Player currPlayer, otherPlayer, defencePlayer;
 		Card card;
+		ArrayList<Card> cardSet = null;
 		int playerId, otherPlayerId, numUnits, numCards, attackUnits, defenceUnits, countryId, attackCountryId, defenceCountryId;
 		String name;
 		ArrayList<Card> p1_cardset = new ArrayList<Card>();
@@ -104,11 +105,17 @@ public class Sprint4 {
 			currPlayer.addUnits(numUnits);
 			ui.displayReinforcements(currPlayer, numUnits);
 			do {
+				deck.trade(ui, board, otherPlayerId, numUnits, currPlayer, cardSet);
 				ui.inputReinforcement(currPlayer);
 				currPlayer.subtractUnits(ui.getNumUnits());
 				board.addUnits(ui.getCountryId(),currPlayer,ui.getNumUnits());	
 				ui.displayMap();
 			} while (currPlayer.getNumUnits() > 0);
+			//Exchanging cards
+			ui.displayString("Player ["+currPlayer.getName()+"] TRADE TERRITORY CARDS");		
+			deck.tradeCard(board,ui,playerId,numUnits, currPlayer, p1_cardset,p2_cardset);	
+			
+			//
 			// 2. Combat
 			do {
 				ui.inputBattle(currPlayer);
