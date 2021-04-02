@@ -7,7 +7,7 @@ public class SprintTest {
 		UI ui = new UI(board);
 		Player[] players = new Player[GameData.NUM_PLAYERS_PLUS_NEUTRALS];
 		Player currPlayer, otherPlayer, defencePlayer;
-		ArrayList<Card> cardSet = null;
+		Deck armiesGet;
 		int playerId, otherPlayerId, numUnits, attackUnits, defenceUnits, attackCountryId, defenceCountryId;
 		String name;
 		Deck deck = new Deck();
@@ -67,15 +67,15 @@ public class SprintTest {
 			numUnits = board.calcReinforcements(currPlayer);
 			currPlayer.addUnits(numUnits);
 			ui.displayReinforcements(currPlayer, numUnits);
+			// Exchanging cards
+			ui.displayString("Player [" + currPlayer.getName() + "] TRADE TERRITORY CARDS");
+			deck.tradeCard(board, ui, playerId, numUnits, currPlayer, p1_cardset, p2_cardset);
 			do {
 				ui.inputReinforcement(currPlayer);
 				currPlayer.subtractUnits(ui.getNumUnits());
 				board.addUnits(ui.getCountryId(), currPlayer, ui.getNumUnits());
 				ui.displayMap();
 			} while (currPlayer.getNumUnits() > 0);
-			// Exchanging cards
-			ui.displayString("Player [" + currPlayer.getName() + "] TRADE TERRITORY CARDS");
-			deck.tradeCard(board, ui, playerId, numUnits, currPlayer, p1_cardset, p2_cardset);
 
 			// 2. Combat
 			do {

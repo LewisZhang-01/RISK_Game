@@ -104,16 +104,16 @@ public class Sprint4 {
 			numUnits = board.calcReinforcements(currPlayer);
 			currPlayer.addUnits(numUnits);
 			ui.displayReinforcements(currPlayer, numUnits);
+			// Exchanging cards
+			ui.displayString("Player [" + currPlayer.getName() + "] TRADE TERRITORY CARDS");
+			deck.tradeCard(board, ui, playerId, numUnits, currPlayer, p1_cardset, p2_cardset);
 			do {
-				deck.trade(ui, board, otherPlayerId, numUnits, currPlayer, cardSet);
 				ui.inputReinforcement(currPlayer);
 				currPlayer.subtractUnits(ui.getNumUnits());
-				board.addUnits(ui.getCountryId(),currPlayer,ui.getNumUnits());	
+				board.addUnits(ui.getCountryId(), currPlayer, ui.getNumUnits());
 				ui.displayMap();
 			} while (currPlayer.getNumUnits() > 0);
-			//Exchanging cards
-			ui.displayString("Player ["+currPlayer.getName()+"] TRADE TERRITORY CARDS");		
-			deck.tradeCard(board,ui,playerId,numUnits, currPlayer, p1_cardset,p2_cardset);	
+
 			
 			//
 			// 2. Combat

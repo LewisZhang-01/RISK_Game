@@ -86,6 +86,11 @@ public class UI {
 		displayString(makeLongName(player) + " gets " + numUnits + " reinforcements.");
 		return;
 	}
+	
+	public void displayTotalReinforcements(Player player) {
+		displayString(makeLongName(player) + " gets total " + player.getNumUnits() + " reinforcements.");
+		return;
+	}
 
 	public void displayNumUnits(Player player) {
 		String message = makeLongName(player) + " has " + player.getNumUnits() + " units";
@@ -296,12 +301,12 @@ public class UI {
 			response = commandPanel.getCommand();
 			displayString(PROMPT + response);
 
-			if (response.equals("trade")) {
+			if (response.equals("trade")||response.equals("show")) {
 				responseOK = true;
 			} else if (response.equals("skip")) {
 				break;
 			} else {
-				displayString("Error: Incorrect command! [hint] enter: trade");
+				displayString("Error: Incorrect command! [hint] enter: show");
 			}
 		} while (!responseOK);
 		return response;

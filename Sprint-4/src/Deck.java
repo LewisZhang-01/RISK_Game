@@ -167,11 +167,12 @@ public class Deck {
 			}
 		}
 	}
+
 	public void tradeCard(Board board, UI ui, int playerId, int numUnits, Player currPlayer, ArrayList<Card> p1_cardset,
 			ArrayList<Card> p2_cardset) {
-		ui.displayString("\nEnter \"trade\" to check and trade your cards, or skip to skip.\n");
+		ui.displayString("\nEnter \"show\" to check your cards, or skip to skip.\n");
 		String mode2 = ui.inputTradeChoose();
-		if (mode2.equals("trade")) {
+		if (mode2.equals("show")) {
 			if (playerId == 0) {
 				display(ui, p1_cardset);
 				ui.displayString("Player 1 has: ");
@@ -206,8 +207,8 @@ public class Deck {
 
 	public ArrayList<Card> trade(UI ui, Board board, int playerId, int numUnits, Player currPlayer,
 			ArrayList<Card> cardSet) {
-			display(ui, cardSet);
-		
+		display(ui, cardSet);
+
 		int inf, art, cav, wild;
 		inf = art = cav = wild = 0; // inf for type Infantry, art for type Artillery, cav for type Cavalry, wild for
 									// wild card
@@ -305,17 +306,12 @@ public class Deck {
 			ui.displayString("Trade Success. The " + tradeNumber + " set is traded. You earn " + armiesGet
 					+ " armies to place. Traded cards are removed.");
 			tradeNumber += 1; // one trade has been done; next trade would be more valuable
-			ui.displayString("Place your extra armies:"); // inform players to place extra armies they get from trading
-															// cards
-			// put extra army
+			ui.displayString("You get armies from trading:"); // inform players to place extra armies they get from
+																// trading
+
 			currPlayer.addUnits(armiesGet);
 			ui.displayReinforcements(currPlayer, armiesGet);
-			do {
-				ui.inputReinforcement(currPlayer);
-				currPlayer.subtractUnits(ui.getNumUnits());
-				board.addUnits(ui.getCountryId(), currPlayer, ui.getNumUnits());
-				ui.displayMap();
-			} while (currPlayer.getNumUnits() > 0);
+			ui.displayTotalReinforcements(currPlayer);
 
 		} else {
 			ui.displayString("Trade false. No set fount in your cards."); // if trade fails, do nothing
