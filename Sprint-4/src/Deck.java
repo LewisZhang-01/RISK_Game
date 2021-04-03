@@ -179,34 +179,32 @@ public class Deck {
 				for (int i = 0; i < p1_cardset.size(); i++) {
 					ui.displayString(p1_cardset.get(i).toString());
 				}
-				ui.displayString("Please enter \"trade\" to automatically trade your cards,or skip to skip.");
+				ui.displayString("Please enter the first letter of insignias you wish to exchange"
+						+ ", or \"trade\" to automatically trade your cards, or skip to skip.");
 				String trade = ui.inputTradeChoose();
-				if (trade.equals("trade")) {
-					trade(ui, board, playerId, playerId, currPlayer, p1_cardset);
-				}
+				trade(ui, board, playerId, playerId, currPlayer, p1_cardset, trade);
 			} else {
 				display(ui, p2_cardset);
 				ui.displayString("Player 2 has: ");
 				for (int i = 0; i < p2_cardset.size(); i++) {
 					ui.displayString(p2_cardset.get(i).toString());
 				}
-				ui.displayString("Please enter \"trade\" to automatically trade your cards,or skip to skip.");
+				ui.displayString("Please enter the first letter of insignias you wish to exchange"
+						+ ", or \"trade\" to automatically trade your cards, or skip to skip.");
 				String trade = ui.inputTradeChoose();
-				if (trade.equals("trade")) {
-					trade(ui, board, playerId, numUnits, currPlayer, p2_cardset);
-				}
+				trade(ui, board, playerId, numUnits, currPlayer, p2_cardset, trade);
 			}
 		} else if (p1_cardset.size() == 5) {
 			ui.displayString("You could only have at most 5 cards. Auto-trade is forced to process now.");
-			trade(ui, board, playerId, numUnits, currPlayer, p1_cardset);
+			trade(ui, board, playerId, numUnits, currPlayer, p1_cardset, "trade");
 		} else if (p2_cardset.size() == 5) {
 			ui.displayString("You could only have at most 5 cards. Auto-trade is forced to process now.");
-			trade(ui, board, playerId, numUnits, currPlayer, p2_cardset);
+			trade(ui, board, playerId, numUnits, currPlayer, p2_cardset, "trade");
 		}
 	}
 
 	public ArrayList<Card> trade(UI ui, Board board, int playerId, int numUnits, Player currPlayer,
-			ArrayList<Card> cardSet) {
+			ArrayList<Card> cardSet, String trade) {
 		display(ui, cardSet);
 
 		int inf, art, cav, wild;
@@ -230,19 +228,18 @@ public class Deck {
 				break;
 			}
 		}
+		
+		switch(trade) {
+		case "iii":
+			if(inf + wild >= 3) {
+				int armiesGet = 0; // the number of extra armies players get from trading cards
 
-		if (inf + wild >= 3 || art + wild >= 3 || cav + wild >= 3
-				|| (inf + wild > 0 && art + wild > 0 && cav + wild > 0)) { // when player have a set of cards
-			int armiesGet = 0; // the number of extra armies players get from trading cards
-
-			// calculate the extra armies players get
-			if (tradeNumber < 6) {
-				armiesGet = tradeNumber * 2 + 2;
-			} else {
-				armiesGet = (tradeNumber - 6) * 5 + 15;
-			}
-
-			if (inf + wild >= 3) { // 3 infantry set
+				// calculate the extra armies players get
+				if (tradeNumber < 6) {
+					armiesGet = tradeNumber * 2 + 2;
+				} else {
+					armiesGet = (tradeNumber - 6) * 5 + 15;
+				}
 				int count = 0; // count whether 3 cards have been removed from players' inventory
 				for (int i = 0; i < cardSet.size(); i++) {
 					if (cardSet.get(i).getType().equals(Card.type.Infantry) && count < 3) {
@@ -254,16 +251,36 @@ public class Deck {
 						count++; // one more card has been removed
 					}
 				}
-			} else if (art + wild >= 3) { // 3 artillery set, similar to infantry
-				int count = 0;
-				for (int i = 0; i < cardSet.size(); i++) {
-					if (cardSet.get(i).getType().equals(Card.type.Artillery) && count < 3) {
-						cardSet.remove(i);
-						i--;
-						count++;
-					}
+				
+				// inform players that trade is successful and the extra army number players get
+				// from the trade
+				ui.displayString("Trade Success. The " + tradeNumber + " set is traded. You earn " + armiesGet
+					+ " armies to place. Traded cards are removed.");
+				tradeNumber += 1; // one trade has been done; next trade would be more valuable
+				ui.displayString("You get armies from trading:"); // inform players to place extra armies they get from
+																// trading
+
+				currPlayer.addUnits(armiesGet);
+				ui.displayReinforcements(currPlayer, armiesGet);
+				ui.displayTotalReinforcements(currPlayer);
+				
+			} else {
+				ui.displayString("Trade false. No set fount in your cards."); // if trade fails, do nothing
+				ui.displayString("Enter another card set you wish to trade, or enter \"skip\" to skip.");
+				trade = ui.inputTradeChoose();
+				cardSet = trade(ui, board, playerId, numUnits, currPlayer, cardSet, trade);
+			}
+			break;
+		case "ccc":
+			if(cav + wild >= 3) {
+				int armiesGet = 0; // the number of extra armies players get from trading cards
+
+				// calculate the extra armies players get
+				if (tradeNumber < 6) {
+					armiesGet = tradeNumber * 2 + 2;
+				} else {
+					armiesGet = (tradeNumber - 6) * 5 + 15;
 				}
-			} else if (cav + wild >= 3) { // 3 cavalry set, similar to infantry
 				int count = 0;
 				for (int i = 0; i < cardSet.size(); i++) {
 					if (cardSet.get(i).getType().equals(Card.type.Cavalry) && count < 3) {
@@ -272,7 +289,71 @@ public class Deck {
 						count++;
 					}
 				}
-			} else { // one card of each type also form a set
+				// inform players that trade is successful and the extra army number players get
+				// from the trade
+				ui.displayString("Trade Success. The " + tradeNumber + " set is traded. You earn " + armiesGet
+					+ " armies to place. Traded cards are removed.");
+				tradeNumber += 1; // one trade has been done; next trade would be more valuable
+				ui.displayString("You get armies from trading:"); // inform players to place extra armies they get from
+																// trading
+
+				currPlayer.addUnits(armiesGet);
+				ui.displayReinforcements(currPlayer, armiesGet);
+				ui.displayTotalReinforcements(currPlayer);
+				
+			} else {
+				ui.displayString("Trade false. No set fount in your cards."); // if trade fails, do nothing
+				ui.displayString("Enter another card set you wish to trade, or enter \"skip\" to skip.");
+				trade = ui.inputTradeChoose();
+				cardSet = trade(ui, board, playerId, numUnits, currPlayer, cardSet, trade);
+			}
+			break;
+		case "aaa":
+			if(art + wild >= 3) {
+				int armiesGet = 0; // the number of extra armies players get from trading cards
+
+				// calculate the extra armies players get
+				if (tradeNumber < 6) {
+					armiesGet = tradeNumber * 2 + 2;
+				} else {
+					armiesGet = (tradeNumber - 6) * 5 + 15;
+				}
+				int count = 0;
+				for (int i = 0; i < cardSet.size(); i++) {
+					if (cardSet.get(i).getType().equals(Card.type.Artillery) && count < 3) {
+						cardSet.remove(i);
+						i--;
+						count++;
+					}
+				}
+				
+				ui.displayString("Trade Success. The " + tradeNumber + " set is traded. You earn " + armiesGet
+						+ " armies to place. Traded cards are removed.");
+				tradeNumber += 1; // one trade has been done; next trade would be more valuable
+				ui.displayString("You get armies from trading:"); // inform players to place extra armies they get from
+																	// trading
+
+				currPlayer.addUnits(armiesGet);
+				ui.displayReinforcements(currPlayer, armiesGet);
+				ui.displayTotalReinforcements(currPlayer);
+				
+			} else {
+				ui.displayString("Trade false. No set fount in your cards."); // if trade fails, do nothing
+				ui.displayString("Enter another card set you wish to trade, or enter \"skip\" to skip.");
+				trade = ui.inputTradeChoose();
+				cardSet = trade(ui, board, playerId, numUnits, currPlayer, cardSet, trade);
+			}
+			break;
+		case "ica":
+			if((inf + wild > 0 && art + wild > 0 && cav + wild > 0)) {
+				int armiesGet = 0; // the number of extra armies players get from trading cards
+
+				// calculate the extra armies players get
+				if (tradeNumber < 6) {
+					armiesGet = tradeNumber * 2 + 2;
+				} else {
+					armiesGet = (tradeNumber - 6) * 5 + 15;
+				}
 				int first_i = 0; // to record the deletion of first infantry card
 				int first_c = 0; // to record the deletion of first cavalry card
 				int first_a = 0; // to record the deletion of first artillery card
@@ -298,23 +379,117 @@ public class Deck {
 						cardSet.remove(i);
 						i--;
 						first_w++;
+					}	
+				}
+				ui.displayString("Trade Success. The " + tradeNumber + " set is traded. You earn " + armiesGet
+						+ " armies to place. Traded cards are removed.");
+				tradeNumber += 1; // one trade has been done; next trade would be more valuable
+				ui.displayString("You get armies from trading:"); // inform players to place extra armies they get from
+																	// trading
+
+				currPlayer.addUnits(armiesGet);
+				ui.displayReinforcements(currPlayer, armiesGet);
+				ui.displayTotalReinforcements(currPlayer);
+			} else {
+				ui.displayString("Trade false. No set fount in your cards."); // if trade fails, do nothing
+				ui.displayString("Enter another card set you wish to trade, or enter \"skip\" to skip.");
+				trade = ui.inputTradeChoose();
+				cardSet = trade(ui, board, playerId, numUnits, currPlayer, cardSet, trade);
+			}
+			break;
+		case "trade":
+			if (inf + wild >= 3 || art + wild >= 3 || cav + wild >= 3
+				|| (inf + wild > 0 && art + wild > 0 && cav + wild > 0)) { // when player have a set of cards
+				int armiesGet = 0; // the number of extra armies players get from trading cards
+
+				// calculate the extra armies players get
+				if (tradeNumber < 6) {
+					armiesGet = tradeNumber * 2 + 2;
+				} else {
+					armiesGet = (tradeNumber - 6) * 5 + 15;
+				}
+
+				if (inf + wild >= 3) { // 3 infantry set
+					int count = 0; // count whether 3 cards have been removed from players' inventory
+					for (int i = 0; i < cardSet.size(); i++) {
+						if (cardSet.get(i).getType().equals(Card.type.Infantry) && count < 3) {
+							// when card type is Infantry, and no more than 3 Infantry cards have been
+							// removed,
+							// remove this card from inventory.
+							cardSet.remove(i); // remove the card from user inventory
+							i--; // remove a card decreases the index
+							count++; // one more card has been removed
+						}
+					}
+				} else if (art + wild >= 3) { // 3 artillery set, similar to infantry
+					int count = 0;
+					for (int i = 0; i < cardSet.size(); i++) {
+						if (cardSet.get(i).getType().equals(Card.type.Artillery) && count < 3) {
+							cardSet.remove(i);
+							i--;
+							count++;
+						}
+					}
+				} else if (cav + wild >= 3) { // 3 cavalry set, similar to infantry
+					int count = 0;
+					for (int i = 0; i < cardSet.size(); i++) {
+						if (cardSet.get(i).getType().equals(Card.type.Cavalry) && count < 3) {
+							cardSet.remove(i);
+							i--;
+							count++;
+						}
+					}
+				} else { // one card of each type also form a set
+					int first_i = 0; // to record the deletion of first infantry card
+					int first_c = 0; // to record the deletion of first cavalry card
+					int first_a = 0; // to record the deletion of first artillery card
+					int first_w = 0; // to record the deletion of first wild card
+					for (int i = 0; i < cardSet.size(); i++) {
+						if (first_i == 0 && cardSet.get(i).getType().equals(Card.type.Infantry)) {
+							// remove the first infantry card found
+							cardSet.remove(i);
+							i--;
+							first_i++; // first infantry is found, no more infantry cards need to be delete
+						} else if (first_c == 0 && cardSet.get(i).getType().equals(Card.type.Cavalry)) {
+							// remove the first cavalry card found
+							cardSet.remove(i);
+							i--;
+							first_c++;
+						} else if (first_a == 0 && cardSet.get(i).getType().equals(Card.type.Artillery)) {
+							// remove the first artillery card found
+							cardSet.remove(i);
+							i--;
+							first_a++;
+						} else if (first_w == 0 && cardSet.get(i).getType().equals(Card.type.Artillery)) {
+							// remove the first artillery card found
+							cardSet.remove(i);
+							i--;
+							first_w++;
+						}	
 					}
 				}
-			}
-			// inform players that trade is successful and the extra army number players get
-			// from the trade
-			ui.displayString("Trade Success. The " + tradeNumber + " set is traded. You earn " + armiesGet
+				// inform players that trade is successful and the extra army number players get
+				// from the trade
+				ui.displayString("Trade Success. The " + tradeNumber + " set is traded. You earn " + armiesGet
 					+ " armies to place. Traded cards are removed.");
-			tradeNumber += 1; // one trade has been done; next trade would be more valuable
-			ui.displayString("You get armies from trading:"); // inform players to place extra armies they get from
+				tradeNumber += 1; // one trade has been done; next trade would be more valuable
+				ui.displayString("You get armies from trading:"); // inform players to place extra armies they get from
 																// trading
 
-			currPlayer.addUnits(armiesGet);
-			ui.displayReinforcements(currPlayer, armiesGet);
-			ui.displayTotalReinforcements(currPlayer);
+				currPlayer.addUnits(armiesGet);
+				ui.displayReinforcements(currPlayer, armiesGet);
+				ui.displayTotalReinforcements(currPlayer);
 
-		} else {
-			ui.displayString("Trade false. No set fount in your cards."); // if trade fails, do nothing
+			} else {
+				ui.displayString("Trade false. No set fount in your cards."); // if trade fails, do nothing
+			}
+			break;
+		case "skip":
+			break;
+		default:
+			ui.displayString("Error command. Please enter \"iii\" or \"ccc\" or \"aaa\" or \"ica\" or \"trade\" to trade, or \"skip\" to skip");
+			trade = ui.inputTradeChoose();
+			cardSet = trade(ui, board, playerId, numUnits, currPlayer, cardSet, trade);
 		}
 		return cardSet;
 	}

@@ -296,19 +296,9 @@ public class UI {
 
 	public String inputTradeChoose() {
 		String response;
-		boolean responseOK = false;
-		do {
-			response = commandPanel.getCommand();
-			displayString(PROMPT + response);
-
-			if (response.equals("trade")||response.equals("show")) {
-				responseOK = true;
-			} else if (response.equals("skip")) {
-				break;
-			} else {
-				displayString("Error: Incorrect command! [hint] enter: show");
-			}
-		} while (!responseOK);
+		response = commandPanel.getCommand();
+		displayString(PROMPT + response);
+	
 		return response;
 	}
 }
