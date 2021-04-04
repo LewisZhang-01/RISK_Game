@@ -103,9 +103,12 @@ public class Deck {
 		frame.getLayeredPane().add(bglabel, new Integer(Integer.MIN_VALUE));
 
 		// Information of the card
-		JLabel cName = new JLabel(GameData.COUNTRY_NAMES[cardNum]);
+		if(cardNum!=43||cardNum!=44) {
+			JLabel cName = new JLabel(GameData.COUNTRY_NAMES[cardNum]);
+			cName.setHorizontalAlignment(JLabel.CENTER);
+			frame.add(cName, BorderLayout.SOUTH);
+		}
 		JLabel cType = new JLabel(GameData.cardType[cardNum].toString());
-		cName.setHorizontalAlignment(JLabel.CENTER);
 		cType.setHorizontalAlignment(JLabel.CENTER);
 
 		// Get card photo
@@ -117,7 +120,6 @@ public class Deck {
 		// Add labels into frame.
 		frame.add(cType, BorderLayout.NORTH);
 		frame.add(cPhoto, BorderLayout.CENTER);
-		frame.add(cName, BorderLayout.SOUTH);
 		// Gets the top-level container of the Frame and sets it to transparent.
 		JPanel j = (JPanel) frame.getContentPane();
 		j.setOpaque(false);
@@ -212,14 +214,17 @@ public class Deck {
 			} else {
 				trade(ui, board, playerId, numUnits, currPlayer, p2_cardset, input);
 			}
+			showCardSet(board, ui, playerId, numUnits, currPlayer, p1_cardset, p2_cardset);
 		}else if (p1_cardset.size() == 5 || p2_cardset.size() == 5) {
 			ui.displayString("You could only have at most 5 cards. Auto-trade is forced to process now.");
-			if(p1_cardset.size() == 5) {
+			if(p1_cardset.size() == 5 && currPlayer.getId() == 0) {
 				trade(ui, board, playerId, numUnits, currPlayer, p1_cardset, "trade");
 			}else {
 				trade(ui, board, playerId, numUnits, currPlayer, p2_cardset, "trade");
 			}	
-		} 
+			showCardSet(board, ui, playerId, numUnits, currPlayer, p1_cardset, p2_cardset);
+		}
+		
 	}
 
 	public ArrayList<Card> trade(UI ui, Board board, int playerId, int numUnits, Player currPlayer, ArrayList<Card> cardSet, String input) {

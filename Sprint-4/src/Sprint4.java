@@ -72,8 +72,9 @@ public class Sprint4 {
 		for (int r=0; r<2*GameData.NUM_REINFORCE_ROUNDS; r++) {
 			ui.displayReinforcements(currPlayer, 3);
 			currPlayer.addUnits(3);
+			int UnitNum = currPlayer.getNumUnits();
 			do {
-				ui.inputReinforcement(currPlayer,1);
+				ui.inputReinforcement(currPlayer,UnitNum);
 				currPlayer.subtractUnits(ui.getNumUnits());
 				board.addUnits(ui.getCountryId(), currPlayer, ui.getNumUnits());
 				ui.displayMap();
@@ -120,6 +121,7 @@ public class Sprint4 {
 			deck.showCardSet(board, ui, playerId, numUnits, currPlayer, p1_cardset, p2_cardset);
 			// Exchanging cards
 			deck.tradeCard(board, ui, playerId, numUnits, currPlayer, p1_cardset, p2_cardset);
+			numUnits = currPlayer.getNumUnits();
 			do {
 				ui.inputReinforcement(currPlayer,numUnits);
 				currPlayer.subtractUnits(ui.getNumUnits());

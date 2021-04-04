@@ -94,6 +94,7 @@ public class SprintTest {
 			deck.showCardSet(board, ui, playerId, numUnits, currPlayer, p1_cardset, p2_cardset);
 			// Exchanging cards
 			deck.tradeCard(board, ui, playerId, numUnits, currPlayer, p1_cardset, p2_cardset);
+			numUnits = currPlayer.getNumUnits();
 			do {
 				ui.inputReinforcement(currPlayer,numUnits);
 				currPlayer.subtractUnits(ui.getNumUnits());

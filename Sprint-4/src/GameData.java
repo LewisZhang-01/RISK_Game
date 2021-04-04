@@ -110,7 +110,7 @@ public final class GameData {
   			 "images/cards/10.jpg","images/cards/11.jpg","images/cards/12.jpg","images/cards/13.jpg","images/cards/14.jpg","images/cards/15.jpg","images/cards/16.jpg","images/cards/17.jpg","images/cards/18.jpg",
   			 "images/cards/19.jpg","images/cards/20.jpg","images/cards/21.jpg","images/cards/22.jpg","images/cards/23.jpg","images/cards/24.jpg","images/cards/25.jpg","images/cards/26.jpg","images/cards/27.jpg",
   			 "images/cards/28.jpg","images/cards/29.jpg","images/cards/30.jpg","images/cards/31.jpg","images/cards/32.jpg","images/cards/33.jpg","images/cards/34.jpg","images/cards/35.jpg","images/cards/36.jpg",
-  			 "images/cards/37.jpg","images/cards/38.jpg","images/cards/39.jpg","images/cards/40.jpg","images/cards/41.jpg","images/cards/42.jpg"};
+  			 "images/cards/37.jpg","images/cards/38.jpg","images/cards/39.jpg","images/cards/40.jpg","images/cards/41.jpg","images/cards/42.jpg","images/cards/43.jpg","images/cards/44.jpg"};
     
     public static final String MapPanelImage = "images/MapPanelImage.jpg";
     public static final String InfoPanelImage = "images/InfoPanelImage.jpg";
