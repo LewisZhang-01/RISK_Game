@@ -35,7 +35,7 @@ public class Deck {
 	}
 
 	public Card getCard() {
-		int index = (int) (Math.random() * cards.size());
+		int index = (int) (Math.random() * (cards.size()-2));
 		Card card = cards.remove(index);
 		return card;
 	}
@@ -73,14 +73,18 @@ public class Deck {
 			cardNum = Dice();
 
 			// Make sure there are no duplicate cards
-			for (int i = 0; i < p1_cardset.size(); i++) {
-				if (p1_cardset.get(i).getCountryId() == cardNum) {
-					repeat = true;
+			if(p1_cardset.size() != 0) {
+				for (int i = 0; i < p1_cardset.size(); i++) {
+					if (p1_cardset.get(i).getCountryId() == cardNum) {
+						repeat = true;
+					}
 				}
 			}
-			for (int i = 0; i < p2_cardset.size(); i++) {
-				if (p1_cardset.get(i).getCountryId() == cardNum) {
+			if(p2_cardset.size() != 0) {
+				for (int i = 0; i < p2_cardset.size(); i++) {
+					if (p1_cardset.get(i).getCountryId() == cardNum) {
 					repeat = true;
+					}
 				}
 			}
 		}
@@ -273,7 +277,7 @@ public class Deck {
 				// the number of extra armies players get from trading cards
 				int armiesGet = 0; 
 				// calculate the extra armies players get
-				calcExtraArmies(armiesGet);
+				armiesGet = calcExtraArmies(armiesGet);
 				cardRemover(cardSet);
 				tradeSuccess(ui, currPlayer,armiesGet);
 			} else {
@@ -286,7 +290,7 @@ public class Deck {
 				int armiesGet = 0; // the number of extra armies players get from trading cards
 
 				// calculate the extra armies players get
-				calcExtraArmies(armiesGet);
+				armiesGet = calcExtraArmies(armiesGet);
 
 				if (inf + wild >= 3) { // 3 infantry set
 					int count = 0; // count whether 3 cards have been removed from players' inventory
@@ -358,7 +362,7 @@ public class Deck {
 		int armiesGet = 0; // the number of extra armies players get from trading cards
 
 		// calculate the extra armies players get
-		calcExtraArmies(armiesGet);
+		armiesGet = calcExtraArmies(armiesGet);
 		int count = 0; // count whether 3 cards have been removed from players' inventory
 		for (int i = 0; i < cardSet.size(); i++) {
 			if (cardSet.get(i).getType().equals(type) && count < 3) {
@@ -376,12 +380,13 @@ public class Deck {
 	}
 	
 	// calculate the extra armies players get
-	public void calcExtraArmies(int armiesGet) {
+	public int calcExtraArmies(int armiesGet) {
 		if (tradeNumber < 6) {
 			armiesGet = tradeNumber * 2 + 2;
 		} else {
 			armiesGet = (tradeNumber - 6) * 5 + 15;
 		}
+		return armiesGet;
 	}
 	
 	public void cardRemover(ArrayList<Card> cardSet) {

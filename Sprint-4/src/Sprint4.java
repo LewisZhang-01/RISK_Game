@@ -20,6 +20,8 @@ public class Sprint4 {
 		String name;
 		ArrayList<Card> p1_cardset = new ArrayList<Card>();
 		ArrayList<Card> p2_cardset = new ArrayList<Card>();
+		Deck deck1 = new Deck();
+		Deck deck = new Deck();
 		
 		ui.displayString(">>>>>> START GAMES <<<<<<\n");
 		
@@ -36,7 +38,6 @@ public class Sprint4 {
 		}
 		
 		ui.displayString("\n***< DRAW TERRITORY CARDS FOR STARTING COUNTRIES >***");
-		Deck deck = new Deck();
 		for (playerId=0; playerId<GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
 			currPlayer = players[playerId];
 			if (playerId < GameData.NUM_PLAYERS) {
@@ -45,7 +46,7 @@ public class Sprint4 {
 				numCards = GameData.INIT_COUNTRIES_NEUTRAL;
 			}
 			for (int c=0; c<numCards; c++) {
-				card = deck.getCard();
+				card = deck1.getCard();
 				ui.displayCardDraw(currPlayer, card);
 				board.addUnits(card, currPlayer, 1);
 			}
@@ -72,7 +73,7 @@ public class Sprint4 {
 			ui.displayReinforcements(currPlayer, 3);
 			currPlayer.addUnits(3);
 			do {
-				ui.inputReinforcement(currPlayer,1);///////
+				ui.inputReinforcement(currPlayer,1);
 				currPlayer.subtractUnits(ui.getNumUnits());
 				board.addUnits(ui.getCountryId(), currPlayer, ui.getNumUnits());
 				ui.displayMap();
@@ -152,6 +153,8 @@ public class Sprint4 {
 						ui.displayMap();
 						
 						conquestRecord++;		
+					}else if(board.isInvasionSuccess() && (board.getNumUnits(attackCountryId) == 1)){
+						conquestRecord++;
 					}
 				} 
 				
