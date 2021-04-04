@@ -1,3 +1,10 @@
+/*
+ * BadGuys
+ * Zhonghe Chen 19203048
+ * Zhi Zhang 18210054
+ * Yunlong Cheng 18210611
+ * 
+ */
 
 public class Board {
 	
@@ -27,7 +34,9 @@ public class Board {
 	}
 	
 	public void addUnits (Card card, Player player, int addNumUnits) {
-		addUnits(card.getCountryId(), player.getId(), addNumUnits);
+		if(!card.getType().equals(Card.type.Wild)) {
+			addUnits(card.getCountryId(), player.getId(), addNumUnits);
+		}
 		return;
 	}
 	

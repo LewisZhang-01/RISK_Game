@@ -1,3 +1,10 @@
+/*
+ * BadGuys
+ * Zhonghe Chen 19203048
+ * Zhi Zhang 18210054
+ * Yunlong Cheng 18210611
+ * 
+ */
 
 public final class GameData {
 
@@ -104,4 +111,10 @@ public final class GameData {
   			 "images/cards/19.jpg","images/cards/20.jpg","images/cards/21.jpg","images/cards/22.jpg","images/cards/23.jpg","images/cards/24.jpg","images/cards/25.jpg","images/cards/26.jpg","images/cards/27.jpg",
   			 "images/cards/28.jpg","images/cards/29.jpg","images/cards/30.jpg","images/cards/31.jpg","images/cards/32.jpg","images/cards/33.jpg","images/cards/34.jpg","images/cards/35.jpg","images/cards/36.jpg",
   			 "images/cards/37.jpg","images/cards/38.jpg","images/cards/39.jpg","images/cards/40.jpg","images/cards/41.jpg","images/cards/42.jpg"};
+    
+    public static final String MapPanelImage = "images/MapPanelImage.jpg";
+    public static final String InfoPanelImage = "images/InfoPanelImage.jpg";
+    public static final String CommandPanelImage = "images/CommandPanelImage.jpg";
+    public static final String CardSetsImage = "images/CardSetsImage.jpg";
+    public static final String CardImage = "images/CardImage.png";
 }

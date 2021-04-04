@@ -1,3 +1,11 @@
+/*
+ * BadGuys
+ * Zhonghe Chen 19203048
+ * Zhi Zhang 18210054
+ * Yunlong Cheng 18210611
+ * 
+ */
+
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 
@@ -48,7 +56,7 @@ public class UI {
 		return parse.getToCountryId();
 	}
 
-	private String makeLongName(Player player) {
+	public String makeLongName(Player player) {
 		return player.getName() + " (" + mapPanel.getColorName(player.getId()) + ")";
 	}
 
@@ -84,6 +92,11 @@ public class UI {
 
 	public void displayReinforcements(Player player, int numUnits) {
 		displayString(makeLongName(player) + " gets " + numUnits + " reinforcements.");
+		return;
+	}
+	
+	public void displayTradeReinforcements(Player player, int numUnits) {
+		displayString(makeLongName(player) + " gets " + numUnits + " reinforcements from trading.");
 		return;
 	}
 	
@@ -131,11 +144,12 @@ public class UI {
 		return response;
 	}
 
-	public void inputReinforcement(Player player) {
+	public void inputReinforcement(Player player, int numUnits) {
 		String response, message;
 		boolean responseOK = false;
 		do {
-			message = makeLongName(player) + ": REINFORCE: Enter a country to reinforce and the number of units";
+			message = makeLongName(player) + ": REINFORCE: Enter a country to reinforce and the number of units." 
+										   + "\nNumber of reinforcements " + player.getNumUnits() + "/" + numUnits;
 			displayString(message);
 			response = commandPanel.getCommand();
 			displayString(PROMPT + response);
@@ -278,27 +292,10 @@ public class UI {
 		return;
 	}
 
-	public String inputDrawChoose() {
-		String response;
-		boolean responseOK = false;
-		do {
-			response = commandPanel.getCommand();
-			displayString(PROMPT + response);
-
-			if (response.equals("draw")) {
-				responseOK = true;
-			} else {
-				displayString("Error: Incorrect command! [hint] enter: draw");
-			}
-		} while (!responseOK);
-		return response;
-	}
-
-	public String inputTradeChoose() {
+	public String inputChoose() {
 		String response;
 		response = commandPanel.getCommand();
 		displayString(PROMPT + response);
-	
 		return response;
 	}
 }

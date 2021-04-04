@@ -1,3 +1,11 @@
+/*
+ * BadGuys
+ * Zhonghe Chen 19203048
+ * Zhi Zhang 18210054
+ * Yunlong Cheng 18210611
+ * 
+ */
+
 import java.util.ArrayList;
 
 public class Sprint4 {
@@ -8,13 +16,14 @@ public class Sprint4 {
 		Player[] players = new Player[GameData.NUM_PLAYERS_PLUS_NEUTRALS];
 		Player currPlayer, otherPlayer, defencePlayer;
 		Card card;
-		ArrayList<Card> cardSet = null;
 		int playerId, otherPlayerId, numUnits, numCards, attackUnits, defenceUnits, countryId, attackCountryId, defenceCountryId;
 		String name;
 		ArrayList<Card> p1_cardset = new ArrayList<Card>();
 		ArrayList<Card> p2_cardset = new ArrayList<Card>();
 		
-		ui.displayString("ENTER PLAYER NAMES");
+		ui.displayString(">>>>>> START GAMES <<<<<<\n");
+		
+		ui.displayString("***< ENTER PLAYER NAMES >***");
 		ui.displayMap();
 		for (playerId=0; playerId<GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
 			if (playerId < GameData.NUM_PLAYERS) {
@@ -26,7 +35,7 @@ public class Sprint4 {
 			players[playerId] = new Player (playerId, name, 0);
 		}
 		
-		ui.displayString("\nDRAW TERRITORY CARDS FOR STARTING COUNTRIES");
+		ui.displayString("\n***< DRAW TERRITORY CARDS FOR STARTING COUNTRIES >***");
 		Deck deck = new Deck();
 		for (playerId=0; playerId<GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
 			currPlayer = players[playerId];
@@ -43,7 +52,7 @@ public class Sprint4 {
 		}
 		ui.displayMap();
 		
-		ui.displayString("\nROLL DICE TO SEE WHO REINFORCES THEIR COUNTRIES FIRST");
+		ui.displayString("\n***< ROLL DICE TO SEE WHO REINFORCES THEIR COUNTRIES FIRST >***");
 		do {
 			for (int i=0; i<GameData.NUM_PLAYERS; i++) {
 				players[i].rollDice(1);
@@ -58,12 +67,12 @@ public class Sprint4 {
 		currPlayer = players[playerId];
 		ui.displayRollWinner(currPlayer);
 		
-		ui.displayString("\nREINFORCE INITIAL COUNTRIES");
+		ui.displayString("\n***< REINFORCE INITIAL COUNTRIES PHASE >***");
 		for (int r=0; r<2*GameData.NUM_REINFORCE_ROUNDS; r++) {
 			ui.displayReinforcements(currPlayer, 3);
 			currPlayer.addUnits(3);
 			do {
-				ui.inputReinforcement(currPlayer);
+				ui.inputReinforcement(currPlayer,1);///////
 				currPlayer.subtractUnits(ui.getNumUnits());
 				board.addUnits(ui.getCountryId(), currPlayer, ui.getNumUnits());
 				ui.displayMap();
@@ -79,7 +88,7 @@ public class Sprint4 {
 			currPlayer = players[playerId];
 		}
 		
-		ui.displayString("\nROLL DICE TO SEE WHO TAKES THE FIRST TURN");
+		ui.displayString("\n***< ROLL DICE TO SEE WHO TAKES THE FIRST TURN >***");
 		do {
 			for (int i=0; i<GameData.NUM_PLAYERS; i++) {
 				players[i].rollDice(1);
@@ -94,29 +103,31 @@ public class Sprint4 {
 		currPlayer = players[playerId];
 		ui.displayRollWinner(currPlayer);
 		
-		ui.displayString("\nSTART TURNS");
+		// Start Turns from here:
+		ui.displayString("\n>>> START TURNS <<<");
 		do {
 			otherPlayerId = (playerId+1)%GameData.NUM_PLAYERS;
 			otherPlayer = players[otherPlayerId];
 			int conquestRecord = 0;
 			
 			// 1. Reinforcements
+			ui.displayString("\n***< REINFORCEMENTS PHASE >***");
 			numUnits = board.calcReinforcements(currPlayer);
 			currPlayer.addUnits(numUnits);
 			ui.displayReinforcements(currPlayer, numUnits);
+			// Show card Sets
+			deck.showCardSet(board, ui, playerId, numUnits, currPlayer, p1_cardset, p2_cardset);
 			// Exchanging cards
-			ui.displayString("Player [" + currPlayer.getName() + "] TRADE TERRITORY CARDS");
 			deck.tradeCard(board, ui, playerId, numUnits, currPlayer, p1_cardset, p2_cardset);
 			do {
-				ui.inputReinforcement(currPlayer);
+				ui.inputReinforcement(currPlayer,numUnits);
 				currPlayer.subtractUnits(ui.getNumUnits());
 				board.addUnits(ui.getCountryId(), currPlayer, ui.getNumUnits());
 				ui.displayMap();
 			} while (currPlayer.getNumUnits() > 0);
 
-			
-			//
 			// 2. Combat
+			ui.displayString("\n***< COMBAT PHASE >***");
 			do {
 				ui.inputBattle(currPlayer);
 				if (!ui.isTurnEnded()) {
@@ -147,6 +158,7 @@ public class Sprint4 {
 			} while (!ui.isTurnEnded() && !board.isGameOver());
 
 			// 3. Fortify
+			ui.displayString("\n***< FORTIFY PHASE >***");
 			if (!board.isGameOver()) {
 				ui.inputFortify(currPlayer);
 				if (!ui.isTurnEnded()) {
@@ -156,22 +168,25 @@ public class Sprint4 {
 				}
 			}			
 
-			/* Card part */
-			// if player conquered at lease 1 territory, then player can get one card.
+			// 4. Draw Card
+			// If player conquered at lease 1 territory, then player can get one card.
 			if(conquestRecord >=1) {
-				ui.displayString("Player ["+currPlayer.getName()+"] DRAW TERRITORY CARDS");		
+				ui.displayString("\n***< DRAW CARD PHASE >***");	
 				deck.drawCard(board,ui,playerId,numUnits, currPlayer, p1_cardset,p2_cardset);
+				// Show card Sets
+				deck.showCardSet(board, ui, playerId, numUnits, currPlayer, p1_cardset, p2_cardset);
 			}
 			
+			// Exchange of players
+			ui.displayString("\n***< EXCHANGE OF PLAYERS >***\n");
 			playerId = (playerId+1)%GameData.NUM_PLAYERS;
 			currPlayer = players[playerId];			
 
 		} while (!board.isGameOver());
 		
 		ui.displayWinner(players[board.getWinner()]);
-		ui.displayString("GAME OVER");
+		ui.displayString("\n>>>>>> GAME OVER <<<<<<");
 		
 		return;
 	}
-
 }

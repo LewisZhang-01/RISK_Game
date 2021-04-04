@@ -1,3 +1,11 @@
+/*
+ * BadGuys
+ * Zhonghe Chen 19203048
+ * Zhi Zhang 18210054
+ * Yunlong Cheng 18210611
+ * 
+ */
+
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
@@ -14,7 +22,7 @@ public class InfoPanel extends JPanel {
 	DefaultCaret caret = (DefaultCaret)textArea.getCaret();
 
 	//Display Info Panel Background Image
-	private Image image=new ImageIcon("images/InfoPanelImage.jpg").getImage();
+	private Image image=new ImageIcon(GameData.InfoPanelImage).getImage();
 	protected void paintComponent(Graphics g) {  
         g.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), this);  
 	}  
