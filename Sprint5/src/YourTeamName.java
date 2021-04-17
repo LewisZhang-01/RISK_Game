@@ -64,8 +64,24 @@ public class YourTeamName implements Bot {
 
 	public String getMoveIn (int attackCountryId) {
 		String command = "";
-		// put your code here
-		command = "0";
+		int units = board.getNumUnits(attackCountryId);
+		boolean surrounded = true;
+		int a[] = GameData.ADJACENT[attackCountryId];
+		for(int i = 0; i < a.length; i++) {
+			if(board.getOccupier(attackCountryId) != board.getOccupier(a[i])) {
+				surrounded = false;
+				break;
+			}
+		}
+		
+		if(!surrounded) {
+			int move = units/2;
+			command = "" + move;
+		}else {
+			int move = units - 1;
+			command = "" + move;
+		}
+		
 		return(command);
 	}
 
