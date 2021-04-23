@@ -38,20 +38,36 @@ public class BadGuy implements Bot {
 	public String getReinforcement () {
 		String command = "";
 		// put your code here
-		command = GameData.COUNTRY_NAMES[(int)(Math.random() * GameData.NUM_COUNTRIES)];
+		int[] own = new int[GameData.NUM_COUNTRIES];
+		int index = 0;
+		for(int id=0; id<GameData.NUM_COUNTRIES; id++) {
+			if(board.getOccupier(id)==player.getId()) {
+				own[index] = id;
+				index++;
+			}
+		}
+		command = GameData.COUNTRY_NAMES[own[(int)(Math.random() * index)]];
 		command = command.replaceAll("\\s", "");
 		command += " 1";
 		return(command);
 	}
-	
+
 	public String getPlacement (int forPlayer) {
 		String command = "";
 		// put your code here
-		command = GameData.COUNTRY_NAMES[(int)(Math.random() * GameData.NUM_COUNTRIES)];
+		int[] own = new int[GameData.NUM_COUNTRIES];
+		int index = 0;
+		for(int id=0; id<GameData.NUM_COUNTRIES; id++) {
+			if(board.getOccupier(id)==forPlayer) {
+				own[index] = id;
+				index++;
+			}
+		}
+		command = GameData.COUNTRY_NAMES[own[(int)(Math.random() * index)]];
 		command = command.replaceAll("\\s", "");
 		return(command);
 	}
-	
+
 	public String getCardExchange () {
 		String command = "";
 		// put your code here
