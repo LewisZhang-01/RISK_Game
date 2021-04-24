@@ -53,9 +53,30 @@ public class BadGuy implements Bot {
 		}
 	}
 
+	// Check if it is surrounded by its own countries.
+	private boolean isSurrounded(int countryId) {
+		int around_num = 0;
+		int around_same_num = 0;
+		boolean isSurrounded = false;// Is surrounded by own country.
+		for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
+			if (board.isAdjacent(countryId, i)) {
+				// if adjacent.
+				around_num++;
+				// if adjacent is also our country.
+				if (board.getOccupier(i) == player.getId()) {
+					around_same_num++;
+				}
+			}
+		}
+		if(around_num == around_same_num) {
+			isSurrounded = true;
+		}
+		return isSurrounded;
+	}
+	
 	private int calcWeightForOwn(int countryId) {
 		// Add strategy here:
-		int weight = 0;
+		int weight = 1;
 		boolean skip = false;
 		/* Own feature */
 		// 1. Check if it is a critical country.
@@ -69,6 +90,8 @@ public class BadGuy implements Bot {
 		int numUnits = board.getNumUnits(countryId);
 
 		/* Around feature */
+		// 1. Check if it is surrounded by its own countries.
+		boolean surroundedStatus = isSurrounded(countryId);
 		// 2. Check if it in SA. Find out all the countries in SA that belong to me.
 		boolean inSA = false;
 		int countryInSA = 0;
@@ -94,6 +117,10 @@ public class BadGuy implements Bot {
 
 		weight += countryInSA + countryInAU;
 
+		if(surroundedStatus == true) {
+			weight -= numUnits+10;
+		}
+		
 		if (inSA == true && isCrirical == true) {
 			weight += 10;
 		} else if (inSA == true || isCrirical == true) {
@@ -105,11 +132,11 @@ public class BadGuy implements Bot {
 		} else if (inAU == true || isCrirical == true) {
 			weight += 5;
 		}
-
+		
 		// skip condition:
-		// if(weight <= 5) {
-		// skip = true;
-		// }
+//		if(weight <= 5) {
+//			skip = true;
+//		}
 
 		if (skip == true) {
 			return -1;
@@ -192,6 +219,8 @@ public class BadGuy implements Bot {
 		}
 
 		/* Around feature */
+		boolean surroundedStatus = isSurrounded(countryId);
+		
 		// 2. Check if it in SA. Find out all the countries in SA that belong to me.
 		boolean inSA = false;
 		int countryInSA = 0;
@@ -213,7 +242,7 @@ public class BadGuy implements Bot {
 		}
 
 		weight += countryInSA + countryInAU;
-
+		
 		if (inSA == true && isCrirical == true) {
 			weight += 10;
 		} else if (inSA == true || isCrirical == true) {
@@ -226,10 +255,9 @@ public class BadGuy implements Bot {
 			weight += 5;
 		}
 
-		// skip condition:
-		// if(weight <= 5) {
-		// skip = true;
-		// }
+		if(surroundedStatus == true) {
+			weight = 0;
+		}
 
 		if (skip == true) {
 			return -1;
@@ -319,7 +347,7 @@ public class BadGuy implements Bot {
 		// Traverse and calculate the weights of all the countries that belong to us.
 		for (int id = 0; id < GameData.NUM_COUNTRIES; id++) {
 			if (own[id] != -1) {
-				System.out.println("id=" + id);
+//				System.out.println("from=" + id);
 				own[id] = calcWeightForOwn(id);// Store weight in the corresponding position.
 				if (own[id] == -1) {// Skip command.
 					skip = true;
@@ -336,7 +364,7 @@ public class BadGuy implements Bot {
 
 						// if adjacent is also our country , just skip.
 						if (board.getOccupier(i) != player.getId()) {
-//							System.out.println("from: "+id+" to: "+i);
+							System.out.println("from: "+id+" to: "+i);
 							around[index] = i;
 							around_weight[index] = calcWeightForOpp(i);
 							// find max weight of opp
@@ -384,8 +412,12 @@ public class BadGuy implements Bot {
 
 	public String getDefence(int countryId) {
 		String command = "";
-		// put your code here
-		command = "1";
+		int num = board.getNumUnits(countryId);
+		if (num > 3) {
+			command = "2";
+		} else if (num < 4 || num > 1) {
+			command = "1";
+		} 
 		return (command);
 	}
 

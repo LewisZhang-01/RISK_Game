@@ -115,7 +115,7 @@ public class Sprint5Test {
 //		}
 		
 		ui.displayString("\nSTART TURNS");
-		int count=0;
+//		int count=0;
 		do {
 			otherPlayerId = (playerId+1)%GameData.NUM_PLAYERS;
 			otherPlayer = players[otherPlayerId];
@@ -214,8 +214,9 @@ public class Sprint5Test {
 
 			playerId = (playerId+1)%GameData.NUM_PLAYERS;
 			currPlayer = players[playerId];			
-			count++;
-		} while (count<3);
+//			count++;
+//		} while (count<3);
+		} while (!board.isGameOver());
 		
 		ui.displayWinner(players[board.getWinner()]);
 		ui.displayString("GAME OVER");
