@@ -28,7 +28,7 @@ public class Silly_PLUS implements Bot {
 	public String getName() {
 		String command = "";
 		// put your code here
-		command = "BadGuy";
+		command = "Silly_PLUS";
 		return (command);
 	}
 

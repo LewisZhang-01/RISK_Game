@@ -113,9 +113,11 @@ public class Sprint5Test {
 //				ui.displayCardDraw(players[i],card);
 //			}
 //		}
-		
+		int times = 0;
 		ui.displayString("\nSTART TURNS");
 		do {
+			System.out.println("times: "+times);
+			times++;
 			otherPlayerId = (playerId+1)%GameData.NUM_PLAYERS;
 			otherPlayer = players[otherPlayerId];
 			

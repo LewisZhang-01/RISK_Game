@@ -17,8 +17,9 @@ public class BadGuy implements Bot {
 	private BoardAPI board;
 	private PlayerAPI player;
 
-	int[] criticalCountry = { 8, 4, 7, 32, 34, 14, 10, 11, 12, 37, 39, 40, 18, 16, 20, 22, 23, 31 };
-
+	private int[] criticalCountry = { 8, 4, 7, 32, 34, 14, 10, 11, 12, 37, 39, 40, 18, 16, 20, 22, 23, 31 };
+	private int[] continentNum = { 9, 7, 13, 4, 4, 6 };
+			
 	BadGuy(BoardAPI inBoard, PlayerAPI inPlayer) {
 		board = inBoard;
 		player = inPlayer;
@@ -166,6 +167,20 @@ public class BadGuy implements Bot {
 		return weight;
 	}
 
+	private int calcLeftOnContinent(int countryId) {
+		int remain = 0;
+		// Get continent id about current country.
+		int continentId = GameData.CONTINENT_IDS[countryId];
+		// Traverse all country in this continent.
+		for(int i=0; i<continentNum[continentId]; i++) {
+			// If current country is not occupier by us.
+			if( board.getOccupier(GameData.CONTINENT_COUNTRIES[continentId][i]) != board.getOccupier(player.getId())) {
+				remain++;
+			}
+		}
+		return remain;
+	}
+	
 	private int calcWeightForOpp(int countryId) {
 		int weight = 100;
 		int oppId = board.getOccupier(countryId);
@@ -174,8 +189,9 @@ public class BadGuy implements Bot {
 		// 1. Check if it is a critical country.
 		boolean isCrirical = false;
 		for (int check : criticalCountry) {
-			if (check == countryId)
+			if (check == countryId) {
 				isCrirical = true;
+			}
 		}
 
 		// 2. Check how many units it has.
@@ -194,22 +210,36 @@ public class BadGuy implements Bot {
 		boolean inSA = false;
 		int countryInSA = 0;
 		for (int i = 0; i < 4; i++) {
-			if (GameData.CONTINENT_COUNTRIES[4][i] == countryId)
+			if (GameData.CONTINENT_COUNTRIES[4][i] == countryId) {
 				inSA = true;
-			if (board.getOccupier(GameData.CONTINENT_COUNTRIES[4][i]) == oppId)
+			}
+			if (board.getOccupier(GameData.CONTINENT_COUNTRIES[4][i]) == oppId) {
 				countryInSA++;
+			}
 		}
 
 		// 2. Check if it in AU. Find out all the countries in AU that belong to me.
 		boolean inAU = false;
 		int countryInAU = 0;
 		for (int i = 0; i < 4; i++) {
-			if (GameData.CONTINENT_COUNTRIES[3][i] == countryId)
+			if (GameData.CONTINENT_COUNTRIES[3][i] == countryId) {
 				inAU = true;
-			if (board.getOccupier(GameData.CONTINENT_COUNTRIES[3][i]) == oppId)
+			}
+			if (board.getOccupier(GameData.CONTINENT_COUNTRIES[3][i]) == oppId) {
 				countryInAU++;
+			}
 		}
 
+		// 3. Check the remaining number of country in continent.
+		int remain = calcLeftOnContinent(countryId);
+		if(remain == 1) {
+			weight += 100;
+		}else if(remain == 2) {
+			weight += 80;
+		}else if(remain == 3) {
+			weight += 60;
+		}
+		
 		/* Calculate weight */
 		// if it is a neutral player.
 		if (oppId > GameData.NUM_PLAYERS) {
@@ -292,12 +322,11 @@ public class BadGuy implements Bot {
 			weight = 0;
 		}
 
-		return weight;
-		
+		return weight;	
 	}
+	
 	public String getReinforcement() {
 		String command = "";
-		// put your code here
 		int[] own = new int[GameData.NUM_COUNTRIES];
 		getOwnCountryOnBoard(own);
 		int maxWeight = 0;
@@ -563,6 +592,16 @@ public class BadGuy implements Bot {
 	}
 
 	public String getMoveIn(int attackCountryId) {
+		  String command = "";
+		  int units = board.getNumUnits(attackCountryId);
+		   
+		  int move = units - 1;
+		  command = "" + move;
+		 
+		  return (command);
+	}
+/*
+	public String getMoveIn(int attackCountryId) {
 		String command = "";
 		int units = board.getNumUnits(attackCountryId);
 		boolean surrounded = true;
@@ -584,7 +623,7 @@ public class BadGuy implements Bot {
 
 		return (command);
 	}
-
+*/
 	public String getFortify() {
 		String command = "";
 		int i = 0, j = 0;
