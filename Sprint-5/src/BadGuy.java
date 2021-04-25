@@ -502,14 +502,14 @@ public class BadGuy implements Bot {
 //		System.out.println("once");
 		String command = "";
 		int[] own = new int[GameData.NUM_COUNTRIES];
-		int[] opp = new int[GameData.NUM_COUNTRIES];
+//		int[] opp = new int[GameData.NUM_COUNTRIES];
 		int[][] ans = new int[GameData.NUM_COUNTRIES][3];
 		// Country belong to us:
 		getOwnCountryOnBoard(own);
 		// Country belong to non-neutral player:
-		getOppCountryOnBoard(opp);
+//		getOppCountryOnBoard(opp);
 		// neutral is the rest country
-
+		
 		int countryFrom = 0;
 		int countryTo = 0;
 		int ownNum = 0;// Count the total number of own country on board.
@@ -531,7 +531,6 @@ public class BadGuy implements Bot {
 				int index = 0;
 				for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
 					if (board.isAdjacent(id, i)) {
-
 						// if adjacent is also our country , just skip.
 						if (board.getOccupier(i) != player.getId()) {
 //							System.out.println("from: "+id+" to: "+i);
@@ -557,8 +556,9 @@ public class BadGuy implements Bot {
 			return "skip";
 		}
 
-		int maxWeight = 0;
+		int maxWeight = 1;
 		for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
+//			System.out.println("ans "+ans[i][0]);		
 			if (maxWeight <= ans[i][0]) {
 				maxWeight = ans[i][0];
 				countryFrom = ans[i][1];

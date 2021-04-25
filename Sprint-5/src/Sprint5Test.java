@@ -4,6 +4,7 @@ public class Sprint5Test {
 	
 	public static void main (String args[]) {	   
 		Board board = new Board();
+		
 		UI ui = new UI(board);
 		Player[] players = new Player[GameData.NUM_PLAYERS_PLUS_NEUTRALS];
 		Player currPlayer, otherPlayer, defencePlayer;
@@ -116,7 +117,8 @@ public class Sprint5Test {
 		int times = 0;
 		ui.displayString("\nSTART TURNS");
 		do {
-			System.out.println("times: "+times);
+			System.out.println("times: "+times+" name: "+players[playerId].getName());
+			
 			times++;
 			otherPlayerId = (playerId+1)%GameData.NUM_PLAYERS;
 			otherPlayer = players[otherPlayerId];
