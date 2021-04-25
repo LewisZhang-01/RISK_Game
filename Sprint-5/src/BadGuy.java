@@ -1,3 +1,17 @@
+/*
+ * Name: Zhi Zhang, Student Number: 18210054
+ * Name: Zhonghe Chen, Student Number: 19203048
+ * Name: Yunlong Cheng, Student Number: 18210611
+ * 
+ * Our bot will have an error because of unknown reasons.
+ * 
+ * The error is that the bot will sometimes attack a not adjacent country, but we cannot figure out the reason.
+ * 
+ * The probability of the error is about 10%. In ten games the error may happen one game, 
+ * and that game falls in dead lock then, because the bot will insist that wrong attack forever.
+ * 
+ * */
+
 import java.util.ArrayList;
 
 // put your code here
@@ -350,7 +364,6 @@ public class BadGuy implements Bot {
 		// Add strategy here:
 		int weight = 100;
 		int oppId = board.getOccupier(countryId);
-		// System.out.println("oppId="+oppId);
 		// 1. Check if it is a critical country.
 		boolean isCrirical = false;
 		for (int check : criticalCountry) {
@@ -430,14 +443,11 @@ public class BadGuy implements Bot {
 	}
 
 	public String getCardExchange() {
-//		System.out.println("ooooo");
 		String command = "";
 		// put your code here
 		ArrayList<Card> cards = player.getCards();
 		int i = 0, c = 0, a = 0, w = 0;
-		for(int j = 0; j < cards.size(); j++) {		//{"Infantry","Cavalry","Artillary","Wild Card"};
-			
-//			System.out.println(cards.get(j).getInsigniaName());
+		for(int j = 0; j < cards.size(); j++) {		
 			if(cards.get(j).getInsigniaName().equals("Infantry")) {
 				i++;
 			}else if(cards.get(j).getInsigniaName().equals("Cavalry")) {
@@ -499,16 +509,11 @@ public class BadGuy implements Bot {
 	}
 
 	public String getBattle() {
-//		System.out.println("once");
 		String command = "";
 		int[] own = new int[GameData.NUM_COUNTRIES];
-//		int[] opp = new int[GameData.NUM_COUNTRIES];
 		int[][] ans = new int[GameData.NUM_COUNTRIES][3];
 		// Country belong to us:
 		getOwnCountryOnBoard(own);
-		// Country belong to non-neutral player:
-//		getOppCountryOnBoard(opp);
-		// neutral is the rest country
 		
 		int countryFrom = 0;
 		int countryTo = 0;
@@ -517,7 +522,6 @@ public class BadGuy implements Bot {
 		// Traverse and calculate the weights of all the countries that belong to us.
 		for (int id = 0; id < GameData.NUM_COUNTRIES; id++) {
 			if (own[id] != -1) {
-//				System.out.println("from=" + id);
 				ownNum++;
 				own[id] = calcWeightForOwn(id);// Store weight in the corresponding position.
 				if (own[id] == -1) {// Skip command.
@@ -533,7 +537,6 @@ public class BadGuy implements Bot {
 					if (board.isAdjacent(id, i)) {
 						// if adjacent is also our country , just skip.
 						if (board.getOccupier(i) != player.getId()) {
-//							System.out.println("from: "+id+" to: "+i);
 							around[index] = i;
 							around_weight[index] = calcWeightForOpp(i);
 							// find max weight of opp
@@ -557,15 +560,13 @@ public class BadGuy implements Bot {
 		}
 
 		int maxWeight = 1;
-		for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
-//			System.out.println("ans "+ans[i][0]);		
+		for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {		
 			if (maxWeight <= ans[i][0]) {
 				maxWeight = ans[i][0];
 				countryFrom = ans[i][1];
 				countryTo = ans[i][2];
 			}
 		}
-//		System.out.println("final from: " + countryFrom + " to: " + countryTo);
 
 		// Calculate the number of unit to attack
 		int numToAttack = calcUnitAttak(countryFrom);
@@ -599,30 +600,7 @@ public class BadGuy implements Bot {
 		 
 		  return (command);
 	}
-/*
-	public String getMoveIn(int attackCountryId) {
-		String command = "";
-		int units = board.getNumUnits(attackCountryId);
-		boolean surrounded = true;
-		int a[] = GameData.ADJACENT[attackCountryId];
-		for (int i = 0; i < a.length; i++) {
-			if (board.getOccupier(attackCountryId) != board.getOccupier(a[i])) {
-				surrounded = false;
-				break;
-			}
-		}
 
-		if (!surrounded) {
-			int move = units / 2;
-			command = "" + move;
-		} else {
-			int move = units - 1;
-			command = "" + move;
-		}
-
-		return (command);
-	}
-*/
 	public String getFortify() {
 		String command = "";
 		int i = 0, j = 0;
