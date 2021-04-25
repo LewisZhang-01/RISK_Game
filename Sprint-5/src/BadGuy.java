@@ -3,11 +3,11 @@
  * Name: Zhonghe Chen, Student Number: 19203048
  * Name: Yunlong Cheng, Student Number: 18210611
  * 
- * Our bot will have an error because of unknown reasons.
+ * Our bot will have an error because of unknown reasons.(Probably due to the IDE)
  * 
  * The error is that the bot will sometimes attack a not adjacent country, but we cannot figure out the reason.
  * 
- * The probability of the error is about 10%. In ten games the error may happen one game, 
+ * The probability of the error is about 5%. In twenty games the error may happen one game, 
  * and that game falls in dead lock then, because the bot will insist that wrong attack forever.
  * 
  * */
@@ -567,7 +567,7 @@ public class BadGuy implements Bot {
 				countryTo = ans[i][2];
 			}
 		}
-
+		
 		// Calculate the number of unit to attack
 		int numToAttack = calcUnitAttak(countryFrom);
 		if (numToAttack == -1) {
