@@ -210,8 +210,7 @@ public class BadGuy implements Bot {
 
 	private int calcWeightForReiforcement(int countryId) {
 		// Add strategy here:
-		int weight = 0;
-		boolean skip = false;
+		int weight = 1;
 		/* Own feature */
 		// 1. Check if it is a critical country.
 		boolean isCrirical = false;
@@ -261,51 +260,105 @@ public class BadGuy implements Bot {
 			weight = 0;
 		}
 
-		if (skip == true) {
-			return -1;
-		} else {
 			return weight;
-		}
+		
 	}
-	public String getReinforcement () {
+	public String getReinforcement() {
 		String command = "";
 		// put your code here
 		int[] own = new int[GameData.NUM_COUNTRIES];
-		// Country belong to us:
 		getOwnCountryOnBoard(own);
-	    int maxWeight=0;
-	    int maxWeightid=0;
-	    int index=0;
-	    //compare every countries' weight and get the most important one.
-		for(int id=0; id<GameData.NUM_COUNTRIES; id++) {
-			if (board.getOccupier(id) == player.getId()) {
-				own[index] = id;
-				if (calcWeightForReiforcement(index)>maxWeight) {
-					maxWeightid=index;
+		int maxWeight = 0;
+		int maxWeightid = 0;
+		// compare every countries' weight and get the most important one.
+		for (int id = 0; id < GameData.NUM_COUNTRIES; id++) {
+			if (own[id]!=-1) {
+				if ( calcWeightForReiforcement(id) > maxWeight) {
+					maxWeight=calcWeightForReiforcement(id);
+					maxWeightid = id;
 				}
-				index++;
 			}
 		}
-				
 		command = GameData.COUNTRY_NAMES[own[maxWeightid]];
 		command = command.replaceAll("\\s", "");
 		command += " 1";
-		return(command);
+		return (command);
+	}
+
+	private int calcWeightForPlace(int countryId) {
+		// Add strategy here:
+		int weight = 100;
+		int oppId = board.getOccupier(countryId);
+		// System.out.println("oppId="+oppId);
+		// 1. Check if it is a critical country.
+		boolean isCrirical = false;
+		for (int check : criticalCountry) {
+			if (check == countryId)
+				isCrirical = true;
+		}
+
+		// 2. Check how many units it has.
+		int numUnits = board.getNumUnits(countryId);
+
+		/* Around feature */
+		// 2. Check if it in SA. Find out all the countries in SA that belong to opp.
+		boolean inSA = false;
+		int countryInSA = 0;
+		for (int i = 0; i < 4; i++) {
+			if (GameData.CONTINENT_COUNTRIES[4][i] == countryId)
+				inSA = true;
+			if (board.getOccupier(GameData.CONTINENT_COUNTRIES[4][i]) == oppId)
+				countryInSA++;
+		}
+
+		// 3. Check if it in AU. Find out all the countries in AU that belong to me.
+		boolean inAU = false;
+		int countryInAU = 0;
+		for (int i = 0; i < 4; i++) {
+			if (GameData.CONTINENT_COUNTRIES[3][i] == countryId)
+				inAU = true;
+			if (board.getOccupier(GameData.CONTINENT_COUNTRIES[3][i]) == oppId)
+				countryInAU++;
+		}
+
+		/* Calculate weight */
+		// if it is a neutral player.
+		if (oppId > GameData.NUM_PLAYERS) {
+			weight += 5;
+		}
+
+		weight -= numUnits;
+
+		weight -= countryInSA + countryInAU;
+
+		if (inSA == true && isCrirical == true) {
+			weight -= 10;
+		} else if (inSA == true || isCrirical == true) {
+			weight -= 5;
+		}
+
+		if (inAU == true && isCrirical == true) {
+			weight -= 10;
+		} else if (inAU == true || isCrirical == true) {
+			weight -= 5;
+		}
+
+		return weight;
 	}
 
 	public String getPlacement(int forPlayer) {
 		String command = "";
 		// put your code here
 		int[] opp = new int[GameData.NUM_COUNTRIES];
-		getOppCountryOnBoard(opp);
-	    int minWeight=0;
-	    int minWeightid=0;
-	    int index=0;
+		int minWeight = 100;
+		int minWeightid = 0;
+		int index = 0;
 		for (int id = 0; id < GameData.NUM_COUNTRIES; id++) {
-			if (board.getOccupier(id) == forPlayer) {
+			if(board.getOccupier(id)==forPlayer) {
 				opp[index] = id;
-				if (calcWeightForOpp(index)<minWeight) {
-					minWeightid=index;
+				if ( calcWeightForPlace(id) < minWeight) {
+					minWeight=calcWeightForPlace(id);
+					minWeightid = index;
 				}
 				index++;
 			}
@@ -478,16 +531,23 @@ public class BadGuy implements Bot {
 	public String getMoveIn(int attackCountryId) {
 		String command = "";
 		int units = board.getNumUnits(attackCountryId);
-		int move = units - 1;
-		command = "" + move;
-	/*	if (isSurrounded(attackCountryId)) {
-			int move = units - 1;
+		boolean surrounded = true;
+		int a[] = GameData.ADJACENT[attackCountryId];
+		for (int i = 0; i < a.length; i++) {
+			if (board.getOccupier(attackCountryId) != board.getOccupier(a[i])) {
+				surrounded = false;
+				break;
+			}
+		}
+
+		if (!surrounded) {
+			int move = units / 2;
 			command = "" + move;
 		} else {
-			int move =  units / 2;
+			int move = units - 1;
 			command = "" + move;
 		}
-*/
+
 		return (command);
 	}
 
@@ -556,4 +616,8 @@ public class BadGuy implements Bot {
 			}
 		}
 	}
+
+}
+
+	
 }
