@@ -478,33 +478,82 @@ public class BadGuy implements Bot {
 	public String getMoveIn(int attackCountryId) {
 		String command = "";
 		int units = board.getNumUnits(attackCountryId);
-		boolean surrounded = true;
-		int a[] = GameData.ADJACENT[attackCountryId];
-		for (int i = 0; i < a.length; i++) {
-			if (board.getOccupier(attackCountryId) != board.getOccupier(a[i])) {
-				surrounded = false;
-				break;
-			}
-		}
-
-		if (!surrounded) {
-			int move = units / 2;
-			command = "" + move;
-		} else {
+		int move = units - 1;
+		command = "" + move;
+	/*	if (isSurrounded(attackCountryId)) {
 			int move = units - 1;
 			command = "" + move;
+		} else {
+			int move =  units / 2;
+			command = "" + move;
 		}
-
+*/
 		return (command);
 	}
 
 	public String getFortify() {
 		String command = "";
+		int i = 0, j = 0;
 		// put code here
+		int own[] = new int[42];
+		getOwnCountryOnBoard(own);
+		int count = 0;
+		int maxunit = 0;
+		for(i = 0; i < 42; i++) {
+			if(own[i] != -1) {
+				count++;				
+				if(maxunit < board.getNumUnits(own[i])) {
+					maxunit = i;
+				}
+			}
+		}
+		int weight[] = new int[count];
+		int id[] = new int[count];
+		for(i = 0; i < 42; i++) {
+			if(own[i] != -1) {
+				weight[j] = calcWeightForOwn(own[i]);
+				id[j++] = own[i];
+			}
+		}
+
+		sort(weight, id);
 		
 		
-		command = "skip";
+		if(board.getNumUnits(maxunit) > 1) {
+			command = GameData.COUNTRY_NAMES[own[maxunit]].replaceAll("\\s", "");
+			int funits = board.getNumUnits(own[maxunit]) - 1;
+			for(i = weight.length - 1 ; i >= 0; i--) {
+				if(id[i] == maxunit) {
+					command = "skip";
+					break;
+				}
+				if(board.isConnected(own[maxunit], own[id[i]])) {
+					command += " " + GameData.COUNTRY_NAMES[own[id[i]]].replaceAll("\\s", "") + " " + funits;
+				}
+			}
+		}else {
+			command = "skip";
+		}
+		
 		return (command);
 	}
-
+	
+	private void sort(int a[], int b[]) {
+		int N = a.length;
+		for(int i = 0; i<N; i++) {
+			for(int j = i; j>0; j--) {
+				if(a[j] < a[j-1]) {
+					int temp = a[j];
+					a[j] = a[j-1];
+					a[j-1] = temp;
+					
+					temp = b[j];
+					b[j] = b[j - 1];
+					b[j-1] = temp;
+				}else {
+					break;
+				}
+			}
+		}
+	}
 }
