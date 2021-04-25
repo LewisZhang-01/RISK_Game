@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 // put your code here
 
 public class BadGuy implements Bot {
@@ -316,7 +318,53 @@ public class BadGuy implements Bot {
 	public String getCardExchange() {
 		String command = "";
 		// put your code here
+		ArrayList<Card> cards = player.getCards();
+		int i = 0, c = 0, a = 0, w = 0;
+		for(int j = 0; j < cards.size(); j++) {		//{"Infantry","Cavalry","Artillary","Wild Card"};
+			if(cards.get(i).getInsigniaName().equals("Infantry")) {
+				i++;
+			}else if(cards.get(i).getInsigniaName().equals("Cavalry")) {
+				c++;
+			}else if(cards.get(i).getInsigniaName().equals("Artillary")) {
+				a++;
+			}else if(cards.get(i).getInsigniaName().equals("Wild Card")) {
+				w++;
+			}
+		}
 		command = "skip";
+		if(w == 0) {
+			if(i >= 3) {
+				command = "iii";
+			}else if(c >= 3) {
+				command = "ccc";
+			}else if(a >= 3) {
+				command = "aaa";
+			}else if(i >= 1 && c >= 1 && a >= 1) {
+				command = "ica";
+			}
+		}else if(w == 1) {
+			if(i >= 2) {
+				command = "iiw";
+			}else if(c >= 2) {
+				command = "ccw";
+			}else if(a >= 2) {
+				command = "aaw";
+			}else if(i >= 1 && c >= 1) {
+				command = "icw";
+			}else if(i >= 1 && a >= 1) {
+				command = "iaw";
+			}else if(c >= 1 && a >= 1) {
+				command = "caw";
+			}
+		}else if(w == 2){
+			if(i >= 1) {
+				command = "iww";
+			}else if(c >= 1) {
+				command = "cww";
+			}else if(a >= 1) {
+				command = "aww";
+			}
+		}
 		return (command);
 	}
 
