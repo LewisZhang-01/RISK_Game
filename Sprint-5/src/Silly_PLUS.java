@@ -1,25 +1,24 @@
 import java.util.ArrayList;
 
-// put your code here
+/*
+ * 
+ * This class is for testing only
+ * 
+ */
 
-public class BadGuy implements Bot {
+public class Silly_PLUS implements Bot {
 	// The public API of YourTeamName must not change
 	// You cannot change any other classes
 	// YourTeamName may not alter the state of the board or the player objects
 	// It may only inspect the state of the board and the player objects
-	// So you can use player.getNumUnits() but you can't use player.addUnits(10000),
-	// for example
-
-	/*
-	 * Total Bonus NA 9 5 SA 4 2 EU 7 5 AF 6 3 AS 12 7 AU 4 2
-	 */
-
+	// So you can use player.getNumUnits() but you can't use player.addUnits(10000), for example
+	
 	private BoardAPI board;
 	private PlayerAPI player;
 
 	int[] criticalCountry = { 8, 4, 7, 32, 34, 14, 10, 11, 12, 37, 39, 40, 18, 16, 20, 22, 23, 31 };
 
-	BadGuy(BoardAPI inBoard, PlayerAPI inPlayer) {
+	Silly_PLUS(BoardAPI inBoard, PlayerAPI inPlayer) {
 		board = inBoard;
 		player = inPlayer;
 		// put your code here
@@ -76,47 +75,19 @@ public class BadGuy implements Bot {
 		return isSurrounded;
 	}
 	
-	// Check if skip this attack round.
-	private boolean isSkip(int countryId) {
-		int around_opp_num = 0;
-		int skip_num = 0;
-		boolean isSkip = false;
-		for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
-			if (board.isAdjacent(countryId, i)) {				
-				// if adjacent is opp country.
-				if (board.getOccupier(i) != player.getId() && board.getOccupier(i) < GameData.NUM_PLAYERS) {
-					// 
-					around_opp_num++;
-					// if own's unit < opp's unit
-					if(board.getNumUnits(countryId) < board.getNumUnits(i)) {
-						skip_num++;
-					}
-				}
-			}
-		}
-		if(around_opp_num == skip_num) {
-			isSkip = true;
-		}
-		return isSkip;
-	}
-	
 	private int calcWeightForOwn(int countryId) {
+		// Add strategy here:
 		int weight = 1;
-		
+		boolean skip = false;
 		/* Own feature */
-		// 1. Check if it's unit is less than around opp country, just skip.
-		if(isSkip(countryId) == true) {
-			return -1;
-		}
-		
-		// 2. Check if it is a critical country.
+		// 1. Check if it is a critical country.
 		boolean isCrirical = false;
 		for (int check : criticalCountry) {
 			if (check == countryId)
 				isCrirical = true;
 		}
 
-		// 3. Check how many units it has.
+		// 2. Check how many units it has.
 		int numUnits = board.getNumUnits(countryId);
 				
 		/* Around feature */
@@ -162,15 +133,23 @@ public class BadGuy implements Bot {
 		if(surroundedStatus == true) {
 			weight = 0;
 		}
+		// skip condition:
+//		if(weight <= 5) {
+//			skip = true;
+//		}
 
-		return weight;
+		if (skip == true) {
+			return -1;
+		} else {
+			return weight;
+		}
 	}
 
 	private int calcWeightForOpp(int countryId) {
+		// Add strategy here:
 		int weight = 100;
 		int oppId = board.getOccupier(countryId);
-
-		/* Own feature */
+		// System.out.println("oppId="+oppId);
 		// 1. Check if it is a critical country.
 		boolean isCrirical = false;
 		for (int check : criticalCountry) {
@@ -190,7 +169,7 @@ public class BadGuy implements Bot {
 		}
 				
 		/* Around feature */
-		// 1. Check if it in SA. Find out all the countries in SA that belong to opp.
+		// 2. Check if it in SA. Find out all the countries in SA that belong to opp.
 		boolean inSA = false;
 		int countryInSA = 0;
 		for (int i = 0; i < 4; i++) {
@@ -200,7 +179,7 @@ public class BadGuy implements Bot {
 				countryInSA++;
 		}
 
-		// 2. Check if it in AU. Find out all the countries in AU that belong to me.
+		// 3. Check if it in AU. Find out all the countries in AU that belong to me.
 		boolean inAU = false;
 		int countryInAU = 0;
 		for (int i = 0; i < 4; i++) {
@@ -215,6 +194,7 @@ public class BadGuy implements Bot {
 		if (oppId > GameData.NUM_PLAYERS) {
 			weight += 5;
 		}
+
 
 		// If it is non-neutral player's country.
 		if (isTarget == true) {
@@ -292,7 +272,7 @@ public class BadGuy implements Bot {
 			weight = 0;
 		}
 
-		return weight;
+			return weight;
 		
 	}
 	public String getReinforcement() {
@@ -472,6 +452,7 @@ public class BadGuy implements Bot {
 	public String getBattle() {
 //		System.out.println("once");
 		String command = "";
+		// put your code here
 		int[] own = new int[GameData.NUM_COUNTRIES];
 		int[] opp = new int[GameData.NUM_COUNTRIES];
 		int[][] ans = new int[GameData.NUM_COUNTRIES][3];
@@ -483,16 +464,15 @@ public class BadGuy implements Bot {
 
 		int countryFrom = 0;
 		int countryTo = 0;
-		int ownNum = 0;// Count the total number of own country on board.
-		int skipNum = 0;// Count the total number of countries to skip.
+		boolean skip = false;
 		// Traverse and calculate the weights of all the countries that belong to us.
 		for (int id = 0; id < GameData.NUM_COUNTRIES; id++) {
 			if (own[id] != -1) {
 //				System.out.println("from=" + id);
-				ownNum++;
 				own[id] = calcWeightForOwn(id);// Store weight in the corresponding position.
 				if (own[id] == -1) {// Skip command.
-					skipNum++;
+					skip = true;
+					break;
 				}
 
 				/* Find around country attribute */
@@ -522,9 +502,8 @@ public class BadGuy implements Bot {
 				ans[id][2] = countryTo;// to
 			}
 		}
-		
-		// If all countries want skip, then skip.
-		if (ownNum == skipNum) {
+//		System.out.println("decide from: "+countryFrom+" to: "+countryTo);
+		if (skip == true) {
 			return "skip";
 		}
 
@@ -537,6 +516,7 @@ public class BadGuy implements Bot {
 				countryTo = ans[i][2];
 			}
 		}
+		// System.out.println("final: "+maxWeight);
 //		System.out.println("final from: " + countryFrom + " to: " + countryTo);
 
 		// Calculate the number of unit to attack
@@ -546,8 +526,7 @@ public class BadGuy implements Bot {
 		}
 		// Form a command
 		command = GameData.COUNTRY_NAMES[countryFrom].replaceAll("\\s", "") + " "
-				+ GameData.COUNTRY_NAMES[countryTo].replaceAll("\\s", "") + " " 
-				+ numToAttack;
+				+ GameData.COUNTRY_NAMES[countryTo].replaceAll("\\s", "") + " " + numToAttack;
 		return command;
 	}
 

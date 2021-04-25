@@ -19,7 +19,7 @@ public class Sprint5Test {
 		for (playerId=0; playerId<GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
 			players[playerId] = new Player (playerId);
 			if (playerId == 0) {
-				players[playerId].setBot(new SillyBot(board,players[playerId]));
+				players[playerId].setBot(new Silly_PLUS(board,players[playerId]));
 			}
 			if (playerId == 1) {
 				players[playerId].setBot(new BadGuy(board,players[playerId]));
@@ -115,7 +115,6 @@ public class Sprint5Test {
 //		}
 		
 		ui.displayString("\nSTART TURNS");
-//		int count=0;
 		do {
 			otherPlayerId = (playerId+1)%GameData.NUM_PLAYERS;
 			otherPlayer = players[otherPlayerId];
@@ -214,10 +213,8 @@ public class Sprint5Test {
 
 			playerId = (playerId+1)%GameData.NUM_PLAYERS;
 			currPlayer = players[playerId];			
-//			count++;
-//		} while (count<3);
+
 		} while (!board.isGameOver());
-		
 		
 		ui.displayWinner(players[board.getWinner()]);
 		ui.displayString("GAME OVER");
