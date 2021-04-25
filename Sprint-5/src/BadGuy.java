@@ -252,7 +252,7 @@ public class BadGuy implements Bot {
 		if (inAU == true && isCrirical == true) {
 			weight += 10;
 		} else if (inAU == true || isCrirical == true) {
-			weight += 5;
+            weight += 5;
 		}
 
 		if(surroundedStatus == true) {
@@ -294,15 +294,21 @@ public class BadGuy implements Bot {
 	public String getPlacement(int forPlayer) {
 		String command = "";
 		// put your code here
-		int[] own = new int[GameData.NUM_COUNTRIES];
-		int index = 0;
+		int[] opp = new int[GameData.NUM_COUNTRIES];
+		getOppCountryOnBoard(opp);
+	    int minWeight=0;
+	    int minWeightid=0;
+	    int index=0;
 		for (int id = 0; id < GameData.NUM_COUNTRIES; id++) {
 			if (board.getOccupier(id) == forPlayer) {
-				own[index] = id;
+				opp[index] = id;
+				if (calcWeightForOpp(index)<minWeight) {
+					minWeightid=index;
+				}
 				index++;
 			}
 		}
-		command = GameData.COUNTRY_NAMES[own[(int) (Math.random() * index)]];
+		command = GameData.COUNTRY_NAMES[opp[minWeightid]];
 		command = command.replaceAll("\\s", "");
 		return (command);
 	}
@@ -447,6 +453,8 @@ public class BadGuy implements Bot {
 	public String getFortify() {
 		String command = "";
 		// put code here
+		
+		
 		command = "skip";
 		return (command);
 	}
