@@ -369,18 +369,21 @@ public class BadGuy implements Bot {
 	}
 
 	public String getCardExchange() {
+		System.out.println("ooooo");
 		String command = "";
 		// put your code here
 		ArrayList<Card> cards = player.getCards();
 		int i = 0, c = 0, a = 0, w = 0;
 		for(int j = 0; j < cards.size(); j++) {		//{"Infantry","Cavalry","Artillary","Wild Card"};
-			if(cards.get(i).getInsigniaName().equals("Infantry")) {
+			
+			System.out.println(cards.get(j).getInsigniaName());
+			if(cards.get(j).getInsigniaName().equals("Infantry")) {
 				i++;
-			}else if(cards.get(i).getInsigniaName().equals("Cavalry")) {
+			}else if(cards.get(j).getInsigniaName().equals("Cavalry")) {
 				c++;
-			}else if(cards.get(i).getInsigniaName().equals("Artillary")) {
+			}else if(cards.get(j).getInsigniaName().equals("Artillary")) {
 				a++;
-			}else if(cards.get(i).getInsigniaName().equals("Wild Card")) {
+			}else if(cards.get(j).getInsigniaName().equals("Wild Card")) {
 				w++;
 			}
 		}
@@ -617,7 +620,4 @@ public class BadGuy implements Bot {
 		}
 	}
 
-}
-
-	
 }
