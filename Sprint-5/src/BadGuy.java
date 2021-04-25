@@ -85,7 +85,7 @@ public class BadGuy implements Bot {
 		for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
 			if (board.isAdjacent(countryId, i)) {				
 				// if adjacent is opp country.
-				if (board.getOccupier(i) != player.getId() && board.getOccupier(i) < GameData.NUM_PLAYERS) {
+				if (board.getOccupier(i) != player.getId()) {
 					// 
 					around_opp_num++;
 					// if own's unit < opp's unit
@@ -95,7 +95,7 @@ public class BadGuy implements Bot {
 				}
 			}
 		}
-		if(around_opp_num == skip_num) {
+		if(around_opp_num == skip_num && skip_num != 0) {
 			isSkip = true;
 		}
 		return isSkip;
@@ -559,7 +559,6 @@ public class BadGuy implements Bot {
 
 		int maxWeight = 0;
 		for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
-//			System.out.println("find: "+ans[i][0]);
 			if (maxWeight <= ans[i][0]) {
 				maxWeight = ans[i][0];
 				countryFrom = ans[i][1];
